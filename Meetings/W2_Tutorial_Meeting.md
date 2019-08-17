@@ -1,22 +1,14 @@
 # Meeting Minutes - Week 2
 
-**Subject**: Week 2 Tutorial Meeting
-
-**Project Name**: 22 - SepsisUx
-
-**Facilitator**: 
-
-**Prepared by**: Phillip Porteous
-
-**Mode**: Face-to-face
-
-**Date**: Tuesday 13 August
-
-**Time**: 9 am - 11 am
-
-**Attendees**: John, Phillip, Flynn, Allen, Mark
-
-**Absent**: None
+**Subject**: Week 2 Tutorial Meeting  
+**Project Name**: 22 - SepsisUx  
+**Facilitator**:  
+**Prepared by**: Phillip Porteous  
+**Mode**: Face-to-face  
+**Date**: Tuesday 13 August  
+**Time**: 9 am - 11 am  
+**Attendees**: John, Phillip, Flynn, Allen, Mark  
+**Absent**: None  
 
 ## Agenda Item: What has been completed?
 - Since this is the first week of the project, no items have been completed.
