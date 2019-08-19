@@ -7,5 +7,4 @@
 - Phillip Porteous - ppor2353@uni.sydney.edu.au
 - John Spicer - jspi0204@uni.sydney.edu.au
 
-## Week 1
-- [Tutorial Meeting Minutes](https://bitbucket.org/jspi0204/comp3888-t09a-group-2/src/master/Meetings/W2_Tutorial_Meeting.md)
+## [Wiki](https://bitbucket.org/jspi0204/comp3888-t09a-group-2/wiki/Home)
