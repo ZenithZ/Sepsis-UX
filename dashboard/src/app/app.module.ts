@@ -9,13 +9,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
-import { PatientsComponent } from './components/patients/patients.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TopbarComponent,
-    PatientsComponent
+    TopbarComponent
   ],
   imports: [
     BrowserModule,

@@ -1,18 +1,20 @@
 mat-toolbar {
     width: 100%;
-    min-width: 10px;
-    height: 115px;
-    min-height: 64px;
+    height: 120px;
     background-color: #002664;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
-    box-sizing: border-box;
-    color: white;
 }
 
-.title {
-    font-size: 20px;
+.content {
+    max-width: 1024px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: row;
+    margin: 0 auto;
+    color: white;
+    font-size: 1.5rem;
 }
