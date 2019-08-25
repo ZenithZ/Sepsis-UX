@@ -1,62 +1,85 @@
-<div>
-    <mat-table #table [dataSource]="dataSource" class="example-container mat-elevation-z8">
 
-        <!-- Note that these columns may be defined in any order.
-                the actual rendered columnds are set as a property on 
-                the row definition -->
+<mat-form-field>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+</mat-form-field>
+<div class="title">Vital Stats</div>
 
-        <!-- MRN Column -->
-        <ng-container matColumnDef="MRN">
-            <mat-header-cell *matHeaderCellDef>MRN</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.MRN }} </mat-cell>
-        </ng-container>
-        <!-- Name Column -->
-        <ng-container matColumnDef="Name">
-            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.FirstName + ' ' + patient.LastName }} </mat-cell>
-        </ng-container>
-        <!-- Date of Birth Column -->
-        <ng-container matColumnDef="DOB">
-            <mat-header-cell *matHeaderCellDef>DOB</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.DOB }} </mat-cell>
-        </ng-container>
-        <!-- Gender Column -->
-        <ng-container matColumnDef="Gender">
-            <mat-header-cell *matHeaderCellDef>Gender</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.Gender }} </mat-cell>
-        </ng-container>
-        <!-- Vitals Column -->
-        <ng-container matColumnDef="Vitals">
-            <mat-header-cell *matHeaderCellDef>Vitals</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.BG ? 'yes' : 'no' }} </mat-cell>
-        </ng-container>
-        <!-- Level of Conciousness Column -->
-        <ng-container matColumnDef="LOC">
-            <mat-header-cell *matHeaderCellDef>LOC</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.LOC }} </mat-cell>
-        </ng-container>
-        <!-- Bloodgas Column -->
-        <ng-container matColumnDef="Bloodgas">
-            <mat-header-cell *matHeaderCellDef>Bloodgas</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.BG ? 'yes' : 'no' }} </mat-cell>
-        </ng-container>
-        <!-- Registration Date Column -->
-        <ng-container matColumnDef="Registration">
-            <mat-header-cell *matHeaderCellDef>Registration</mat-header-cell>
-            <mat-cell *matCellDef="let patient"> {{ patient.Registration }} </mat-cell>
-        </ng-container>
+<table mat-table #table [dataSource]="dataSource" multiTemplateDataRows class="example-container mat-elevation-z8">
+    <!-- columns -->
+    <ng-container matColumnDef="MRN">
+        <th mat-header-cell *matHeaderCellDef> MRN </th>
+        <td mat-cell *matCellDef="let element"> {{ element.MRN }} </td>
+    </ng-container>
+    <ng-container matColumnDef="Name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{ element.FirstName + ' ' + element.LastName }} </td>
+    </ng-container>
+    <ng-container matColumnDef="DOB">
+        <th mat-header-cell *matHeaderCellDef> DOB </th>
+        <td mat-cell *matCellDef="let element"> {{ element.DOB }} </td>
+    </ng-container>
+    <ng-container matColumnDef="Gender">
+        <th mat-header-cell *matHeaderCellDef> Gender </th>
+        <td mat-cell *matCellDef="let element"> {{ element.Gender }} </td>
+    </ng-container>
+    <ng-container matColumnDef="Vitals">
+        <th mat-header-cell *matHeaderCellDef> Vitals </th>
+        <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.BG; else elseBlock" title="{{ element.BT_time }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" /></svg>
+            </div>
+            <ng-template #elseBlock>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    <path d="M0 0h24v24H0z" fill="none" /></svg>
+            </ng-template>
 
-        <!-- Expanded content column - the detail row is made of this one column -->
-        <ng-container matColumnDef="expandedDetail">
-            <mat-cell *matCellDef="let patient"> Patient: {{ patient.Registration }} </mat-cell>
-        </ng-container>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="LOC">
+        <th mat-header-cell *matHeaderCellDef> LOC </th>
+        <td mat-cell *matCellDef="let element"> {{ element.LOC }} </td>
+    </ng-container>
+    <ng-container matColumnDef="BG">
+        <th mat-header-cell *matHeaderCellDef> Bloodgas </th>
+        <td mat-cell *matCellDef="let element">
+            <div *ngIf="element.BG; else elseBlock" title="{{ element.BG_time }}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M0 0h24v24H0z" fill="none" />
+                    <path
+                        d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
+                </svg>
+            </div>
+            <ng-template #elseBlock>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                    <path d="M0 0h24v24H0z" fill="none" /></svg>
+            </ng-template>
+        </td>
+    </ng-container>
+    <ng-container matColumnDef="Reg">
+        <th mat-header-cell *matHeaderCellDef> Registration </th>
+        <td mat-cell *matCellDef="let element"> {{ element.Registration }} </td>
+    </ng-container>
 
-        <!-- Header row -->
-        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;" matRipple class="element-row"
-            [class.expanded]="expandedElement == row" (click)="expandedElement = row"></mat-row>
-        <mat-row *matRowDef="let row; columns: ['expandedDetail']; when: isExpansionDetailRow"
-            [@detailExpand]="row.element == expandedElement ? 'expanded' : 'collapsed'" style="overflow: hidden">
-        </mat-row>
-    </mat-table>
-</div>
+
+    <!-- expanded detail -->
+    <ng-container matColumnDef="expandedDetail">
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+            <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                patient detail for {{element.FirstName + ' ' + element.LastName}}
+            </div>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+    <tr mat-row *matRowDef="let element; columns: displayedColumns;" class="example-element-row"
+        [class.expanded-row]="expandedElement === element"
+        (click)="expandedElement = expandedElement === element ? null : element"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+
+</table>
