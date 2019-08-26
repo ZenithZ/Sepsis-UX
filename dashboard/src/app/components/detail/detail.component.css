@@ -1,0 +1,9 @@
+ul {
+    width: 100%;
+    flex: content;
+}
+
+mat-slider {
+    width: 80%;
+    margin: 5px;
+}

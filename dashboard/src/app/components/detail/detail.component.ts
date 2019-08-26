@@ -10,9 +10,15 @@ export class DetailComponent implements OnInit {
 
   @Input() patient: Patient;
 
+  val:number = 15;
+  selected:string = "Yes";
+
   constructor() { }
 
   ngOnInit() {
   }
 
+  formatLabel(value) {
+    return value;
+  }
 }

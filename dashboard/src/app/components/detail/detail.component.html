@@ -1,1 +1,26 @@
-<p>patient details for {{patient.FirstName + ' ' + patient.LastName}}</p>
+<ul>
+    <li>
+        <p>patient details for {{patient.FirstName + ' ' + patient.LastName}}</p><br>
+    </li>
+    <li>
+        <table>
+
+        </table>
+    </li>
+    <li>
+        <div>
+            Level of Consciousness<br>
+            <mat-slider min="3" max="15" step="1" tickInterval="auto" thumbLabel [(ngModel)]="val" [displayWith]="formatLabel"></mat-slider>
+            {{val}}
+        </div>
+        <div>
+            <mat-form-field>
+                <mat-label>Clinically Suspected of Sepsis</mat-label>
+                <mat-select [(value)]="selected">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="No">No</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </li>
+</ul>
