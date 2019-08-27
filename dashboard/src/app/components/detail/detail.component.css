@@ -1,11 +1,18 @@
-ul {
-    width: auto;
-    display: content;
+.manual-loc-example {
+    display: flex;
 }
 
 .mat-slider {
     align-content: center;
-    width: 90%;
+    flex: 8;
     margin: 5px;
+}
 
+.loc-slider-value {
+    flex: 2;
+    font-size: 1.5vw;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
 }

@@ -10,8 +10,8 @@ import { MatTableModule} from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'
-import {MatSliderModule} from '@angular/material/slider';
-import {MatSelectModule} from '@angular/material/select'; 
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

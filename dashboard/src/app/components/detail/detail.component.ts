@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output } from '@angular/core';
 import { Patient } from '../table/table.component';
 
 @Component({
@@ -19,18 +19,27 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
   }
 
-  formatLabel(value) {
-    switch (value) {
-      case 3: this.loC = "Unresponsive";
-        break;
-      case 5: this.loC = "Pain";
-        break;
-      case 10: this.loC = "Verbal";
-        break;
-      case 15: this.loC = "Alert";
-        break;
-      default: this.loC = value + "";
+  formatLabel(value:number) {
+    return DetailComponent.getLabel(value);
+  }
+
+  setLoCText() {
+    this.loC = DetailComponent.getLabel(this.val);
+  }
+
+  // Returns the stringified qualitative description of the level of consciousness
+  static getLabel(value:number) {
+    switch(value) {
+      case 3:
+        return "Unresponsive";
+      case 5:
+        return "Pain";
+      case 10:
+        return "Verbal";
+      case 15:
+        return "Alert";
+      default:
+        return value.toString();
     }
-    return this.loC;
   }
 }

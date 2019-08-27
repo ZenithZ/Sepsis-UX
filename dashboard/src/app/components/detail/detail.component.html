@@ -10,10 +10,12 @@
     <li>
         <div>
             Level of Consciousness<br>
-            <mat-slider min="3" max="15" step="1" tickInterval="auto" thumbLabel [(ngModel)]="val" [displayWith]="formatLabel"></mat-slider> 
-            {{loC}}
+            <div class="manual-loc-example">
+                <mat-slider class="manual-loc-slider" min="3" max="15" step="1" tickInterval="auto" thumbLabel [(ngModel)]="val" [displayWith]="formatLabel" (change)="setLoCText()"></mat-slider> 
+                <span class="loc-slider-value">{{loC}}</span>
+            </div>
         </div>
-        <div>
+        <div class="manual-clinical-override">
             <mat-form-field>
                 <mat-label>Clinically Suspected of Sepsis</mat-label>
                 <mat-select [(value)]="selected">

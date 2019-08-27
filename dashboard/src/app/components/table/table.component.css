@@ -20,7 +20,6 @@ table {
   
   .example-element-detail {
     overflow: hidden;
-    /*display: flex; Fixes the slider width issue*/
   }
   
   .example-element-description {
