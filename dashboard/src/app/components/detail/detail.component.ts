@@ -12,6 +12,7 @@ export class DetailComponent implements OnInit {
 
   val:number = 15;
   selected:string = "Yes";
+  loC: string = "Alert";
 
   constructor() { }
 
@@ -19,6 +20,17 @@ export class DetailComponent implements OnInit {
   }
 
   formatLabel(value) {
-    return value;
+    switch (value) {
+      case 3: this.loC = "Unresponsive";
+        break;
+      case 5: this.loC = "Pain";
+        break;
+      case 10: this.loC = "Verbal";
+        break;
+      case 15: this.loC = "Alert";
+        break;
+      default: this.loC = value + "";
+    }
+    return this.loC;
   }
 }
