@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
 import sampleData from '../../../../mock_data.json'
 
 @Component({
@@ -20,8 +21,14 @@ export class TableComponent {
   dataSource = new MatTableDataSource(data);
   expandedElement: Patient | null ;
 
+  @ViewChild(MatSort, {static: true}) sort: MatSort;
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+
+  ngOnInit() {
+    this.dataSource.sort = this.sort;
   }
 }
 

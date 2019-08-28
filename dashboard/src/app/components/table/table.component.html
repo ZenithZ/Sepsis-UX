@@ -3,7 +3,7 @@
 </mat-form-field>
 <div class="title">Vital Stats</div>
 
-<table mat-table #table [dataSource]="dataSource" multiTemplateDataRows class="example-container mat-elevation-z8">
+<table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort class="example-container mat-elevation-z8">
     <!-- columns -->
     <ng-container matColumnDef="MRN">
         <th mat-header-cell *matHeaderCellDef> MRN </th>
@@ -39,11 +39,11 @@
         </td>
     </ng-container>
     <ng-container matColumnDef="LOC">
-        <th mat-header-cell *matHeaderCellDef> LOC </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> LOC </th>
         <td mat-cell *matCellDef="let element"> {{ element.LOC }} </td>
     </ng-container>
     <ng-container matColumnDef="BG">
-        <th mat-header-cell *matHeaderCellDef> Bloodgas </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bloodgas </th>
         <td mat-cell *matCellDef="let element">
             <div *ngIf="element.BG; else elseBlock" title="{{ element.BG_time }}">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
