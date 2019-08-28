@@ -11,7 +11,7 @@ export class DetailComponent implements OnInit {
 
   @Input() patient: Patient;
 
-  displayedColumns: string[] = ['Stat', 'Value', 'Time'];
+  displayedColumns: string[] = ['Stat', 'Value', 'Range', 'Time'];
   data: string[] = ['BT', 'PR', 'RR', 'BP'];
   dataSource;
 
@@ -23,10 +23,10 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     let patientDataArray = [
-      {'stat': 'Body Temperature', 'value': this.patient.BT, 'time': this.patient.BT_time},
-      {'stat': 'Pulse Rate', 'value': this.patient.PR, 'time': this.patient.PR_time},
-      {'stat': 'Respiration Rate', 'value': this.patient.RR, 'time': this.patient.RR_time},
-      {'stat': 'Blood Pressure', 'value': this.patient.BP, 'time': this.patient.BP_time}
+      {'stat': 'Body Temperature', 'range': '35.5 < temp < 38.5', 'value': this.patient.BT, 'time': this.patient.BT_time},
+      {'stat': 'Heart Rate', 'range': '50 ≤ pulse ≤ 120', 'value': this.patient.PR, 'time': this.patient.PR_time},
+      {'stat': 'Respiration Rate', 'range': '10 ≤ breaths per minute ≤ 50', 'value': this.patient.RR, 'time': this.patient.RR_time},
+      {'stat': 'Blood Pressure', 'range': 'SBP ≥ 100mmHg', 'value': this.patient.BP, 'time': this.patient.BP_time}
     ];
     this.dataSource = new MatTableDataSource(patientDataArray);
   }
