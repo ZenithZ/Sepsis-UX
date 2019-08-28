@@ -15,9 +15,9 @@ export class DetailComponent implements OnInit {
   data: string[] = ['BT', 'PR', 'RR', 'BP'];
   dataSource;
 
-  val:number = 15;
+  val:number = 3;
   selected:string = "Yes";
-  loC: string = "Alert";
+  loC: string = "Unresponsive";
 
   constructor() { }
 
@@ -54,5 +54,25 @@ export class DetailComponent implements OnInit {
       default:
         return value.toString();
     }
+  }
+
+  change_value_by_simple_select() {
+      switch(this.loC) {
+        case "Unresponsive":
+          this.val = 3;
+          break;
+        case "Pain":
+          this.val = 5;
+          break;
+        case "Verbal":
+          this.val = 10;
+          break;
+        case "Alert":
+          this.val = 15;
+          break;
+        default:
+          this.val = this.val;
+          break;
+      }
   }
 }

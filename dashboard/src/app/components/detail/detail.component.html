@@ -28,6 +28,15 @@
             Level of Consciousness<br>
             <div class="manual-loc-example">
                 <mat-slider class="manual-loc-slider" min="3" max="15" step="1" tickInterval="auto" thumbLabel [(ngModel)]="val" [displayWith]="formatLabel" (change)="setLoCText()"></mat-slider> 
+                <mat-form-field>
+                    <mat-label>Quick Select</mat-label>
+                    <mat-select [(value)]="loC" (selectionChange)="change_value_by_simple_select()">
+                        <mat-option value = "Unresponsive">Unresponsive</mat-option>
+                        <mat-option value = "Pain">Pain</mat-option>
+                        <mat-option value = "Verbal">Verbal</mat-option>
+                        <mat-option value = "Alert">Alert</mat-option>
+                    </mat-select>
+                </mat-form-field>
                 <span class="loc-slider-value">{{loC}}</span>
             </div>
         </div>
