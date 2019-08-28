@@ -12,6 +12,11 @@
     margin-top: 25px;
 }
 
+.loc-quick-select {
+    flex: 2;
+    margin-left: 5px;
+}
+
 .loc-slider-value {
     flex: 2;
     font-size: 1.5vw;

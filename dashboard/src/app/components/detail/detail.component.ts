@@ -61,7 +61,7 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  change_value_by_simple_select() {
+  changeValueBySimpleSelect() {
       switch(this.loC) {
         case "Unresponsive":
           this.val = 3;
