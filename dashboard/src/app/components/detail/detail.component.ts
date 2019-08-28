@@ -23,14 +23,19 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     let patientDataArray = [
-      {'stat': 'Body Temperature', 'lower': 35.5,'upper':38.5, 'value': this.patient.BT, 'time': this.patient.BT_time},
-      {'stat': 'Heart Rate', 'lower': 50, 'upper':120, 'value': this.patient.PR, 'time': this.patient.PR_time},
-      {'stat': 'Respiration Rate', 'lower': 10,'upper':50, 'value': this.patient.RR, 'time': this.patient.RR_time},
-      {'stat': 'Blood Pressure', 'lower': 100, 'upper': 120, 'value': this.patient.BP, 'time': this.patient.BP_time}
+      {'stat': 'Body Temperature', 'lower': 35.5, 'upper': 38.5, 'value': this.patient.BT, 'time': this.patient.BT_time},
+      {'stat': 'Heart Rate', 'lower': 50, 'upper': 120, 'value': this.patient.PR, 'time': this.patient.PR_time},
+      {'stat': 'Respiration Rate', 'lower': 10, 'upper': 50, 'value': this.patient.RR, 'time': this.patient.RR_time},
+      {'stat': 'Blood Pressure', 'lower': 100, 'upper': 125, 'value': this.patient.BP, 'time': this.patient.BP_time},
+      {'stat': 'Blood Gas pH', 'lower': 7.35, 'upper': 7.45, 'value': this.patient.BG_pH, 'time': this.patient.BG_time},
+      {'stat': 'PaO₂', 'lower': 75, 'upper': 100, 'value': this.patient.PaO2, 'time': this.patient.BG_time},
+      {'stat': 'PaCO₂', 'lower': 35, 'upper': 45, 'value': this.patient.Pa_CO2, 'time': this.patient.BG_time},      
+      {'stat': 'HCO₃', 'lower': 22, 'upper': 26, 'value': this.patient.HCO3, 'time': this.patient.BG_time},
+      {'stat': 'SpO₂', 'lower': 95, 'upper': 100, 'value': '-', 'time': this.patient.BG_time}      
     ];
     this.dataSource = new MatTableDataSource(patientDataArray);
   }
-
+  
   formatLabel(value:number) {
     return DetailComponent.getLabel(value);
   }
@@ -56,7 +61,7 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  change_value_by_simple_select() {
+  changeValueBySimpleSelect() {
       switch(this.loC) {
         case "Unresponsive":
           this.val = 3;
