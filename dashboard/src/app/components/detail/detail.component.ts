@@ -35,49 +35,4 @@ export class DetailComponent implements OnInit {
     ];
     this.dataSource = new MatTableDataSource(patientDataArray);
   }
-  
-  formatLabel(value:number) {
-    return DetailComponent.getLabel(value);
-  }
-
-
-  setLoCText() {
-    this.loC = DetailComponent.getLabel(this.val);
-  }
-
-  // Returns the stringified qualitative description of the level of consciousness
-  static getLabel(value:number) {
-    switch(value) {
-      case 3:
-        return "Unresponsive";
-      case 5:
-        return "Pain";
-      case 10:
-        return "Verbal";
-      case 15:
-        return "Alert";
-      default:
-        return value.toString();
-    }
-  }
-
-  changeValueBySimpleSelect() {
-      switch(this.loC) {
-        case "Unresponsive":
-          this.val = 3;
-          break;
-        case "Pain":
-          this.val = 5;
-          break;
-        case "Verbal":
-          this.val = 10;
-          break;
-        case "Alert":
-          this.val = 15;
-          break;
-        default:
-          this.val = this.val;
-          break;
-      }
-  }
 }
