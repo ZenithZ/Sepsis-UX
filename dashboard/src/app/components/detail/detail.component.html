@@ -12,8 +12,19 @@
                     <th mat-header-cell *matHeaderCellDef> Value </th>
                     <td mat-cell *matCellDef="let element">
                         {{element.value}}
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'Body Temperature' && (element.value < 35.5 || element.value > 38.5)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'Heart Rate' && (element.value <= 50 || element.value >= 120)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'Respiration Rate' && (element.value <= 10 || element.value >= 25)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'Blood Pressure' && (element.value < 90);else elseIfBP"></span>
+                        <span #elseIfBP matBadge="!" matBadgeOverlap="false" matBadgeColor="primary" matBadgeSize="small" *ngIf="element.stat == 'Blood Pressure' && (element.value < 100)"></span>
+                        
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'Blood Gas pH' && (element.value < 7.35 || element.value > 7.45)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'PaO₂' && (element.value < 75 || element.value > 100)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'PaCO₂' && (element.value < 35 || element.value > 45)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'HCO₃' && (element.value < 22 || element.value >= 26)"></span>
+                        <span matBadge="!" matBadgeOverlap="false" matBadgeColor="warn" matBadgeSize="small" *ngIf="element.stat == 'SpO₂' && (element.value < 95)"></span>
                     </td>
-                </ng-container>
+                </ng-container>warn
                 <ng-container matColumnDef="Range">
                     <th mat-header-cell *matHeaderCellDef> Normal Range </th>
                     <td mat-cell *matCellDef="let element">

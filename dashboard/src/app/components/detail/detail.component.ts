@@ -23,14 +23,19 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     let patientDataArray = [
-      {'stat': 'Body Temperature', 'range': '35.5 < temp < 38.5', 'value': this.patient.BT, 'time': this.patient.BT_time},
-      {'stat': 'Heart Rate', 'range': '50 ≤ pulse ≤ 120', 'value': this.patient.PR, 'time': this.patient.PR_time},
-      {'stat': 'Respiration Rate', 'range': '10 ≤ breaths per minute ≤ 50', 'value': this.patient.RR, 'time': this.patient.RR_time},
-      {'stat': 'Blood Pressure', 'range': 'SBP ≥ 100mmHg', 'value': this.patient.BP, 'time': this.patient.BP_time}
+      {'stat': 'Body Temperature', 'range': 'Temp ≥ 35.5 and ≤ 38.5', 'value': this.patient.BT, 'time': this.patient.BT_time},
+      {'stat': 'Heart Rate', 'range': 'Pulse > 50 and < 120', 'value': this.patient.PR, 'time': this.patient.PR_time},
+      {'stat': 'Respiration Rate', 'range': 'Breaths per minute > 10 and < 50', 'value': this.patient.RR, 'time': this.patient.RR_time},
+      {'stat': 'Blood Pressure', 'range': 'SBP ≥ 100mmHg', 'value': this.patient.BP, 'time': this.patient.BP_time},
+      {'stat': 'Blood Gas pH', 'range': '7.35 - 7.45', 'value': this.patient.BG_pH, 'time': this.patient.BG_time},
+      {'stat': 'PaO₂', 'range': '75 to 100 mmHg', 'value': this.patient.PaO2, 'time': this.patient.BG_time},
+      {'stat': 'PaCO₂', 'range': '35 to 45 mmHg', 'value': this.patient.Pa_CO2, 'time': this.patient.BG_time},      
+      {'stat': 'HCO₃', 'range': '22 - 26 mEq/L', 'value': this.patient.HCO3, 'time': this.patient.BG_time},
+      {'stat': 'SpO₂', 'range': 'SpO₂ ≥ 95%', 'value': '-', 'time': this.patient.BG_time}      
     ];
     this.dataSource = new MatTableDataSource(patientDataArray);
   }
-
+  
   formatLabel(value:number) {
     return DetailComponent.getLabel(value);
   }
