@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input'
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
+import {MatBadgeModule} from '@angular/material/badge';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -42,7 +43,8 @@ import { DetailComponent } from './components/detail/detail.component';
     MatInputModule,
     MatSliderModule,
     MatSelectModule,
-    MatSortModule
+    MatSortModule,
+    MatBadgeModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
