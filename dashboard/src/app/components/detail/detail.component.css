@@ -8,6 +8,10 @@
     margin: 5px;
 }
 
+.loc-example {
+    margin-top: 25px;
+}
+
 .loc-slider-value {
     flex: 2;
     font-size: 1.5vw;
@@ -15,4 +19,9 @@
     justify-content: center;
     flex-direction: column;
     text-align: center;
+}
+
+table {
+    width: 100%;
+    margin: 10px;
 }
