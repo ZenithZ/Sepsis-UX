@@ -15,3 +15,12 @@
 table {
     width: 100%;
 }
+
+.make-yellow {
+    background-color: yellow
+
+}
+
+.make-red {
+    background-color: red
+}
