@@ -59,12 +59,16 @@
         </mat-form-field>
     </div>
     <div class="manual-clinical-override">
-        <mat-form-field>
+        <!-- <mat-form-field>
             <mat-label>Clinically Suspected of Sepsis</mat-label>
             <mat-select [(value)]="selected">
                 <mat-option value="Yes">Yes</mat-option>
                 <mat-option value="No">No</mat-option>
             </mat-select>
+        </mat-form-field> -->
+        <mat-form-field floatPlaceholder="always">
+            <input matInput placeholder="" style="display: none">
+            <mat-checkbox labelPosition="before">Clinically Suspected of Sepsis: </mat-checkbox>
         </mat-form-field>
     </div>
 </div>
