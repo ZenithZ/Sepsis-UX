@@ -9,8 +9,9 @@ import { MatTableDataSource, MatTable } from '@angular/material/table';
 })
 export class DetailComponent implements OnInit {
 
-  @Input() patient: Patient;
+  checked = false;
 
+  @Input() patient: Patient;
   displayedColumns: string[] = ['Stat', 'Lower', 'Value', 'Upper', 'Time'];
   data: string[] = ['BT', 'PR', 'RR', 'BP'];
   dataSource;
