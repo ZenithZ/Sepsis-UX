@@ -1,0 +1,52 @@
+{
+    "Body Temperature": {
+        "upper": 36.1,
+        "lower": 38,
+        "units": "°C"
+    },
+    "Pulse Rate": {
+        "upper": 100,
+        "lower": 60,
+        "units": "bpm"
+    },
+    "Respiration Rate": {
+        "upper": 25,
+        "lower": 12,
+        "units": "bpm"
+    },
+    "Systolic Pressure": {
+        "upper": 120,
+        "lower": 90,
+        "units": "mmHg"
+    },
+    "Diasystolic Pressure": {
+        "upper": 80,
+        "lower": 60,
+        "units": "mmHg"
+    },
+    "pH": {
+        "upper": 7.45,
+        "lower": 7.35,
+        "units": ""
+    },
+    "ppO2": {
+        "upper": 100,
+        "lower": 75,
+        "units": "mmHg"
+    },
+    "ppCO2": {
+        "upper": 45,
+        "lower": 35,
+        "units": "mmHg"
+    },
+    "ppHCO3": {
+        "upper": 26,
+        "lower": 22,
+        "units": "mEq/L"
+    },
+    "O2S": {
+        "upper": 100,
+        "lower": 94,
+        "units": "%"
+    }
+}
