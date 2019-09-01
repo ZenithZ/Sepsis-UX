@@ -1,3 +1,8 @@
+.manual-clinical-override {
+    display: flex;
+    background-color: transparent;
+}
+
 .manual-loc-example {
     display: flex;
 }
