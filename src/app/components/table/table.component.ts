@@ -1,8 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-import sampleData from '../../../../mock_data.json'
 
 @Component({
   selector: 'app-table',
@@ -17,44 +16,20 @@ import sampleData from '../../../../mock_data.json'
   ],
 })
 export class TableComponent {
-  displayedColumns: string[] = ['MRN', 'Name', 'DOB', 'Gender', 'Vitals', 'LOC', 'BG', 'Reg'];
-  dataSource = new MatTableDataSource(data);
-  expandedElement: Patient | null ;
 
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
+  @Input() title: String;
+  @Input() patients: any[];
+
+  displayedColumns: string[] = ['MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
+  expandedElement: any | null;
+  dataSource: MatTableDataSource<any>;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
   ngOnInit() {
-    this.dataSource.sort = this.sort;
+    this.dataSource = new MatTableDataSource(this.patients);
   }
 }
-
-export interface Patient {
-  MRN: number;
-  FirstName: string;
-  LastName: string;
-  DOB: string;
-  Gender: string;
-  BT: number;
-  PR: number;
-  RR: number;
-  BP: number;
-  LOC: number;
-  BT_time: string;
-  PR_time: string;
-  RR_time: string;
-  BP_time: string;
-  LOC_time: string;
-  Registration: string;
-  BG: boolean;
-  BG_time: string;
-  BG_pH: number;
-  Pa_CO2: number;
-  HCO3: number;
-  PaO2: number;
-}
-
-const data: Patient[] = sampleData.slice(1,50); 
