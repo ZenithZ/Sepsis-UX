@@ -19,30 +19,37 @@
         "lower": 90,
         "units": "mmHg"
     },
-    "Diasystolic Pressure": {
+    "Diastolic Pressure": {
         "upper": 80,
         "lower": 60,
         "units": "mmHg"
     },
     "pH": {
+        "uppab": 7.59,
         "upper": 7.45,
         "lower": 7.35,
+        "lowab": 7.21,
         "units": ""
     },
     "ppO2": {
-        "upper": 100,
+        "upper": 105,
         "lower": 75,
+        "lowab": 61,
         "units": "mmHg"
     },
     "ppCO2": {
+        "uppab": 64,
         "upper": 45,
         "lower": 35,
+        "lowab": 21,
         "units": "mmHg"
     },
     "ppHCO3": {
-        "upper": 26,
+        "uppab": 39,
+        "upper": 28,
         "lower": 22,
-        "units": "mEq/L"
+        "lowab": 11,
+        "units": "mmol/L"
     },
     "O2S": {
         "upper": 100,
