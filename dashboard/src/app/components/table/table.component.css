@@ -1,7 +1,11 @@
-table {
+mat-form-field {
+  min-width: 545px;
+}
+
+.mat-table {
     width: 100%;
   }
-  
+
   tr.example-detail-row {
     height: 0;
   }
@@ -34,6 +38,15 @@ table {
     font-size: 14px;
     width: 100%;
   }
+
+  .mat-header-cell {
+    padding-left: 10px;
+  }
+
+  .mat-cell {
+    padding-left: 10px;
+  }
+
 
   .title {
     font-weight: normal;
