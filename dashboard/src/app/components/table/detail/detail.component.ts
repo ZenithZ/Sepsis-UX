@@ -21,7 +21,7 @@ export class DetailComponent implements OnInit {
   lactateU: number = 2; // Greater than 4 mmol/L RED ZONE
   val: number = 3;
   selected: string = "Yes";
-  loC: string = "Unresponsive";
+  loC: string = "Alert";
   editField:string;
 
   constructor() { }
