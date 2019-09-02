@@ -31,5 +31,6 @@ export class TableComponent {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.patients);
+    this.dataSource.sort = this.sort;
   }
 }
