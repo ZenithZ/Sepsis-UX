@@ -19,7 +19,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { TableComponent } from './components/table/table.component';
-import { DetailComponent } from './components/detail/detail.component';
+import { DetailComponent } from './components/table/detail/detail.component';
 
 @NgModule({
   declarations: [
