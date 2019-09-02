@@ -22,6 +22,7 @@ export class DetailComponent implements OnInit {
   val: number = 3;
   selected: string = "Yes";
   loC: string = "Unresponsive";
+  editField:string;
 
   constructor() { }
 
@@ -39,15 +40,15 @@ export class DetailComponent implements OnInit {
     }
 
     // let patientDataArray = [
-    //   { 'stat': 'Body Temperature', 'lower': 35.5, 'upper': 38.5, 'value': this.patient.BT, 'time': this.patient.BT_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'Heart Rate', 'lower': 50, 'upper': 120, 'value': this.patient.PR, 'time': this.patient.PR_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'Respiration Rate', 'lower': 10, 'upper': 50, 'value': this.patient.RR, 'time': this.patient.RR_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'Blood Pressure', 'lower': 100, 'upper': 125, 'value': this.patient.BP, 'time': this.patient.BP_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'Blood Gas pH', 'lower': 7.35, 'upper': 7.45, 'value': this.patient.BG_pH, 'time': this.patient.BG_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'PaO₂', 'lower': 75, 'upper': 100, 'value': this.patient.PaO2, 'time': this.patient.BG_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'PaCO₂', 'lower': 35, 'upper': 45, 'value': this.patient.Pa_CO2, 'time': this.patient.BG_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'HCO₃', 'lower': 22, 'upper': 26, 'value': this.patient.HCO3, 'time': this.patient.BG_time, 'color': this.zoneCol[0] },
-    //   { 'stat': 'SpO₂', 'lower': 95, 'upper': 100, 'value': '-', 'time': this.patient.BG_time, 'color': this.zoneCol[0] }
+    //   {'id': 1, 'stat': 'Body Temperature', 'lower': 35.5, 'upper': 38.5, 'value': this.patient.BT, 'time': this.patient.BT_time, 'color': this.zoneCol[0]},
+    //   {'id': 2, 'stat': 'Heart Rate', 'lower': 50, 'upper': 120, 'value': this.patient.PR, 'time': this.patient.PR_time, 'color': this.zoneCol[0]},
+    //   {'id': 3, 'stat': 'Respiration Rate', 'lower': 10, 'upper': 50, 'value': this.patient.RR, 'time': this.patient.RR_time, 'color': this.zoneCol[0]},
+    //   {'id': 4, 'stat': 'Blood Pressure', 'lower': 100, 'upper': 125, 'value': this.patient.BP, 'time': this.patient.BP_time, 'color': this.zoneCol[0]},
+    //   {'id': 5, 'stat': 'Blood Gas pH', 'lower': 7.35, 'upper': 7.45, 'value': this.patient.BG_pH, 'time': this.patient.BG_time, 'color': this.zoneCol[0]},
+    //   {'id': 6, 'stat': 'PaO₂', 'lower': 75, 'upper': 100, 'value': this.patient.PaO2, 'time': this.patient.BG_time, 'color': this.zoneCol[0]},
+    //   {'id': 7, 'stat': 'PaCO₂', 'lower': 35, 'upper': 45, 'value': this.patient.Pa_CO2, 'time': this.patient.BG_time, 'color': this.zoneCol[0]},      
+    //   {'id': 8, 'stat': 'HCO₃', 'lower': 22, 'upper': 26, 'value': this.patient.HCO3, 'time': this.patient.BG_time, 'color': this.zoneCol[0]},
+    //   {'id': 9, 'stat': 'SpO₂', 'lower': 95, 'upper': 100, 'value': '-', 'time': this.patient.BG_time, 'color': this.zoneCol[0]}   
     // ];
 
     this.dataSource = new MatTableDataSource(patientDataArray);
@@ -83,4 +84,14 @@ export class DetailComponent implements OnInit {
 
     }
   }
+
+  changeValue(id: number, property: string, event: any) {
+    this.editField = event.target.textContent;
+  }
+
+  updateList(id: number, property: string, event: any) {
+    const editField = event.target.textContent;
+    this.dataSource[id][property] = editField;
+  }
+  
 }
