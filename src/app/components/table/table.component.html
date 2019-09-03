@@ -95,6 +95,7 @@
     <ng-container matColumnDef="Delta">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Δ Delta </th>
         <td mat-cell *matCellDef="let patient"> {{ currentTime | date:'HH:mm:ss a':'+1000' - patient['Registration']}} </td>
+        <!-- <td mat-cell *matCellDef="let patient"> {{ deltaTimeString }} </td> -->
     </ng-container>
 
 
