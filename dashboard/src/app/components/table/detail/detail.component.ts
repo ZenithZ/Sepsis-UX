@@ -13,7 +13,7 @@ export class DetailComponent implements OnInit {
 
   @Input() patient: any;
 
-  displayedColumns: string[] = ['Test', 'Lower Interval', 'Value', 'Upper Interval', 'Time'];
+  displayedColumns: string[] = ['Test', 'Value', 'Lower Interval', 'Upper Interval', 'Time'];
   dataSource: MatTableDataSource<any>;
 
   ranges: any = sampleRanges;
