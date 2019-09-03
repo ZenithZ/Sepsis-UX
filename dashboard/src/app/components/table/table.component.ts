@@ -21,14 +21,16 @@ export class TableComponent {
   @Input() title: string;
   @Input() patients: any[];
 
-  currentTime: number;
+  currentTime: Date;
+  // currentTime: number;
   myInterval;
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
   // private _snackBar: MatSnackBar;
-  // deltaTime: number;
+  deltaTime: number;
+  deltaTimeString: string;
   // limit: number;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -51,8 +53,13 @@ export class TableComponent {
   }
 
   getTime() {
-    this.currentTime = Date.now();
-    // this.deltaTime = this.currentTime - this.patients['Registration']
+    // this.currentTime = Date.now();
+    this.currentTime = new Date();
+    let total = Math.abs(this.currentTime.getTime() - this.patients['Registration'].getTime());
+    let hr = Math.ceil((total % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)) - 1;
+    var min = Math.ceil((total % (1000 * 60 * 60)) / (1000 * 60)) - 1;
+    let sec = Math.ceil(total % (1000 * 60) / 1000) - 1;
+    this.deltaTimeString = hr+"h: "+min+"min: "+sec+"s";
   }
 
   // openSnackBar(name: string) {
