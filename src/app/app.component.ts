@@ -26,6 +26,5 @@ export class AppComponent implements OnInit {
       this.ats[r].push(this.data[i]);
       this.data[i]['ATS'] = r;
     }
-    console.log(this.ats);
   }
 }
