@@ -20,10 +20,13 @@ export class TableComponent {
   @Input() title: String;
   @Input() patients: any[];
   @Input() atsNo: number;
+  currentTime: number;
+  myInterval;
 
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Waiting_time'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
+
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
@@ -33,5 +36,14 @@ export class TableComponent {
   ngOnInit() {
     this.dataSource = new MatTableDataSource(this.patients);
     this.dataSource.sort = this.sort;
+    this.getTime()
+    this.myInterval = setInterval(() => {
+      this.getTime()
+    }, 1000)
   }
+
+  getTime() {
+    this.currentTime = Date.now();
+  }
+
 }
