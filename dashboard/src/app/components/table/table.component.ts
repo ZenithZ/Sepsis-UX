@@ -17,12 +17,12 @@ import { MatSort } from '@angular/material/sort';
 })
 export class TableComponent {
 
-  @Input() title: String;
+  @Input() title: string;
   @Input() patients: any[];
-  @Input() atsNo: number;
 
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
   expandedElement: any | null;
+  atsNo: number;
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -31,6 +31,7 @@ export class TableComponent {
   }
 
   ngOnInit() {
+    this.atsNo = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
     this.dataSource.sort = this.sort;
   }
