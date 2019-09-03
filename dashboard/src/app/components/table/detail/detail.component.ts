@@ -85,13 +85,13 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  changeValue(id: number, property: string, event: any) {
+  changeValue(property: string, event: any) {
     this.editField = event.target.textContent;
   }
 
-  updateList(id: number, property: string, event: any) {
+  updateList(property: string, event: any) {
     const editField = event.target.textContent;
-    this.dataSource[id][property] = editField;
+    this.patient['Vitals']['property']['value'] = editField;
   }
   
 }
