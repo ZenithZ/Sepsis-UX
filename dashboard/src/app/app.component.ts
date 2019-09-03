@@ -12,10 +12,11 @@ export class AppComponent implements OnInit {
     2: [],
     3: [],
     4: [],
-    5: []
+    5: [],
   }
 
   data = sampleData.slice(1, 10);
+  filter: string;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -23,8 +24,12 @@ export class AppComponent implements OnInit {
     var dLen = this.data.length;
     for (var i = 0; i < dLen; i++) {
       var r = Math.floor((Math.random() * 5) + 1);
-      this.ats[r].push(this.data[i]);
       this.data[i]['ATS'] = r;
+        this.ats[r].push(this.data[i]);
     }
+  }
+
+  sendFilter(filterValue: string) {
+    this.filter = filterValue;
   }
 }
