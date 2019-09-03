@@ -2,6 +2,7 @@ import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-table',
@@ -26,6 +27,9 @@ export class TableComponent {
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
+  // private _snackBar: MatSnackBar;
+  // deltaTime: number;
+  // limit: number;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -40,11 +44,21 @@ export class TableComponent {
     this.getTime()
     this.myInterval = setInterval(() => {
       this.getTime()
+      // if (this.deltaTime > this.limit) {
+      //   this.openSnackBar(this.patients['Name'])
+      // }
     }, 1000)
   }
 
   getTime() {
     this.currentTime = Date.now();
+    // this.deltaTime = this.currentTime - this.patients['Registration']
   }
+
+  // openSnackBar(name: string) {
+  //   this._snackBar.open(name + ' has been waiting for ' + this.limit, 'Ok', {
+  //     duration: 99999,
+  //   });
+  // }
 
 }
