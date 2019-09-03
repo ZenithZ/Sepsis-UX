@@ -3,3 +3,9 @@
     margin: auto;
     padding: 3em;
 }
+
+mat-form-field {
+    min-width: 545px;
+    font-size: 14px;
+    width: 100%;
+}
