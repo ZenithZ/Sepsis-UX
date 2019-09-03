@@ -20,10 +20,13 @@ export class TableComponent {
   @Input() title: string;
   @Input() patients: any[];
 
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
+  currentTime: number;
+  myInterval;
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
+
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
@@ -34,5 +37,14 @@ export class TableComponent {
     this.atsNo = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
     this.dataSource.sort = this.sort;
+    this.getTime()
+    this.myInterval = setInterval(() => {
+      this.getTime()
+    }, 1000)
   }
+
+  getTime() {
+    this.currentTime = Date.now();
+  }
+
 }
