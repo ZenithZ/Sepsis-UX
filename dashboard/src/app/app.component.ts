@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
     for (var i = 0; i < dLen; i++) {
       var r = Math.floor((Math.random() * 5) + 1);
       this.ats[r].push(this.data[i]);
+      this.data[i]['ATS'] = r;
     }
     console.log(this.ats);
   }
