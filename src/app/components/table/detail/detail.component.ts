@@ -91,7 +91,8 @@ export class DetailComponent implements OnInit {
 
   updateList(property: string, event: any) {
     const editField = event.target.textContent;
-    this.patient['Vitals']['property']['value'] = editField;
+    this.patient['Vitals'][property] = editField;
+    console.log(this.patient['Vitals'][property]);
   }
   
 }
