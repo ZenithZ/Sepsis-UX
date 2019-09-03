@@ -53,3 +53,42 @@ mat-form-field {
     font-size: large;
     padding-bottom: 15px;
   }
+
+  .ats1 {
+    background-color: #ffa7a7;
+  }
+  
+  .ats2 {
+    background-color: #ffdca7;
+  }
+  
+  .ats3 {
+    background-color: #e5ffa7;
+  }
+  
+  .ats4 {
+    background-color: #a7ffff;
+  }
+  
+  .ats5 {
+    background-color: #b9a7ff;
+  }
+  
+  .ats1_p {
+    background-color: #ffa7a73d;
+  }
+  .ats2_p {
+    background-color: #ffdca73d;
+  }
+  
+  .ats3_p {
+    background-color: #e5ffa73d;
+  }
+  
+  .ats4_p {
+    background-color: #a7ffff3d;
+  }
+  
+  .ats5_p {
+    background-color: #b9a7ff3d;
+  }

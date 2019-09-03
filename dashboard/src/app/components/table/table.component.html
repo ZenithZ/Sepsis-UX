@@ -96,8 +96,8 @@
         </td>
     </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-    <tr mat-row *matRowDef="let patient; columns: displayedColumns;" class="example-element-row"
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;" [ngClass]="{'ats1': atsNo == 1,'ats2': atsNo == 2,'ats3': atsNo == 3,'ats4': atsNo == 4,'ats5': atsNo == 5}"></tr>
+    <tr mat-row *matRowDef="let patient; columns: displayedColumns;" class="example-element-row" [ngClass]="{'ats1_p': atsNo == 1,'ats2_p': atsNo == 2,'ats3_p': atsNo == 3,'ats4_p': atsNo == 4,'ats5_p': atsNo == 5}"
         [class.expanded-row]="expandedElement === patient"
         [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
         (click)="expandedElement = expandedElement === patient ? null : (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas') ? patient : expandedElement)">
