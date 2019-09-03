@@ -1,4 +1,4 @@
-import { Component, ViewChild, Input, OnInit } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -15,10 +15,11 @@ import { MatSort } from '@angular/material/sort';
     ]),
   ],
 })
-export class TableComponent {
+export class TableComponent implements OnChanges {
 
   @Input() title: string;
   @Input() patients: any[];
+  @Input() filter: string;
 
   currentTime: number;
   myInterval;
@@ -31,16 +32,24 @@ export class TableComponent {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource)
   }
 
   ngOnInit() {
     this.atsNo = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
     this.dataSource.sort = this.sort;
+    this.filter = ""
     this.getTime()
     this.myInterval = setInterval(() => {
       this.getTime()
     }, 1000)
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.filter.currentValue !== undefined) {
+      this.applyFilter(changes.filter.currentValue)
+    }
   }
 
   getTime() {
