@@ -4,6 +4,7 @@ mat-form-field {
 
 .mat-table {
     width: 100%;
+    margin-bottom: 20px;
   }
 
   tr.example-detail-row {
@@ -51,44 +52,32 @@ mat-form-field {
   .title {
     font-weight: normal;
     font-size: large;
-    padding-bottom: 15px;
+    padding-bottom: 10px;
+    display:flex;
+    align-items: center;
+  }
+
+  svg {
+    margin-right: 5px;
+    margin-bottom: 4px;
   }
 
   .ats1 {
-    background-color: #ffa7a7;
+    fill: #e53935;
   }
   
   .ats2 {
-    background-color: #ffdca7;
+    fill: #e53935;
   }
   
   .ats3 {
-    background-color: #e5ffa7;
+    fill: #fb8c00;
   }
   
   .ats4 {
-    background-color: #a7ffff;
+    fill: #002664;
   }
   
   .ats5 {
-    background-color: #b9a7ff;
-  }
-  
-  .ats1_p {
-    background-color: #ffa7a73d;
-  }
-  .ats2_p {
-    background-color: #ffdca73d;
-  }
-  
-  .ats3_p {
-    background-color: #e5ffa73d;
-  }
-  
-  .ats4_p {
-    background-color: #a7ffff3d;
-  }
-  
-  .ats5_p {
-    background-color: #b9a7ff3d;
+    fill: #43a047;
   }
