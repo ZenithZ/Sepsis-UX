@@ -20,7 +20,7 @@ export class TableComponent {
   @Input() title: String;
   @Input() patients: any[];
 
-  displayedColumns: string[] = ['MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   @ViewChild(MatSort, { static: true }) sort: MatSort;

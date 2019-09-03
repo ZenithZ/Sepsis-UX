@@ -10,6 +10,12 @@
         <th mat-header-cell *matHeaderCellDef> ATS </th>
         <td mat-cell *matCellDef="let patient"> {{ patient['ATS'] }} </td>
     </ng-container>
+    <ng-container matColumnDef="Seen">
+        <th mat-header-cell *matHeaderCellDef> Seen </th>
+        <td mat-cell *matCellDef="let patient">
+            <mat-checkbox [checked]="patient.hasOwnProperty('Vitals')"></mat-checkbox>
+        </td>
+    </ng-container>
     <ng-container matColumnDef="MRN">
         <th mat-header-cell *matHeaderCellDef> MRN </th>
         <td mat-cell *matCellDef="let patient"> {{ patient['MRN'] }} </td>
@@ -42,7 +48,6 @@
                         d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                     <path d="M0 0h24v24H0z" fill="none" /></svg>
             </ng-template>
-
         </td>
     </ng-container>
     <ng-container matColumnDef="BG">
