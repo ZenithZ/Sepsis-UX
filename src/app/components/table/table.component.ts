@@ -19,6 +19,7 @@ export class TableComponent {
 
   @Input() title: String;
   @Input() patients: any[];
+  @Input() atsNo: number;
 
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration'];
   expandedElement: any | null;
