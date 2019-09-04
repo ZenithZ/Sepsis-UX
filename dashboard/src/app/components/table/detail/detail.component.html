@@ -15,7 +15,7 @@
         <ng-container matColumnDef="Value">
             <th mat-header-cell *matHeaderCellDef> Value </th>
             <td mat-cell *matCellDef="let element">
-                <span (keyup)="changeValue(element['test'], $event)" (blur)="updateList(element['test'], $event)" contenteditable="true">
+                <span setColor="element.color" (keyup)="changeValue(element['test'], $event)" (blur)="updateList(element['test'], $event)" contenteditable="true">
                     {{element['value']}}
                 </span>
             </td>

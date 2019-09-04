@@ -1,7 +1,7 @@
 {
     "Body Temperature": {
-        "upper": 36.1,
-        "lower": 38,
+        "upper": 38.5,
+        "lower": 35.5,
         "units": "°C"
     },
     "Pulse Rate": {
@@ -11,12 +11,13 @@
     },
     "Respiration Rate": {
         "upper": 25,
-        "lower": 12,
+        "lower": 10,
         "units": "bpm"
     },
     "Systolic Pressure": {
         "upper": 120,
         "lower": 90,
+        "lowab": 100,
         "units": "mmHg"
     },
     "Diastolic Pressure": {
