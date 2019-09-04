@@ -1,7 +1,12 @@
 {
     "Body Temperature": {
+<<<<<<< HEAD
         "upper": 38.5,
         "lower": 35.5,
+=======
+        "upper": 36.1,
+        "lower": 38,
+>>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
         "units": "°C"
     },
     "Pulse Rate": {
@@ -11,13 +16,20 @@
     },
     "Respiration Rate": {
         "upper": 25,
+<<<<<<< HEAD
         "lower": 10,
+=======
+        "lower": 12,
+>>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
         "units": "bpm"
     },
     "Systolic Pressure": {
         "upper": 120,
         "lower": 90,
+<<<<<<< HEAD
         "lowab": 100,
+=======
+>>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
         "units": "mmHg"
     },
     "Diastolic Pressure": {

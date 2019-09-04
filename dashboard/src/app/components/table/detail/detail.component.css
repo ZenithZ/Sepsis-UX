@@ -22,14 +22,10 @@ table {
 }
 
 .make-yellow {
-    background-color: #ffff8d;
+    background-color: yellow
 
 }
 
 .make-red {
-    background-color: #ffa7a7;
-}
-
-h2 {
-    text-align: center;
+    background-color: red
 }
