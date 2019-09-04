@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
     5: [],
   }
 
-  data = sampleData.slice(1, 10);
+  data = sampleData.slice(1, 50);
   filter: string;
 
   ngOnInit(): void {
