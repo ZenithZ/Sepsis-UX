@@ -34,16 +34,18 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     // add vital information
-    var vitals: string[] = Object.keys(this.patient['Vitals']);
-    var vitalLength = vitals.length;
-    var patientDataArray = []
-    for (var i = 0; i < vitalLength; i++) {
-      patientDataArray.push({
-        'test': vitals[i],
-        'value': this.patient['Vitals'][vitals[i]]['value'],
-        'time': this.patient['Vitals'][vitals[i]]['time'],
-        'color': this.setColor(vitals[i], this.patient['Vitals'][vitals[i]]),
-      })
+    if (this.patient['Vitals']) {
+      var vitals: string[] = Object.keys(this.patient['Vitals']);
+      var vitalLength = vitals.length;
+      var patientDataArray = []
+      for (var i = 0; i < vitalLength; i++) {
+        patientDataArray.push({
+          'test': vitals[i],
+          'value': this.patient['Vitals'][vitals[i]]['value'],
+          'time': this.patient['Vitals'][vitals[i]]['time'],
+          'color': this.setColor(vitals[i], this.patient['Vitals'][vitals[i]]),
+        })
+      }
     }
     this.dataSource = new MatTableDataSource(patientDataArray);
   }
