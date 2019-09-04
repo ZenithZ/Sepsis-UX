@@ -2,6 +2,7 @@ import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-table',
@@ -27,12 +28,12 @@ export class TableComponent implements OnChanges {
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
+  selection = new SelectionModel<any>(true, []);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource)
   }
 
   ngOnInit() {
@@ -50,6 +51,15 @@ export class TableComponent implements OnChanges {
     if (changes.filter.currentValue !== undefined) {
       this.applyFilter(changes.filter.currentValue)
     }
+  }
+
+  removeSelectedRows() {
+    this.selection.selected.forEach(item => {
+      var index = this.dataSource.data.indexOf(item);
+      this.dataSource.data.splice(index,1);
+      this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
+    });
+    this.selection = new SelectionModel<any>(true, []);
   }
 
   getTime() {

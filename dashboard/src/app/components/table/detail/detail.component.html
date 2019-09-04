@@ -1,4 +1,5 @@
 <div>
+    <h2>Vital Signs</h2>
     <table mat-table [dataSource]="dataSource">
         <ng-container matColumnDef="Test">
             <th mat-header-cell *matHeaderCellDef> Test </th>
@@ -36,4 +37,7 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"
             [ngClass]="{'make-yellow': row.color == zoneCol[1], 'make-red': row.color == zoneCol[2]}"></tr>
     </table>
+</div>
+<div>
+
 </div>
