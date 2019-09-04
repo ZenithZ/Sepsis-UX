@@ -2,10 +2,7 @@ import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
-<<<<<<< HEAD
 import { SelectionModel } from '@angular/cdk/collections';
-=======
->>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
 
 @Component({
   selector: 'app-table',
@@ -31,10 +28,7 @@ export class TableComponent implements OnChanges {
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
-<<<<<<< HEAD
   selection = new SelectionModel<any>(true, []);
-=======
->>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -59,11 +53,10 @@ export class TableComponent implements OnChanges {
       this.applyFilter(changes.filter.currentValue)
     }
   }
-<<<<<<< HEAD
 
   removeSelectedRows() {
     this.selection.selected.forEach(item => {
-      var index = this.dataSource.data.indexOf(item);
+      let index = this.dataSource.data.indexOf(item);
       this.dataSource.data.splice(index,1);
       this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
     });
@@ -74,11 +67,4 @@ export class TableComponent implements OnChanges {
     this.currentTime = Date.now();
   }
 
-=======
-
-  getTime() {
-    this.currentTime = Date.now();
-  }
-
->>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
 }

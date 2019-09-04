@@ -19,16 +19,12 @@
     <ng-container matColumnDef="Seen">
         <th mat-header-cell *matHeaderCellDef> Seen </th>
         <td mat-cell *matCellDef="let patient">
-<<<<<<< HEAD
             <mat-checkbox
                 (click)="$event.stopPropagation()"
                 (change)="$event ? selection.toggle(patient) : null; removeSelectedRows()"
                 [checked]="selection.isSelected(patient)">
             </mat-checkbox>
             <!-- <mat-checkbox color="primary" [checked]="patient.hasOwnProperty('Vitals')"></mat-checkbox> -->
-=======
-            <mat-checkbox color="primary" [checked]="patient.hasOwnProperty('Vitals')"></mat-checkbox>
->>>>>>> dcf57011956bfef477fe51998f8e88ea6f4eb08c
         </td>
     </ng-container>
     <ng-container matColumnDef="MRN">

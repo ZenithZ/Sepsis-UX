@@ -20,10 +20,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    var dLen = this.data.length;
-    for (var i = 0; i < dLen; i++) {
-      var r = Math.floor((Math.random() * 5) + 1);
+    let dLen = this.data.length;
+    for (let i = 0; i < dLen; i++) {
+      let r = Math.floor((Math.random() * 5) + 1);
       this.data[i]['ATS'] = r;
         this.ats[r].push(this.data[i]);
     }
