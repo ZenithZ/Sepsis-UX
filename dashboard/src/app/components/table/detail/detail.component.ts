@@ -14,7 +14,8 @@ export class DetailComponent implements OnInit {
   @Input() patient: any;
 
   displayedColumns: string[] = ['Test', 'Value', 'Lower Interval', 'Upper Interval', 'Time'];
-  dataSource: MatTableDataSource<any>;
+  vitalSource: MatTableDataSource<any>;
+  bgSource: MatTableDataSource<any>;
 
   ranges: any = sampleRanges;
   zoneCol: string[] = ['none', 'YELLOW', 'RED'];
@@ -34,38 +35,34 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     // add vital information
-    let patientDataArray = []
+    let vitalDataArray = []
     if (this.patient['Vitals']) {
       let vitals: string[] = Object.keys(this.patient['Vitals']);
       let vitalLength = vitals.length;
       for (let i = 0; i < vitalLength; i++) {
-        patientDataArray.push({
+        vitalDataArray.push({
           'test': vitals[i],
           'value': this.patient['Vitals'][vitals[i]]['value'],
           'time': this.patient['Vitals'][vitals[i]]['time'],
-          'color': this.setColor(vitals[i], this.patient['Vitals'][vitals[i]]),
         })
       }
     }
-    this.dataSource = new MatTableDataSource(patientDataArray);
-  }
+    this.vitalSource = new MatTableDataSource(vitalDataArray);
 
-  setColor(test, stat) {
-    let col = this.zoneCol[0];
-    let bounds = this.ranges[test];
-    stat['risk'] = DetailComponent.FLAGS.NORMAL;
-
-    if (stat['value'] < bounds['lower'] || stat['value'] > bounds['upper']) {
-      col = this.zoneCol[2];
-      stat['risk'] = DetailComponent.FLAGS.CRITICAL;
-    } else if (bounds.hasOwnProperty('uppab') && stat['value'] > bounds['uppab']) {
-        stat['risk'] = DetailComponent.FLAGS.ABNORMAL;
-        col = this.zoneCol[1];
-    } else if (bounds.hasOwnProperty('lowab') && stat['value'] < bounds['lowab']) {
-        stat['risk'] = DetailComponent.FLAGS.ABNORMAL;
-        col = this.zoneCol[1];
+    // add bloodgas information 
+  let bloodgasDataArray = []
+    if (this.patient['Bloodgas']) {
+      let bloodgases: string[] = Object.keys(this.patient['Bloodgas']);
+      let bloodgasLength = bloodgases.length;
+      for (let i = 0; i < bloodgasLength; i++) {
+        bloodgasDataArray.push({
+          'test': bloodgases[i],
+          'value': this.patient['Bloodgas'][bloodgases[i]]['value'],
+          'time': this.patient['Bloodgas'][bloodgases[i]]['time'],
+        })
+      }
     }
-    return col;
+    this.bgSource = new MatTableDataSource(bloodgasDataArray);
   }
 
   changeValue(property: string, event: any) {
