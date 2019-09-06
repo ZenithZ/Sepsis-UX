@@ -17,7 +17,6 @@
     "Systolic Pressure": {
         "upper": 120,
         "lower": 90,
-        "lowab": 100,
         "units": "mmHg"
     },
     "Diastolic Pressure": {
