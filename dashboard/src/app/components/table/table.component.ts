@@ -91,4 +91,16 @@ export class TableComponent implements OnChanges {
     this.currentTime = Date.now();
   }
 
+  getWaitTime(patient: any) {
+    let seconds = Math.floor((this.currentTime - Date.parse(patient['Registration'])) / 1000);
+
+    let days = Math.floor(seconds / (3600*24));
+    seconds  -= days*3600*24;
+    let hrs   = Math.floor(seconds / 3600);
+    seconds  -= hrs*3600;
+    let mnts = Math.floor(seconds / 60);
+    seconds  -= mnts*60;
+
+    return days+" Days "+hrs+":"+mnts+":"+seconds;
+  }
 }
