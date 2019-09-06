@@ -1,6 +1,13 @@
+.detail-container {
+    padding: 24px;
+}
 .manual-clinical-override {
     display: flex;
     background-color: transparent;
+}
+
+.title {
+    font-weight: 600;
 }
 
 .manual-loc-example {
@@ -21,15 +28,22 @@ table {
     width: 100%;
 }
 
-.make-yellow {
-    background-color: #ffff8d;
-
-}
-
-.make-red {
-    background-color: #ffa7a7;
+.spacer {
+    padding-top: 25px;
 }
 
 h2 {
     text-align: center;
+}
+
+svg {
+    vertical-align: bottom;
+}
+
+.mat-column-Test {
+    width: 30%;
+}
+
+.mat-column-Time {
+    width: 25%;
 }

@@ -2,6 +2,7 @@ import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
@@ -18,6 +19,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class TableComponent implements OnChanges {
 
+  constructor(private snackBar: MatSnackBar) {}
+
   @Input() title: string;
   @Input() patients: any[];
   @Input() filter: string;
@@ -31,6 +34,7 @@ export class TableComponent implements OnChanges {
   atsNo: number;
   dataSource: MatTableDataSource<any>;
   selection = new SelectionModel<any>(true, []);
+  seen: any[] = [];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -43,8 +47,8 @@ export class TableComponent implements OnChanges {
     this.atsNo = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
     this.dataSource.sort = this.sort;
-    this.filter = ""
-    this.getTime()
+    this.filter = "";
+    this.getTime();
     this.myInterval = setInterval(() => {
       this.getTime()
     }, 1000)
@@ -59,19 +63,51 @@ export class TableComponent implements OnChanges {
   removeSelectedRows() {
     this.selection.selected.forEach(item => {
       let index = this.dataSource.data.indexOf(item);
-      this.dataSource.data.splice(index,1);
+      let patient = this.dataSource.data.splice(index, 1);
+      this.seen.push(patient);
+
+      let name = patient[0]['First Name'] + " " + patient[0]['Last Name'];
+      this.openSnackBar("You've just removed a patient: " + name, 'Undo', 5000);
+      
       this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
     });
     this.selection = new SelectionModel<any>(true, []);
   }
 
-  getTime() {
-    this.currentTime = new Date();
-    let total = Math.abs(this.currentTime.getTime() - this.patients['Registration']);
-    let hrs = Math.ceil((total%(1000*60*60*24))/(1000*60*60))-1;
-    var mins = Math.ceil((total%(1000*60*60))/(1000*60))-1;
-    let sec = Math.ceil(total%(1000*60)/1000)-1;
-    this.deltaTimeString = hrs+"h: "+mins+"mins: "+sec+"s";
+  openSnackBar(message: string, action: string, duration: number) {
+    let config = new MatSnackBarConfig();
+    config.verticalPosition = 'bottom';
+    config.duration = duration;
+
+    let res = this.snackBar.open(message, action, config);
+
+    res.onAction().subscribe(() => {
+      if (action == 'Undo') {
+        this.dataSource.data.push(this.seen.pop()[0]);
+        this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
+      }
+    });
   }
 
+  getTime() {
+    this.currentTime = new Date();
+  }
+
+  getWaitTime(patient: any) {
+    let seconds = Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
+
+    let days = Math.floor(seconds / (3600*24));
+    seconds  -= days*3600*24;
+    let hrs   = Math.floor(seconds / 3600);
+    seconds  -= hrs*3600;
+    let mnts = Math.floor(seconds / 60);
+    seconds  -= mnts*60;
+
+    if (days == 0) {
+      return hrs+"hrs "+mnts+"mins";
+    }
+    
+    // return days+" days "+hrs+"hrs "+mnts+"mins";
+    return days+"days "+hrs+"h:"+mnts+"m";
+  }
 }

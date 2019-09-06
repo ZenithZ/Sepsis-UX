@@ -5,7 +5,7 @@
   tr.example-detail-row {
     height: 0;
   }
-  
+
   tr.expandable:not(.example-expanded-row):hover {
     background: #f5f5f5;
   }
