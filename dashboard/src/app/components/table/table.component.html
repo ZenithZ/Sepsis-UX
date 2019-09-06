@@ -19,7 +19,7 @@
     <ng-container matColumnDef="Seen">
         <th mat-header-cell *matHeaderCellDef> Seen </th>
         <td mat-cell *matCellDef="let patient">
-            <mat-checkbox
+            <mat-checkbox color="primary"
                 (click)="$event.stopPropagation()"
                 (change)="$event ? selection.toggle(patient) : null; removeSelectedRows()"
                 [checked]="selection.isSelected(patient)">

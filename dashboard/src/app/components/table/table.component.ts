@@ -74,7 +74,7 @@ export class TableComponent implements OnChanges {
 
   openSnackBar(message: string, action: string, duration: number) {
     let config = new MatSnackBarConfig();
-    config.verticalPosition = 'top';
+    config.verticalPosition = 'bottom';
     config.duration = duration;
 
     let res = this.snackBar.open(message, action, config);
