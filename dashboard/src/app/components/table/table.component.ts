@@ -22,8 +22,10 @@ export class TableComponent implements OnChanges {
   @Input() patients: any[];
   @Input() filter: string;
 
-  currentTime: number;
+  currentTime: Date;
   myInterval;
+  deltaTimeString: string;
+
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
   atsNo: number;
@@ -64,7 +66,12 @@ export class TableComponent implements OnChanges {
   }
 
   getTime() {
-    this.currentTime = Date.now();
+    this.currentTime = new Date();
+    let total = Math.abs(this.currentTime.getTime() - this.patients['Registration']);
+    let hrs = Math.ceil((total%(1000*60*60*24))/(1000*60*60))-1;
+    var mins = Math.ceil((total%(1000*60*60))/(1000*60))-1;
+    let sec = Math.ceil(total%(1000*60)/1000)-1;
+    this.deltaTimeString = hrs+"h: "+mins+"mins: "+sec+"s";
   }
 
 }
