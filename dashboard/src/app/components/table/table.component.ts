@@ -30,10 +30,10 @@ export class TableComponent implements OnChanges {
   deltaTimeString: string;
 
   static readonly WAIT_THRESHOLD = {
-    OVERTIME: 1800,
-    FINISH_SOON: 1500,
-    DURING: 1200,
-    BEGIN: 600
+    OVERTIME: 1800*10000,
+    FINISH_SOON: 1500*10000,
+    DURING: 1200*10000,
+    BEGIN: 60*10000
   };
 
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta', 'Waiting Indicator'];
@@ -115,13 +115,13 @@ export class TableComponent implements OnChanges {
     let col = '#000000';
 
     if (seconds < TableComponent.WAIT_THRESHOLD.BEGIN) {
-      col = '#b1ffa3';
+      col = '#4caf50';
     } else if (seconds < TableComponent.WAIT_THRESHOLD.DURING) {
-      col = '#eeffa3';
+      col = '#ffeb3b';
     } else if (seconds < TableComponent.WAIT_THRESHOLD.FINISH_SOON) {
-      col = '#ffd9a3';
+      col = '#ff9100';
     } else {
-      col = '#ffa3a3';
+      col = '#ff1744';
     }
     return col;
   }
