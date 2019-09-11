@@ -14,6 +14,22 @@
     display: flex;
 }
 
+@media screen and (max-width: 766px) {
+    .mat-column-Time {
+        display: none;
+    }
+    .mat-column-Lower-Interval {
+        display: none;
+    }
+    .mat-column-Upper-Interval {
+        display: none;
+    }
+}
+
+.mat-column-Value, .mat-column-Upper-Interval, .mat-column-Lower-Interval {
+    padding-left: 10px;
+}
+
 .mat-slider {
     align-content: center;
     flex: 8;
