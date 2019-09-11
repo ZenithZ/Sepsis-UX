@@ -19,7 +19,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 })
 export class TableComponent implements OnChanges {
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) { }
 
   @Input() title: string;
   @Input() patients: any[];
@@ -34,13 +34,11 @@ export class TableComponent implements OnChanges {
   atsNo: number;
   dataSource: MatTableDataSource<any>;
   selection = new SelectionModel<any>(true, []);
-  seen: any[] = [];
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    console.log(this.dataSource)
   }
 
   ngOnInit() {
@@ -60,32 +58,15 @@ export class TableComponent implements OnChanges {
     }
   }
 
-  removeSelectedRows() {
-    this.selection.selected.forEach(item => {
-      let index = this.dataSource.data.indexOf(item);
-      let patient = this.dataSource.data.splice(index, 1);
-      this.seen.push(patient);
-
-      let name = patient[0]['First Name'] + " " + patient[0]['Last Name'];
-      this.openSnackBar("You've just removed a patient: " + name, 'Undo', 5000);
-      
-      this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
-    });
-    this.selection = new SelectionModel<any>(true, []);
-  }
-
-  openSnackBar(message: string, action: string, duration: number) {
+  undoSeen(patient: any) {
     let config = new MatSnackBarConfig();
     config.verticalPosition = 'bottom';
-    config.duration = duration;
+    config.duration = 5000;
 
-    let res = this.snackBar.open(message, action, config);
+    let res = this.snackBar.open((patient['seen']? 'Seen' : 'Unseen') + " " + patient['First Name'] + " " + patient['Last Name'], 'Undo', config);
 
     res.onAction().subscribe(() => {
-      if (action == 'Undo') {
-        this.dataSource.data.push(this.seen.pop()[0]);
-        this.dataSource = new MatTableDataSource<any>(this.dataSource.data);
-      }
+        patient['seen'] = !patient['seen'];
     });
   }
 
@@ -96,18 +77,25 @@ export class TableComponent implements OnChanges {
   getWaitTime(patient: any) {
     let seconds = Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
 
-    let days = Math.floor(seconds / (3600*24));
-    seconds  -= days*3600*24;
-    let hrs   = Math.floor(seconds / 3600);
-    seconds  -= hrs*3600;
+    let days = Math.floor(seconds / (3600 * 24));
+    seconds -= days * 3600 * 24;
+    let hrs = Math.floor(seconds / 3600);
+    seconds -= hrs * 3600;
     let mnts = Math.floor(seconds / 60);
-    seconds  -= mnts*60;
+    seconds -= mnts * 60;
 
-    if (days == 0) {
-      return hrs+"hrs "+mnts+"mins";
+    let ret = ""
+    if (days % 9 != 0) {
+      ret += days % 9 + "d "
     }
-    
-    // return days+" days "+hrs+"hrs "+mnts+"mins";
-    return days+"days "+hrs+"h:"+mnts+"m";
+    if (hrs <= 9) {
+      ret += "0"
+    }
+    ret += hrs + ":"
+    if (mnts <= 9) {
+      ret += "0"
+    }
+    ret += mnts
+    return ret
   }
 }
