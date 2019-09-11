@@ -42,8 +42,8 @@
         <th mat-header-cell *matHeaderCellDef mat-sort-header> LOC </th>
         <td mat-cell *matCellDef="let patient"> 
             <mat-form-field class="input-field" (click)="$event.stopPropagation()">
-                <input matInput type="number" value="15">
-                <mat-error *ngIf="loc > 15">max: 15</mat-error>
+                <input matInput type="number" value="15" min="1" max="15">
+                <!-- <mat-error *ngIf="loc > 15">max: 15</mat-error> -->
             </mat-form-field>
         </td>
     </ng-container>
