@@ -2,13 +2,47 @@
     width: 100%;
   }
 
+  @media screen and (min-width: 812px) {
+    .mat-column-Name {
+      width: 20%;
+    }
+  }
+
+  .input-field {
+    width: 35px;
+  }
+
   tr.example-detail-row {
     height: 0;
   }
 
+  .seen {
+    display: none;
+  }
+
+  @media screen and (max-width: 766px) {
+    .mat-column-Registration {
+      display: none;
+    }
+    .mat-column-Vitals {
+      display: none;
+    }
+    .mat-column-BG {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 1024px) {
+    .mat-column-MRN {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 1367px) {
   tr.expandable:not(.example-expanded-row):hover {
     background: #f5f5f5;
   }
+}
   
   tr.expandable:not(.example-expanded-row):active {
     background: #efefef;
