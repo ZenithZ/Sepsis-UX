@@ -29,7 +29,14 @@ export class TableComponent implements OnChanges {
   myInterval;
   deltaTimeString: string;
 
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
+  static readonly WAIT_THRESHOLD = {
+    OVERTIME: 1800,
+    FINISH_SOON: 1500,
+    DURING: 1200,
+    BEGIN: 600
+  };
+
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta', 'Waiting Indicator'];
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
@@ -75,7 +82,11 @@ export class TableComponent implements OnChanges {
   }
 
   getWaitTime(patient: any) {
-    let seconds = Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
+    return Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
+  }
+
+  formatWaitTime(patient: any) {
+    let seconds = this.getWaitTime(patient);
 
     let days = Math.floor(seconds / (3600 * 24));
     seconds -= days * 3600 * 24;
@@ -97,5 +108,21 @@ export class TableComponent implements OnChanges {
     }
     ret += mnts
     return ret
+  }
+
+  getWaitColor(patient: any) {
+    let seconds = this.getWaitTime(patient);
+    let col = '#000000';
+
+    if (seconds < TableComponent.WAIT_THRESHOLD.BEGIN) {
+      col = '#b1ffa3';
+    } else if (seconds < TableComponent.WAIT_THRESHOLD.DURING) {
+      col = '#eeffa3';
+    } else if (seconds < TableComponent.WAIT_THRESHOLD.FINISH_SOON) {
+      col = '#ffd9a3';
+    } else {
+      col = '#ffa3a3';
+    }
+    return col;
   }
 }

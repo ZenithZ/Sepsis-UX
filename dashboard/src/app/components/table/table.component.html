@@ -103,9 +103,13 @@
 
     <ng-container matColumnDef="Delta">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Δ Waiting Time </th>
-        <td mat-cell *matCellDef="let patient"> {{ getWaitTime(patient) }} </td>
+        <td mat-cell *matCellDef="let patient"> {{ formatWaitTime(patient) }} </td>
     </ng-container>
 
+    <ng-container matColumnDef="Waiting Indicator">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let patient" [style.background-color]="getWaitColor(patient)"></td>
+    </ng-container>
 
     <!-- expanded detail -->
     <ng-container matColumnDef="expandedDetail">
