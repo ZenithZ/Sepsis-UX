@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
     for (let i = 0; i < dLen; i++) {
       let r = Math.floor((Math.random() * 5) + 1);
       this.data[i]['ATS'] = r;
-        this.ats[r].push(this.data[i]);
+      this.ats[r].push(this.data[i]);
+      this.data[i]['seen'] = false;
     }
   }
 
