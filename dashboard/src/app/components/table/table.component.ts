@@ -36,7 +36,7 @@ export class TableComponent implements OnChanges {
     BEGIN: 60*10000
   };
 
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta', 'Waiting Indicator'];
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;

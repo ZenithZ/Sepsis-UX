@@ -108,3 +108,17 @@
   .ats5 {
     fill: #43a047;
   }
+
+  .delta {
+    min-width: 100px;
+  }
+
+  .delta-data {
+    float: left;
+    position: relative;
+    top: 6px;
+  }
+
+  .delta-indicator {
+    float: right;
+  }
