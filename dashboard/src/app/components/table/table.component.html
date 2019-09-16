@@ -48,7 +48,7 @@
         </td>
     </ng-container>
     <ng-container matColumnDef="Vitals">
-        <th mat-header-cell *matHeaderCellDef> Vitals </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Vitals"> Vitals </th>
         <td mat-cell *matCellDef="let patient">
             <ng-container *ngIf="patient.hasOwnProperty('Vitals'); else elseTemplate">
                 <!-- done -->
@@ -66,7 +66,7 @@
         </td>
     </ng-container>
     <ng-container matColumnDef="BG">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="BG"> Bloodgas </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Bloodgas"> Bloodgas </th>
         <td mat-cell *matCellDef="let patient">
             <ng-container
                 *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
