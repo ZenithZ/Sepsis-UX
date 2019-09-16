@@ -2,11 +2,14 @@
 <div class="container">
   <router-outlet></router-outlet>
   <mat-form-field>
-    <input matInput (keyup)="sendFilter($event.target.value)" placeholder="Search">
+    <input matInput (keyup)="sendFilter($event.target.value)" placeholder="First Name">
   </mat-form-field>
-  <app-table [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
-  <app-table [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
-  <app-table [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
-  <app-table [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
-  <app-table [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
+  <mat-form-field>
+    <input matInput (keyup)="sendFilterFirst($event.target.value)" placeholder="Last Name">
+  </mat-form-field>
+  <app-table [title]="'ATS 1'" [patients]="ats[1]" [filter]="filterFirstName || filter"></app-table>
+  <app-table [title]="'ATS 2'" [patients]="ats[2]" [filter]="filterFirstName || filter"></app-table>
+  <app-table [title]="'ATS 3'" [patients]="ats[3]" [filter]="filterFirstName || filter"></app-table>
+  <app-table [title]="'ATS 4'" [patients]="ats[4]" [filter]="filterFirstName || filter"></app-table>
+  <app-table [title]="'ATS 5'" [patients]="ats[5]" [filter]="filterFirstName || filter"></app-table>
 </div>

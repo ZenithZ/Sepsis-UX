@@ -29,7 +29,13 @@ export class AppComponent implements OnInit {
     }
   }
 
-  sendFilter(filterValue: string) {
-    this.filter = filterValue;
-  }
+sendFilter(filterValue: string) {
+  return this.filter = filterValue;
+}
+
+filterFirstName: string;
+sendFilterFirst(filterValue: string) {
+  return this.filterFirstName = filterValue;
+}
+
 }
