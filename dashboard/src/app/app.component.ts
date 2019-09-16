@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     let dLen = this.data.length;
     for (let i = 0; i < dLen; i++) {
-      let r = Math.floor((Math.random() * 5) + 1);
+      let r = Math.floor((Math.random() * 6) + 1);
       this.data[i]['ATS'] = r;
       this.ats[r].push(this.data[i]);
       this.data[i]['seen'] = false;
