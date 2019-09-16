@@ -39,10 +39,10 @@
         <td mat-cell *matCellDef="let patient"> {{ patient['DOB'] }} </td>
     </ng-container>
     <ng-container matColumnDef="LOC">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> LOC </th>
-        <td mat-cell *matCellDef="let patient"> 
-            <mat-form-field class="input-field" (click)="$event.stopPropagation()">
-                <input matInput type="number" value="15" min="1" max="15">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="LOC"> LOC </th>
+        <td mat-cell *matCellDef="let patient; let i = renderIndex"> 
+            <mat-form-field class="input-field" (change)="onLOCChange($event.srcElement.value, patient, i)" (click)="onLOCChange($event.srcElement.value, patient, i)" (click)="$event.stopPropagation()" >
+                <input #loc matInput type="number" value="15" min="1" max="15">
                 <!-- <mat-error *ngIf="loc > 15">max: 15</mat-error> -->
             </mat-form-field>
         </td>

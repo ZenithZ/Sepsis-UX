@@ -127,4 +127,28 @@ export class TableComponent implements OnChanges {
     }
     return col;
   }
+
+  onLOCChange(value, patient, i) {
+    let config = new MatSnackBarConfig();
+    config.verticalPosition = 'bottom';
+    config.duration = 3000;
+    config.panelClass = 'red-snackbar';
+    
+    if (value > 15) {
+      patient.LOC = 15;
+      console.log("Patient LOC must be <= 15");
+      let res = this.snackBar.open("Patient LOC must be <= 15", '', config);
+
+    } else if (value < 1) {
+      patient.LOC = 1;
+      console.log("Patient LOC must be > 0");
+      let res = this.snackBar.open("Patient LOC must be > 0", '', config);
+
+    } else {
+      patient.LOC = value;
+      this.dataSource.data = this.dataSource.data.concat();
+      
+    }
+  }
 }
+

@@ -122,3 +122,8 @@
   .delta-indicator {
     float: right;
   }
+
+  ::ng-deep .red-snackbar {
+    color: white;
+    background: rgb(255, 78, 78);
+  }
