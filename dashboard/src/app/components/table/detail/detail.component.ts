@@ -23,7 +23,7 @@ export class DetailComponent implements OnInit {
   val: number = 3;
   selected: string = "Yes";
   loC: string = "Alert";
-  editField: string;
+  editField: number;
   // Flag used for sorting
   static readonly FLAGS = {
     CRITICAL: 2,
@@ -70,7 +70,7 @@ export class DetailComponent implements OnInit {
   }
 
   updateList(property: string, event: any) {
-    const editField = event.target.textContent;
+    const editField = parseFloat(event.target.textContent);
     this.patient['Vitals'][property] = editField;
   }
   
