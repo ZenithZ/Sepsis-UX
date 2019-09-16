@@ -79,12 +79,44 @@ export class TableComponent implements OnChanges {
     });
   }
 
+  getATS(patient: any) {
+    return patient['ATS'][0];
+  }
+
   getTime() {
     this.currentTime = new Date();
   }
 
   getWaitTime(patient: any) {
-    return Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
+    let waitTime = Math.floor((this.currentTime.getTime() - Date.parse(patient['Registration'])) / 1000);
+    let temp = Math.floor(waitTime / (3600*3600*24))
+
+    if (this.getATS(patient) == 1) {
+      if (temp >= 1) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " in ATS 1 has been waiting for over 1 minute.", 'Noticed', {duration: 99999});
+    }
+    else if (this.getATS(patient) == 2) {
+      if (temp >= 10) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " in ATS 2 has been waiting for over 10 minitues.", 'Noticed', {duration: 99999});
+    }
+    else if (this.getATS(patient) == 3) {
+      if (temp >= 30) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " in ATS 3 has been waiting for over 30 minutes.", 'Noticed', {duration: 99999});
+    }
+    else if (this.getATS(patient) == 4) {
+      if (temp >= 60) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " in ATS 4 has been waiting for over an hour.", 'Noticed', {duration: 99999});
+    }
+    else if (this.getATS(patient) == 5) {
+      if (temp >= 120) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " in ATS 5 has been waiting for over two hours.", 'Noticed', {duration: 99999});
+    }
+    else {
+      if (temp >= 120) 
+        this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + " has been uncatogorised for over a day.", 'Noticed', {duration: 99999});
+    }
+
+    return waitTime
   }
 
   formatWaitTime(patient: any) {
