@@ -24,6 +24,7 @@ export class DetailComponent implements OnInit {
   selected: string = "Yes";
   loC: string = "Alert";
   editField: number;
+  fullname: string;
   // Flag used for sorting
   static readonly FLAGS = {
     CRITICAL: 2,
@@ -35,6 +36,7 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     // add vital information
+    this.patient['Fullname'] = this.patient['First Name'] + ' ' + this.patient['Last Name'];
     let vitalDataArray = [];
     if (this.patient['Vitals']) {
       let vitals: string[] = Object.keys(this.patient['Vitals']);
