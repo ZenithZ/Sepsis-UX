@@ -45,6 +45,8 @@ export class TableComponent implements OnChanges {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
+    filterValue = filterValue.trim().toLowerCase();
+    
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -96,8 +98,8 @@ export class TableComponent implements OnChanges {
     seconds -= mnts * 60;
 
     let ret = ""
-    if (days % 9 != 0) {
-      ret += days % 9 + "d "
+    if (days !== 0) {
+      ret += days + "d "
     }
     if (hrs <= 9) {
       ret += "0"

@@ -31,8 +31,8 @@
         <td mat-cell *matCellDef="let patient"> {{ patient['MRN'] }} </td>
     </ng-container>
     <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['First Name'] + ' ' + patient['Last Name'] }} </td>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Last Name"> Name </th>
+        <td mat-cell *matCellDef="let patient"> {{ patient['Last Name']+ ', ' + patient['First Name'] }} </td>
     </ng-container>
     <ng-container matColumnDef="DOB">
         <th mat-header-cell *matHeaderCellDef> DOB </th>
@@ -66,7 +66,7 @@
         </td>
     </ng-container>
     <ng-container matColumnDef="BG">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Bloodgas </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="BG"> Bloodgas </th>
         <td mat-cell *matCellDef="let patient">
             <ng-container
                 *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
@@ -102,7 +102,7 @@
     </ng-container>
 
     <ng-container matColumnDef="Delta">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Δ Waiting Time </th>
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="Registration"> Δ Waiting Time </th>
         <td mat-cell *matCellDef="let patient">
             <ng-container *ngIf="!patient['seen']; else elseTemplate">
                 <div class="delta">
