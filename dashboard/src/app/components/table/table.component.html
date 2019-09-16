@@ -32,7 +32,8 @@
     </ng-container>
     <ng-container matColumnDef="Name">
         <th mat-header-cell *matHeaderCellDef mat-sort-header="Last Name"> Name </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['Last Name']+ ', ' + patient['First Name'] }} </td>
+        <!-- <td mat-cell *matCellDef="let patient"> {{ patient['Last Name'] + ', ' + patient['First Name'] }} </td> -->
+        <td mat-cell *matCellDef="let patient"> {{ patient['Fullname'] }} </td>
     </ng-container>
     <ng-container matColumnDef="DOB">
         <th mat-header-cell *matHeaderCellDef> DOB </th>
