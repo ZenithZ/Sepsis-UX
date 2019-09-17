@@ -59,7 +59,7 @@ export class TableComponent implements OnChanges {
     this.getTime();
     this.myInterval = setInterval(() => {
       this.getTime()
-    }, 1000)
+    }, 60000)
   }
 
   ngOnChanges(changes: SimpleChanges) {
