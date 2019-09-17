@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import sampleData from '../../REST-data.json';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ export class AppComponent implements OnInit {
       this.data[i]['ATS'] = r;
       this.ats[r].push(this.data[i]);
       this.data[i]['seen'] = false;
+      this.data[i]['locValue'] = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
     }
   }
 

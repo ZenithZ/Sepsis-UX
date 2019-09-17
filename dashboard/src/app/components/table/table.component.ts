@@ -3,7 +3,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { SelectionModel } from '@angular/cdk/collections';
+import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -166,8 +166,7 @@ export class TableComponent implements OnChanges {
     config.verticalPosition = 'bottom';
     config.duration = 3000;
     config.panelClass = 'red-snackbar';
-
-    
+    //let locValue = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
     if (value > 15) {
       patient.LOC = 15;
     } else if (value < 1) {
@@ -178,12 +177,10 @@ export class TableComponent implements OnChanges {
     }
   }
 
-  locValue = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
-
-  getErrorMessage() {
-    return this.locValue.hasError('required') ? 'Value required' :
-        this.locValue.hasError('max') ? 'Too large' :
-        this.locValue.hasError('min') ? 'Too small' :
+  getErrorMessage(patient) {
+    return patient['locValue'].hasError('required') ? 'Value required' :
+        patient['locValue'].hasError('max') ? 'Too large' :
+        patient['locValue'].hasError('min') ? 'Too small' :
             '';
   }
 
