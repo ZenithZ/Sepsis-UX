@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ "$1" == "-h" ]
+then
+    echo "Use -o to also serve and open the app"
+    exit 0
+fi
+
+echo -e "\e[93mMoving to \e[1m\e[36mdashboard\e[0m"
+cd dashboard
+
+echo -e "\e[93mRunning \e[1m\e[91mbuild\e[39m"
+#ng build --aot --prod
+
+if [ "$1" == "-o" ]
+then
+    echo -e "\e[1m\e[91mServing \e[0mand \e[1m\e[91mopening\e[0m"
+    ng serve --open
+fi
