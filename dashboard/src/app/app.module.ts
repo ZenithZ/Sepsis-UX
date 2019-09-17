@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule} from '@angular/material/expansion';
 import { MatTableModule} from '@angular/material/table';
@@ -55,7 +56,8 @@ import { DetailComponent } from './components/table/detail/detail.component';
     ReactiveFormsModule,
     // MatChipsModule,
     // MatIconModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    MatSlideToggleModule
   ],
   providers: [],
   bootstrap: [AppComponent]
