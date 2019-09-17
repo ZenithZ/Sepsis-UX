@@ -22,18 +22,21 @@ export class AppComponent implements OnInit {
   data = sampleData.slice(1, 50);
   filter: string;
   myControl = new FormControl();
-  options: string[] = [];
+  options: any[] = [];
   filteredOptions: Observable<string[]>;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     let dLen = this.data.length;
+    let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
       let r = Math.floor((Math.random() * 6) + 1);
       this.data[i]['ATS'] = r;
       this.data[i]['seen'] = false;
       this.data[i]['Name'] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
       this.options[i] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
+      this.options[temp] = this.data[i]['MRN']
+      temp -= 1;
       // console.log(i + " " + this.data[i]['First Name'] + ' ' + this.data[i]['Last Name'])
       this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
       this.ats[r].push(this.data[i]);
