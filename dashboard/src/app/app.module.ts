@@ -16,8 +16,8 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatChipsModule } from '@angular/material';
-import { MatIconModule } from '@angular/material';
+// import { MatChipsModule } from '@angular/material';
+// import { MatIconModule } from '@angular/material';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -53,8 +53,8 @@ import { DetailComponent } from './components/table/detail/detail.component';
     MatTabsModule,
     MatSnackBarModule,
     ReactiveFormsModule,
-    MatChipsModule,
-    MatIconModule,
+    // MatChipsModule,
+    // MatIconModule,
     MatAutocompleteModule
   ],
   providers: [],
