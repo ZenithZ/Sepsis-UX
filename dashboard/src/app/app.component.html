@@ -2,7 +2,7 @@
 <div class="container">
   <router-outlet></router-outlet>
   <mat-form-field>
-    <input matInput (keyup)="sendFilter($event.target.value)" placeholder="First Name">
+    <input matInput (keyup)="sendFilter($event.target.value)" placeholder="Search">
   </mat-form-field>
   <app-table [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
   <app-table [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
