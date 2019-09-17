@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
       this.data[i]['ATS'] = r;
       this.data[i]['seen'] = false;
       this.data[i]['Name'] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
-      this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.max(15), Validators.min(3)]);
+      this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
       this.ats[r].push(this.data[i]);
     }
   }

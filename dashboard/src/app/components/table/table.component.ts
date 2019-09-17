@@ -178,6 +178,9 @@ export class TableComponent implements OnChanges {
   }
 
   getErrorMessage(patient) {
+    if (patient['locValue'].value > 99) {
+      patient['locValue'].reset('99');
+    }
     return patient['locValue'].hasError('required') ? 'Value required' :
         patient['locValue'].hasError('max') ? 'Too large' :
         patient['locValue'].hasError('min') ? 'Too small' :
