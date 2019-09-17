@@ -36,7 +36,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     // add vital information
-    this.patient['Fullname'] = this.patient['First Name'] + ' ' + this.patient['Last Name'];
     let vitalDataArray = [];
     if (this.patient['Vitals']) {
       let vitals: string[] = Object.keys(this.patient['Vitals']);

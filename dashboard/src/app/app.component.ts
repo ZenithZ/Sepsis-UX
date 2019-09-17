@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
     3: [],
     4: [],
     5: [],
+    6: [],
   }
 
   data = sampleData.slice(1, 50);
@@ -27,17 +28,21 @@ export class AppComponent implements OnInit {
       this.data[i]['ATS'] = r;
       this.ats[r].push(this.data[i]);
       this.data[i]['seen'] = false;
+<<<<<<< HEAD
       this.data[i]['locValue'] = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
+=======
+      this.data[i]['Fullname'] = this.data[i]['First Name'] + " " + this.data[i]['Last Name'];
+>>>>>>> 80cacf144075e88c9d9789c477c1fdaae12e1662
     }
   }
 
-sendFilter(filterValue: string) {
-  return this.filter = filterValue;
-}
+  sendFilter(filterValue: string) {
+    return this.filter = filterValue;
+  }
 
-filterFirstName: string;
-sendFilterFirst(filterValue: string) {
-  return this.filterFirstName = filterValue;
-}
+  filterFirstName: string;
+  sendFilterFirst(filterValue: string) {
+    return this.filterFirstName = filterValue;
+  }
 
 }
