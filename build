@@ -14,9 +14,9 @@ ng build --aot --prod
 
 if [ "$?" == "0" ]
 then
-    echo -e "\e[1m\e[92mBuild successful"
+    echo -e "\e[1m\e[92mBuild successful\e[0m"
 else
-    echo -e "\e[91mBuild unsuccessful\e[0m"
+    echo -e "\e[1m\e[91mBuild unsuccessful\e[0m"
 fi
 
 if [ "$1" == "-o" ]

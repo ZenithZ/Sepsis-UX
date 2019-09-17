@@ -1,7 +1,7 @@
 # COMP3888 T09A GROUP 2 - Project 22 - SepsisUx
 
 # Running
-Project can be build and served from the main directory with ```./build -o```
+Project can be built and served from the main directory with ```./build -o```
 Use ```chmod +u build``` to ensure that the file has the correct permissions
 
 ## Team Members
