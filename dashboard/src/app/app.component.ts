@@ -24,6 +24,8 @@ export class AppComponent implements OnInit {
   myControl = new FormControl();
   options: any[] = [];
   filteredOptions: Observable<string[]>;
+  checkboxs: boolean[] = [true, false, false, false, false, false, false]
+  disabled = true;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -46,6 +48,42 @@ export class AppComponent implements OnInit {
       map(value => this._filter(value))
     );
   }
+
+displayTable(table: string) {
+
+  var sec = document.getElementById("s1");
+  console.log("c0 " + this.checkboxs[0])
+  console.log("c1 " + this.checkboxs[1])
+  console.log("disabled " + this.disabled)
+
+  // if (this.disabled == true) {
+  //   sec.style.display = "none";
+
+  //   switch(table) {
+  //     case 'c1': {
+  //       var temp = document.getElementById("d1");
+  //       if (this.checkboxs[1] == false) temp.style.display = "block"; 
+  //       else temp.style.display = "none"; 
+  //       break;
+  //     }
+  //     case 'c2': {
+  //       var temp = document.getElementById("d2");
+  //       if (this.checkboxs[2] == false) temp.style.display = "block"; 
+  //       else temp.style.display = "none"; 
+  //       break;
+  //     }
+  //     default: {
+  //       sec.style.display = "none";
+  //     }
+  //   }
+  // } 
+  // else {
+  //   sec.style.display = "block";
+  //   for (let i=1; i<this.checkboxs.length; ++i) {
+  //     this.checkboxs[i] = false;
+  //   }
+  // }
+}
 
 sendFilter(filterValue: string) {
   return this.filter = filterValue;
