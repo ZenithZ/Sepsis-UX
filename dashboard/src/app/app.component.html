@@ -12,13 +12,13 @@
   </mat-form-field>
 
   <section class="filter_section">
-    <mat-slide-toggle [(ngModel)]="checkboxs[0]" [(ngModel)]="disabled" id="all" matInput (click)="displayTable('all')"> Display All </mat-slide-toggle>
-    <mat-checkbox [(ngModel)]="checkboxs[1]" [disabled]="disabled" id="c1" matInput (click)="displayTable('c1')"> Display ATS 1 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[2]" [disabled]="disabled" id="c2" matInput (click)="displayTable('c2')"> Display ATS 2 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[3]" [disabled]="disabled" id="c3" (click)="displayTable('c3')"> Display ATS 3 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[4]" [disabled]="disabled" id="c4" (click)="displayTable('c4')"> Display ATS 4 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[5]" [disabled]="disabled" id="c5" (click)="displayTable('c5')"> Display ATS 5 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[6]" [disabled]="disabled" id="c6" (click)="displayTable('c6')"> Uncategorised </mat-checkbox>
+    <mat-slide-toggle [(ngModel)]="checkboxs[0]" [(ngModel)]="disabled" id="all" (change)="displayTable('all')"> Display All </mat-slide-toggle>
+    <mat-checkbox [(ngModel)]="checkboxs[1]" [disabled]="disabled" id="c1" (change)="displayTable('c1')"> Display ATS 1 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[2]" [disabled]="disabled" id="c2" (change)="displayTable('c2')"> Display ATS 2 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[3]" [disabled]="disabled" id="c3" (change)="displayTable('c3')"> Display ATS 3 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[4]" [disabled]="disabled" id="c4" (change)="displayTable('c4')"> Display ATS 4 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[5]" [disabled]="disabled" id="c5" (change)="displayTable('c5')"> Display ATS 5 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[6]" [disabled]="disabled" id="c6" (change)="displayTable('c6')"> Uncategorised </mat-checkbox>
   </section>
 
   <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>

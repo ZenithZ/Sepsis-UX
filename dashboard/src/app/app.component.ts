@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import sampleData from '../../REST-data.json';
 import { FormControl, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
@@ -47,61 +47,44 @@ export class AppComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value))
     );
-    console.log("disabled: " + this.disabled)
   }
 
 displayTable(table: string) {
-
-  this.disabled = !this.disabled;
-
-  console.log("disabled: " + this.disabled)
-  console.log("Display table : " + table)
 
   if (this.disabled == true) {
     for (let i=1; i<this.checkboxs.length; ++i) {
       this.checkboxs[i] = true;
     }
-    console.log("in disabled")
-  } 
-  else {
-    for (let i=1; i<this.checkboxs.length; ++i) {
-      this.checkboxs[i] = false;
-    }
   }
-
+  
   for (let i=1; i<this.checkboxs.length; ++i) {
     var temp = document.getElementById("d"+i)
-    console.log("BEFORE switch checkbox" + i + ": " + this.checkboxs[i])
     switch(table) {
       case 'c1':
-        this.checkboxs[1] = !this.checkboxs[1];
+        // this.checkboxs[1] = !this.checkboxs[1];
         break;
       case 'c2':
         this.checkboxs[2] = !this.checkboxs[2];
         break;
       case 'c3':
-        this.checkboxs[3] = !this.checkboxs[3];
+        // this.checkboxs[3] = !this.checkboxs[3];
         break;
       case 'c4':
         this.checkboxs[4] = !this.checkboxs[4];
         break;
       case 'c5':
-        this.checkboxs[5] = !this.checkboxs[5];
+        // this.checkboxs[5] = !this.checkboxs[5];
         break;
       case 'c6':
         this.checkboxs[6] = !this.checkboxs[6];
         break;
-      case 'all':
-        this.checkboxs[0] = !this.checkboxs[0];
-        break;
       default:
         break;
     }
-    console.log("AFTER  switch checkbox" + i + ": " + this.checkboxs[i])
+
     if (this.checkboxs[i] == true) temp.style.display = "block"; 
     else temp.style.display = "none"; 
   }
-  console.log("--------------------------------------")
 }
 
 sendFilter(filterValue: string) {
