@@ -44,7 +44,6 @@ export class AppComponent implements OnInit {
       this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
       this.ats[r].push(this.data[i]);
     }
-    
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
@@ -109,7 +108,7 @@ private _filter(value: string): string[] {
 }
 
 resetForm() {
-  this.myControl.reset();
+  this.myControl.setValue('');
 }
 
 }
