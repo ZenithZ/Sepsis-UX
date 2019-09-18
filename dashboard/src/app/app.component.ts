@@ -24,7 +24,8 @@ export class AppComponent implements OnInit {
   myControl = new FormControl();
   options: any[] = [];
   filteredOptions: Observable<string[]>;
-  checkboxs: boolean[] = [true, false, false, false, false, false, false]
+
+  checkboxs: boolean[] = [true, true, true, true, true, true, true]
   disabled = true;
 
   ngOnInit(): void {
@@ -39,7 +40,6 @@ export class AppComponent implements OnInit {
       this.options[i] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
       this.options[temp] = this.data[i]['MRN']
       temp -= 1;
-      // console.log(i + " " + this.data[i]['First Name'] + ' ' + this.data[i]['Last Name'])
       this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
       this.ats[r].push(this.data[i]);
     }
@@ -47,42 +47,61 @@ export class AppComponent implements OnInit {
       startWith(''),
       map(value => this._filter(value))
     );
+    console.log("disabled: " + this.disabled)
   }
 
 displayTable(table: string) {
 
-  var sec = document.getElementById("s1");
-  console.log("c0 " + this.checkboxs[0])
-  console.log("c1 " + this.checkboxs[1])
-  console.log("disabled " + this.disabled)
+  this.disabled = !this.disabled;
 
-  // if (this.disabled == true) {
-  //   sec.style.display = "none";
+  console.log("disabled: " + this.disabled)
+  console.log("Display table : " + table)
 
-  //   switch(table) {
-  //     case 'c1': {
-  //       var temp = document.getElementById("d1");
-  //       if (this.checkboxs[1] == false) temp.style.display = "block"; 
-  //       else temp.style.display = "none"; 
-  //       break;
-  //     }
-  //     case 'c2': {
-  //       var temp = document.getElementById("d2");
-  //       if (this.checkboxs[2] == false) temp.style.display = "block"; 
-  //       else temp.style.display = "none"; 
-  //       break;
-  //     }
-  //     default: {
-  //       sec.style.display = "none";
-  //     }
-  //   }
-  // } 
-  // else {
-  //   sec.style.display = "block";
-  //   for (let i=1; i<this.checkboxs.length; ++i) {
-  //     this.checkboxs[i] = false;
-  //   }
-  // }
+  if (this.disabled == true) {
+    for (let i=1; i<this.checkboxs.length; ++i) {
+      this.checkboxs[i] = true;
+    }
+    console.log("in disabled")
+  } 
+  else {
+    for (let i=1; i<this.checkboxs.length; ++i) {
+      this.checkboxs[i] = false;
+    }
+  }
+
+  for (let i=1; i<this.checkboxs.length; ++i) {
+    var temp = document.getElementById("d"+i)
+    console.log("BEFORE switch checkbox" + i + ": " + this.checkboxs[i])
+    switch(table) {
+      case 'c1':
+        this.checkboxs[1] = !this.checkboxs[1];
+        break;
+      case 'c2':
+        this.checkboxs[2] = !this.checkboxs[2];
+        break;
+      case 'c3':
+        this.checkboxs[3] = !this.checkboxs[3];
+        break;
+      case 'c4':
+        this.checkboxs[4] = !this.checkboxs[4];
+        break;
+      case 'c5':
+        this.checkboxs[5] = !this.checkboxs[5];
+        break;
+      case 'c6':
+        this.checkboxs[6] = !this.checkboxs[6];
+        break;
+      case 'all':
+        this.checkboxs[0] = !this.checkboxs[0];
+        break;
+      default:
+        break;
+    }
+    console.log("AFTER  switch checkbox" + i + ": " + this.checkboxs[i])
+    if (this.checkboxs[i] == true) temp.style.display = "block"; 
+    else temp.style.display = "none"; 
+  }
+  console.log("--------------------------------------")
 }
 
 sendFilter(filterValue: string) {

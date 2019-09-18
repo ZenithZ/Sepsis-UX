@@ -15,18 +15,16 @@
     <mat-slide-toggle [(ngModel)]="checkboxs[0]" [(ngModel)]="disabled" id="all" matInput (click)="displayTable('all')"> Display All </mat-slide-toggle>
     <mat-checkbox [(ngModel)]="checkboxs[1]" [disabled]="disabled" id="c1" matInput (click)="displayTable('c1')"> Display ATS 1 </mat-checkbox>
     <mat-checkbox [(ngModel)]="checkboxs[2]" [disabled]="disabled" id="c2" matInput (click)="displayTable('c2')"> Display ATS 2 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[3]" [disabled]="disabled" id="c3" matInput (click)="displayTable('c3')"> Display ATS 3 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[4]" [disabled]="disabled" id="c4" matInput (click)="displayTable('c4')"> Display ATS 4 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[5]" [disabled]="disabled" id="c5" matInput (click)="displayTable('c5')"> Display ATS 5 </mat-checkbox>
-    <mat-checkbox [(ngModel)]="checkboxs[6]" [disabled]="disabled" id="c6" matInput (click)="displayTable('c6')"> Uncategorised </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[3]" [disabled]="disabled" id="c3" (click)="displayTable('c3')"> Display ATS 3 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[4]" [disabled]="disabled" id="c4" (click)="displayTable('c4')"> Display ATS 4 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[5]" [disabled]="disabled" id="c5" (click)="displayTable('c5')"> Display ATS 5 </mat-checkbox>
+    <mat-checkbox [(ngModel)]="checkboxs[6]" [disabled]="disabled" id="c6" (click)="displayTable('c6')"> Uncategorised </mat-checkbox>
   </section>
 
-  <section style="display:block" id="s1">
-    <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
-    <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
-    <app-table id="d3" style="display:block" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
-    <app-table id="d4" style="display:block" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
-    <app-table id="d5" style="display:block" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
-    <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
-  </section>
+  <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
+  <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
+  <app-table id="d3" style="display:block" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
+  <app-table id="d4" style="display:block" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
+  <app-table id="d5" style="display:block" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
+  <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
 </div>
