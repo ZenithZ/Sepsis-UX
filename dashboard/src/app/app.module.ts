@@ -18,7 +18,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { MatChipsModule } from '@angular/material';
-// import { MatIconModule } from '@angular/material';
+import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -55,7 +55,7 @@ import { DetailComponent } from './components/table/detail/detail.component';
     MatSnackBarModule,
     ReactiveFormsModule,
     // MatChipsModule,
-    // MatIconModule,
+    MatIconModule,
     MatAutocompleteModule,
     MatSlideToggleModule
   ],

@@ -2,8 +2,10 @@
 <div class="container">
   <router-outlet></router-outlet>
   <mat-form-field>
-    <input matInput (keyup)="sendFilter($event.target.value)" matInput (click)="sendFilter($event.target.value)"
-     placeholder="Search" matInput [formControl]="myControl" [matAutocomplete]="auto">
+    <!-- <input matInput (keyup)="sendFilter($event.target.value)" (input)="sendFilter($event.target.value)"
+     placeholder="Search" matInput [formControl]="myControl" [matAutocomplete]="auto"> -->
+    <input placeholder="Search" matInput [formControl]="myControl" [matAutocomplete]="auto">
+    <mat-icon matSuffix (click)="resetForm()">cancel</mat-icon>
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
         <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
           {{option}}

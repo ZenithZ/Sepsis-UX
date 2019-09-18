@@ -2,7 +2,7 @@ import { Component, OnInit} from '@angular/core';
 import sampleData from '../../REST-data.json';
 import { FormControl, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
-import {map, startWith} from 'rxjs/operators';
+import {map, startWith, debounceTime, distinctUntilChanged} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +22,7 @@ export class AppComponent implements OnInit {
   data = sampleData.slice(1, 50);
   filter: string;
   myControl = new FormControl();
+  private debounce: number = 400;
   options: any[] = [];
   filteredOptions: Observable<string[]>;
 
@@ -43,10 +44,15 @@ export class AppComponent implements OnInit {
       this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
       this.ats[r].push(this.data[i]);
     }
+    
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => this._filter(value))
     );
+    this.myControl.valueChanges.pipe(debounceTime(this.debounce), distinctUntilChanged())
+    .subscribe(query => {
+      this.sendFilter(query)
+    });
   }
 
 displayTable(table: string) {
@@ -100,6 +106,10 @@ private _filter(value: string): string[] {
   const filterValue = value.toLowerCase();
 
   return this.options.filter(option => option.toLowerCase().indexOf(filterValue) === 0);
+}
+
+resetForm() {
+  this.myControl.reset();
 }
 
 }
