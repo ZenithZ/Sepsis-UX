@@ -31,10 +31,10 @@ export class TableComponent implements OnChanges {
   deltaTimeString: string;
 
   static readonly WAIT_THRESHOLD = {
-    OVERTIME: 1800*10000,
-    FINISH_SOON: 1500*10000,
-    DURING: 1200*10000,
-    BEGIN: 60*10000
+    OVERTIME: 1800*6,
+    FINISH_SOON: 1500*6,
+    DURING: 1200*6,
+    BEGIN: 60*6
   };
 
   displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
