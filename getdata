@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd dashboard
 
 curl "https://api.mockaroo.com/api/f6e7c0e0?count=1000&key=d1d49850" > "REST-data.json"
