@@ -23,10 +23,45 @@
     <mat-checkbox [(ngModel)]="checkboxs[6]" [disabled]="disabled" id="c6" (change)="displayTable('c6')"> Uncategorised </mat-checkbox>
   </section>
 
-  <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
+  <!-- <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
   <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
   <app-table id="d3" style="display:block" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
   <app-table id="d4" style="display:block" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
   <app-table id="d5" style="display:block" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
-  <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
+  <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table> -->
+
+
+  <div cdkDropListGroup>
+
+    <!-- <h2>ATS 1</h2>
+    <div cdkDropList [cdkDropListData]="ats[1]" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let patient of ats[1]" cdkDrag>{{patient}}</div>
+    </div>
+
+    <h2>ATS 2</h2>
+    <div cdkDropList [cdkDropListData]="ats[2]" (cdkDropListDropped)="drop($event)">
+      <div *ngFor="let patient of ats[2]" cdkDrag>{{patient}}</div>
+    </div> -->
+
+
+    <div cdkDropList [cdkDropListData]="ATS1">
+      <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter" cdkDrag></app-table>
+    </div>
+    <div cdkDropList [cdkDropListData]="ATS2">
+      <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter" cdkDrag></app-table>
+    </div>
+    <div cdkDropList [cdkDropListData]="ATS3">
+      <app-table id="d3" style="display:block" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter" cdkDrag></app-table>
+    </div>
+    <div cdkDropList [cdkDropListData]="ATS4">
+      <app-table id="d4" style="display:block" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter" cdkDrag></app-table>
+    </div>
+    <div cdkDropList [cdkDropListData]="ATS5">
+      <app-table id="d5" style="display:block" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter" cdkDrag></app-table>
+    </div>
+    <div cdkDropList [cdkDropListData]="Uncategorised">
+      <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter" cdkDrag></app-table>
+    </div>
+  </div>
+
 </div>

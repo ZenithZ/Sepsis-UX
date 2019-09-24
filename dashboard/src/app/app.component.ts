@@ -1,8 +1,9 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import sampleData from '../../REST-data.json';
 import { FormControl, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith, debounceTime, distinctUntilChanged} from 'rxjs/operators';
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,18 @@ export class AppComponent implements OnInit {
 
   checkboxs: boolean[] = [true, true, true, true, true, true, true]
   disabled = true;
+
+  drop(event: CdkDragDrop<string[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+    }
+  }
+  
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
