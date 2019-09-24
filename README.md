@@ -2,7 +2,11 @@
 
 # Running
 Project can be built and served from the main directory with ```./build -o```
-Use ```chmod +u build``` to ensure that the file has the correct permissions
+Use ```chmod +x build``` or ```bash build``` to ensure that the file has the correct permissions to run
+
+# Data
+The JSON data, while there is no backend can be automatically updated with ```./getdata```
+Use ```chmod +x getdata``` or ```bash getdata``` to ensure that the file has the correct permissions to run
 
 ## Team Members
 - Mark Dagher - mdag4370@uni.sydney.edu.au
