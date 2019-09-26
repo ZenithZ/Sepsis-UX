@@ -1,17 +1,16 @@
-.container {
+mat-drawer-content {
     max-width: 1024px;
+    min-height: 100%;
     margin: auto;
     padding: 3em;
 }
 
 mat-form-field {
-    font-size: 14px;
+    max-width: 1024px;
     width: 100%;
+    font-size: 14px;
 }
 
 .filter_section {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    height: 60px;
-  }
+    display: block;
+}
