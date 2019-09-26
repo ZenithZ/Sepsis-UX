@@ -14,3 +14,9 @@ mat-form-field {
 .filter_section {
     display: block;
 }
+
+.one_per_row{ 
+    float:left;
+    display:table-column;
+    width:100%;
+ }

@@ -1,10 +1,11 @@
-import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges, QueryList, forwardRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { SelectionModel, DataSource } from '@angular/cdk/collections';
 import { FormControl, Validators } from '@angular/forms';
+import {CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragHandle} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-table',
@@ -18,6 +19,7 @@ import { FormControl, Validators } from '@angular/forms';
     ]),
   ],
 })
+
 export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar) { }
@@ -37,7 +39,7 @@ export class TableComponent implements OnChanges {
     BEGIN: 60*6
   };
 
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
+  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta', 'Symbol'];
   expandedElement: any | null;
   atsNo: number;
   dataSource: MatTableDataSource<any>;
@@ -194,6 +196,22 @@ export class TableComponent implements OnChanges {
         patient['locValue'].hasError('max') ? 'Too large' :
         patient['locValue'].hasError('min') ? 'Too small' :
             '';
+  }
+
+  dropTable(event: CdkDragDrop<any>) {
+
+    // const prevIndex = this.dataSource.index((d) => d === event.item.data);
+
+    // if (event.previousContainer === event.container) {
+    //   moveItemInArray(this.dataSource.data, prevIndex, event.currentIndex);
+    //   // this.sort.renderRows();
+    // } else {
+    //   transferArrayItem(this.dataSource.data,
+    //   prevIndex,
+    //   event.previousIndex,
+    //   event.currentIndex);
+    // }
+    
   }
 
 }
