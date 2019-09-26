@@ -21,7 +21,7 @@
   <mat-drawer-content>
     <mat-form-field>
       <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)" [formControl]="myControl">
-      <mat-icon matSuffix (click)="drawer.toggle();$event.stopPropagation()">sort</mat-icon>
+      <mat-icon matSuffix (click)="$event.stopPropagation();drawer.toggle()">sort</mat-icon>
     </mat-form-field>
     <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
     <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
