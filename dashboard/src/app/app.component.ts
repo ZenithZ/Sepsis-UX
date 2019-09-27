@@ -27,6 +27,8 @@ export class AppComponent implements OnInit {
   options: any[] = [];
   filteredOptions: Observable<string[]>;
 
+  over;
+
   checkboxs: boolean[] = [true, true, true, true, true, true, true]
   disabled = true;
   
