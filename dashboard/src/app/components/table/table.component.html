@@ -1,90 +1,64 @@
- <div class="container" [style.display]="this.filter.length > 0 ? (this.dataSource.filteredData.length == 0 ? 'none' : 'block') : 'block'">
-     
-<div class="title">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-        <path d="M0 0h24v24H0z" fill="none"/>
-        <path [ngClass]="{'ats1': atsNo == 1, 'ats2': atsNo == 2, 'ats3': atsNo == 3, 'ats4': atsNo == 4, 'ats5': atsNo == 5}"
-            d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" />
-    </svg>
-    {{ title }}
-</div>
+<div class="container"
+    [style.display]="this.filter.length > 0 ? (this.dataSource.filteredData.length == 0 ? 'none' : 'block') : 'block'">
 
-<table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort
-    class="example-container mat-elevation-z8" cdkDropList
-    [cdkDropListData]="dataSource"
-    (cdkDropListDropped)="dropTable($event)">
-    <!-- columns -->
-    <ng-container matColumnDef="ATS">
-        <th mat-header-cell *matHeaderCellDef> ATS </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['ATS'] }} </td>
-    </ng-container>
-    <ng-container matColumnDef="Seen">
-        <th mat-header-cell *matHeaderCellDef> Seen </th>
-        <td mat-cell *matCellDef="let patient">
-            <mat-checkbox color="primary"
-                (click)="$event.stopPropagation();"
-                (change)="patient.hasOwnProperty('seen') ? patient['seen'] = !patient['seen'] : patient['seen'] = true; undoSeen(patient);"
-                [checked]="patient['seen']">
-            </mat-checkbox>
-        </td>
-    </ng-container>
-    <ng-container matColumnDef="MRN">
-        <th mat-header-cell *matHeaderCellDef> MRN </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['MRN'] }} </td>
-    </ng-container>
-    <ng-container matColumnDef="Name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="Last Name"> Name </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['Name'] }} </td>
-        <!-- <td mat-cell *matCellDef="let patient"> {{ patient['Fullname'] }} </td> -->
-    </ng-container>
-    <ng-container matColumnDef="DOB">
-        <th mat-header-cell *matHeaderCellDef> DOB </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['DOB'] }} </td>
-    </ng-container>
-    <ng-container matColumnDef="LOC">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="LOC"> LOC </th>
-        <td mat-cell *matCellDef="let patient; let i = renderIndex"> 
-            <mat-form-field class="input-field" (change)="onLOCChange($event.srcElement.value, patient, i)" (click)="onLOCChange($event.srcElement.value, patient, i)" (click)="$event.stopPropagation()" >
-                <input #loc matInput type="number" value="15" min="1" max="15" [formControl]="patient['locValue']" required>
-                 <mat-error *ngIf="patient['locValue'].invalid">
-                    {{ getErrorMessage(patient) }}
-                </mat-error>
-            </mat-form-field>
-        </td>
-    </ng-container>
-    <ng-container matColumnDef="Vitals">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="Vitals"> Vitals </th>
-        <td mat-cell *matCellDef="let patient">
-            <ng-container *ngIf="patient.hasOwnProperty('Vitals'); else elseTemplate">
-                <!-- done -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path fill="none" d="M0 0h24v24H0z" />
-                    <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" /></svg>
-            </ng-container>
-            <ng-template #elseTemplate>
-                <!-- cross -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path
-                        d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
-                    <path d="M0 0h24v24H0z" fill="none" /></svg>
-            </ng-template>
-        </td>
-    </ng-container>
-    <ng-container matColumnDef="BG">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="Bloodgas"> Bloodgas </th>
-        <td mat-cell *matCellDef="let patient">
-            <ng-container
-                *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
-                <!-- doneall -->
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                    <path d="M0 0h24v24H0z" fill="none" />
-                    <path
-                        d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
-                </svg>
-            </ng-container>
-            <ng-template #elseTemplate>
-                <ng-container *ngIf="patient.hasOwnProperty('Bloodgas'); else elseTemplate">
-                    <!-- done bloodgas -->
+    <div class="title">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path
+                [ngClass]="{'ats1': atsNo == 1, 'ats2': atsNo == 2, 'ats3': atsNo == 3, 'ats4': atsNo == 4, 'ats5': atsNo == 5}"
+                d="M17.63 5.84C17.27 5.33 16.67 5 16 5L5 5.01C3.9 5.01 3 5.9 3 7v10c0 1.1.9 1.99 2 1.99L16 19c.67 0 1.27-.33 1.63-.84L22 12l-4.37-6.16z" />
+        </svg>
+        {{ title }}
+    </div>
+
+    <table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort
+        class="example-container mat-elevation-z8" cdkDropList [cdkDropListData]="dataSource"
+        (cdkDropListDropped)="dropTable($event)">
+        <!-- columns -->
+        <ng-container matColumnDef="ATS">
+            <th mat-header-cell *matHeaderCellDef> ATS </th>
+            <td mat-cell *matCellDef="let patient"> {{ patient['ATS'] }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Seen">
+            <th mat-header-cell *matHeaderCellDef> Seen </th>
+            <td mat-cell *matCellDef="let patient">
+                <mat-checkbox color="primary" (click)="$event.stopPropagation();"
+                    (change)="patient.hasOwnProperty('seen') ? patient['seen'] = !patient['seen'] : patient['seen'] = true; undoSeen(patient);"
+                    [checked]="patient['seen']">
+                </mat-checkbox>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="MRN">
+            <th mat-header-cell *matHeaderCellDef> MRN </th>
+            <td mat-cell *matCellDef="let patient"> {{ patient['MRN'] }} </td>
+        </ng-container>
+        <ng-container matColumnDef="Name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Last Name"> Name </th>
+            <td mat-cell *matCellDef="let patient"> {{ patient['Name'] }} </td>
+            <!-- <td mat-cell *matCellDef="let patient"> {{ patient['Fullname'] }} </td> -->
+        </ng-container>
+        <ng-container matColumnDef="DOB">
+            <th mat-header-cell *matHeaderCellDef> DOB </th>
+            <td mat-cell *matCellDef="let patient"> {{ patient['DOB'] }} </td>
+        </ng-container>
+        <ng-container matColumnDef="LOC">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="LOC"> LOC </th>
+            <td mat-cell *matCellDef="let patient; let i = renderIndex">
+                <mat-form-field class="input-field" (change)="onLOCChange($event.srcElement.value, patient, i)"
+                    (click)="onLOCChange($event.srcElement.value, patient, i)" (click)="$event.stopPropagation()">
+                    <input #loc matInput type="number" value="15" min="1" max="15" [formControl]="patient['locValue']"
+                        required>
+                    <mat-error *ngIf="patient['locValue'].invalid">
+                        {{ getErrorMessage(patient) }}
+                    </mat-error>
+                </mat-form-field>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="Vitals">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Vitals"> Vitals </th>
+            <td mat-cell *matCellDef="let patient">
+                <ng-container *ngIf="patient.hasOwnProperty('Vitals'); else elseTemplate">
+                    <!-- done -->
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                         <path fill="none" d="M0 0h24v24H0z" />
                         <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" /></svg>
@@ -96,71 +70,104 @@
                             d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                         <path d="M0 0h24v24H0z" fill="none" /></svg>
                 </ng-template>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="BG">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Bloodgas"> Bloodgas </th>
+            <td mat-cell *matCellDef="let patient">
+                <ng-container
+                    *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
+                    <!-- doneall -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <path d="M0 0h24v24H0z" fill="none" />
+                        <path
+                            d="M18 7l-1.41-1.41-6.34 6.34 1.41 1.41L18 7zm4.24-1.41L11.66 16.17 7.48 12l-1.41 1.41L11.66 19l12-12-1.42-1.41zM.41 13.41L6 19l1.41-1.41L1.83 12 .41 13.41z" />
+                    </svg>
+                </ng-container>
+                <ng-template #elseTemplate>
+                    <ng-container *ngIf="patient.hasOwnProperty('Bloodgas'); else elseTemplate">
+                        <!-- done bloodgas -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="none" d="M0 0h24v24H0z" />
+                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z" /></svg>
+                    </ng-container>
+                    <ng-template #elseTemplate>
+                        <!-- cross -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path
+                                d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                            <path d="M0 0h24v24H0z" fill="none" /></svg>
+                    </ng-template>
 
-            </ng-template>
+                </ng-template>
 
-        </td>
-    </ng-container>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="Registration">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header> Registration </th>
-        <td mat-cell *matCellDef="let patient"> {{ patient['Registration'] }} </td>
-    </ng-container>
+        <ng-container matColumnDef="Registration">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Registration </th>
+            <td mat-cell *matCellDef="let patient"> {{ patient['Registration'] }} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="Delta">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header="Delta"> Δ Waiting Time </th>
-        <td mat-cell *matCellDef="let patient">
-            <ng-container *ngIf="!patient['seen']; else elseTemplate">
+        <ng-container matColumnDef="Delta">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Delta"> Δ Waiting Time </th>
+            <td mat-cell *matCellDef="let patient">
                 <div class="delta">
                     <div class="delta-data" [class.seenBG]="patient['seen']">
                         {{ patient['seen'] ? patient['Registration'] = currentTime : formatWaitTime(patient) }}
                     </div>
                     <div class="delta-indicator">
-                        <svg *ngIf="getWaitColor(patient) == '#ff1744'" fill="#f03b20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
+                        <svg *ngIf="getWaitColor(patient) == '#ff1744'" fill="#f03b20"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            width="24" height="24" viewBox="0 0 24 24">
+                            <path
+                                d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#4caf50'" fill="#2ca25f" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
+                        <svg *ngIf="getWaitColor(patient) == '#4caf50'" fill="#2ca25f"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            width="24" height="24" viewBox="0 0 24 24">
+                            <path
+                                d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#ffeb3b'" fill="#ffeda0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        <svg *ngIf="getWaitColor(patient) == '#ffeb3b'" fill="#ffeda0"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#ff9100'" fill="#feb24c" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        <svg *ngIf="getWaitColor(patient) == '#ff9100'" fill="#feb24c"
+                            xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M0 0h24v24H0z" fill="none" />
+                            <path
+                                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
                         </svg>
 
                     </div>
-                    
+
                 </div>
-            </ng-container>
-            <ng-template #elseTemplate>
-                <span>Patient has been seen</span>
-            </ng-template>
-        </td>
-    </ng-container>
+            </td>
+        </ng-container>
 
-    <!-- expanded detail -->
-    <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let patient" [attr.colspan]="displayedColumns.length">
-            <div class="example-element-detail" [@detailExpand]="patient == expandedElement ? 'expanded' : 'collapsed'">
-                <app-detail [patient]="patient"></app-detail>
-            </div>
-        </td>
-    </ng-container>
+        <!-- expanded detail -->
+        <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let patient" [attr.colspan]="displayedColumns.length">
+                <div class="example-element-detail"
+                    [@detailExpand]="patient == expandedElement ? 'expanded' : 'collapsed'">
+                    <app-detail [patient]="patient"></app-detail>
+                </div>
+            </td>
+        </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-    <tr mat-row *matRowDef="let patient; columns: displayedColumns; let i = index" class="example-element-row"
-        [class.expanded-row]="expandedElement === patient"
-        [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
-        [class.seen]="patient['seen'] && this.filter.length <= 0"
-        (click)="expandedElement = expandedElement === patient ? null : (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas') ? patient : expandedElement)"
-        style="pointer-events: none;">
-    </tr>
-    <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
-        [class.seen]="patient['seen'] && this.filter.length <= 0">
-</tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
+        <tr mat-row *matRowDef="let patient; columns: displayedColumns;" class="example-element-row"
+            [class.expanded-row]="expandedElement === patient"
+            [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
+            [class.seen]="patient['seen'] && this.filter.length <= 0"
+            (click)="expandedElement = expandedElement === patient ? null : (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas') ? patient : expandedElement)">
+        </tr>
+        <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
+            [class.seen]="patient['seen'] && this.filter.length <= 0">
+        </tr>
 
-</table>
+    </table>
 </div>
