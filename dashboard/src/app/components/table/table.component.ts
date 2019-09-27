@@ -198,7 +198,7 @@ export class TableComponent implements OnChanges {
             '';
   }
 
-  dropTable(event: CdkDragDrop<any>) {
+  // dropTable(event: CdkDragDrop<any>) {
 
     // const prevIndex = this.dataSource.index((d) => d === event.item.data);
 
@@ -212,7 +212,7 @@ export class TableComponent implements OnChanges {
     //   event.currentIndex);
     // }
     
-  }
+  // }
 
 }
 

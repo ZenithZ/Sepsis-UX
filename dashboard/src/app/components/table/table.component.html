@@ -12,8 +12,7 @@
     </div>
 
     <table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort
-        class="example-container mat-elevation-z8" cdkDropList [cdkDropListData]="dataSource"
-        (cdkDropListDropped)="dropTable($event)">
+        class="example-container mat-elevation-z8">
         <!-- columns -->
         <ng-container matColumnDef="ATS">
             <th mat-header-cell *matHeaderCellDef> ATS </th>
