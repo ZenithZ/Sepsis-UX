@@ -112,21 +112,21 @@
         <td mat-cell *matCellDef="let patient">
             <ng-container *ngIf="!patient['seen']; else elseTemplate">
                 <div class="delta">
-                    <div class="delta-data">
+                    <div class="delta-data" [class.seenBG]="patient['seen']">
                         {{ patient['seen'] ? patient['Registration'] = currentTime : formatWaitTime(patient) }}
                     </div>
                     <div class="delta-indicator">
-                        <svg *ngIf="getWaitColor(patient) == '#ff1744'" fill="red" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
+                        <svg *ngIf="getWaitColor(patient) == '#ff1744'" fill="#f03b20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z" />
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#4caf50'" fill="green" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
+                        <svg *ngIf="getWaitColor(patient) == '#4caf50'" fill="#2ca25f" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M10 17L5 12L6.41 10.59L10 14.17L17.59 6.58L19 8L10 17Z" />
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#ffeb3b'" fill="yellow" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <svg *ngIf="getWaitColor(patient) == '#ffeb3b'" fill="#ffeda0" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M0 0h24v24H0z" fill="none"/>
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                         </svg>
-                        <svg *ngIf="getWaitColor(patient) == '#ff9100'" fill="orange" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                        <svg *ngIf="getWaitColor(patient) == '#ff9100'" fill="#feb24c" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                             <path d="M0 0h24v24H0z" fill="none"/>
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
                         </svg>
@@ -139,11 +139,6 @@
                 <span>Patient has been seen</span>
             </ng-template>
         </td>
-    </ng-container>
-
-    <ng-container matColumnDef="Symbol">
-        <th mat-header-cell *matHeaderCellDef> Symbol </th>
-        <td mat-cell *matCellDef="let patient"> <button style="pointer-events: all"> Move </button> </td>
     </ng-container>
 
     <!-- expanded detail -->
@@ -161,8 +156,7 @@
         [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
         [class.seen]="patient['seen'] && this.filter.length <= 0"
         (click)="expandedElement = expandedElement === patient ? null : (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas') ? patient : expandedElement)"
-        style="pointer-events: none;"
-        cdkDrag [cdkDragData]="row">
+        style="pointer-events: none;">
     </tr>
     <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
         [class.seen]="patient['seen'] && this.filter.length <= 0">

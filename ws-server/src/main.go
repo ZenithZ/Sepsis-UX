@@ -32,7 +32,7 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 			delete(clients, ws)
 			break
 		}
-		// Send the newly received message to the broadcast channel
+
 		broadcast <- msg
 	}
 }

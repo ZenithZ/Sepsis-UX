@@ -21,15 +21,13 @@
   <mat-drawer-content>
     <mat-form-field>
       <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)" [formControl]="myControl">
-      <mat-icon matSuffix (click)="$event.stopPropagation();drawer.toggle()">sort</mat-icon>
+      <mat-icon matSuffix (click)="drawer.toggle();$event.stopPropagation()">sort</mat-icon>
     </mat-form-field>
     <app-table id="d1" style="display:block" [title]="'ATS 1'" [patients]="ats[1]" [filter]="filter"></app-table>
     <app-table id="d2" style="display:block" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
     <app-table id="d3" style="display:block" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
     <app-table id="d4" style="display:block" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
     <app-table id="d5" style="display:block" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
-    <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter">
-    </app-table>
-    <button mat-raised-button (click)="drawer.toggle()">Toggle drawer</button>
+    <app-table id="d6" style="display:block" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
   </mat-drawer-content>
 </mat-drawer-container>

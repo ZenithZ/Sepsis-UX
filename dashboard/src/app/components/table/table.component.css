@@ -20,6 +20,11 @@
     display: none;
   }
 
+  .seenBG {
+    background-color: #bdbdbd;
+    border-radius: 5px;
+  }
+
   @media screen and (max-width: 766px) {
     .mat-column-Registration {
       display: none;
