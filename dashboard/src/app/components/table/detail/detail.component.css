@@ -18,6 +18,21 @@
     margin: 20px 0 0 20px;
 }
 
+mat-icon {
+    width: 18px;
+    font-size: 18px;
+    height: 18px;
+    vertical-align: -3px;
+}
+
+.caution-icon {
+    color: #feb24c;
+}
+
+.warning-icon {
+    color: #f03b20;
+}
+
 @media screen and (max-width: 766px) {
     .mat-column-Time {
         display: none;
