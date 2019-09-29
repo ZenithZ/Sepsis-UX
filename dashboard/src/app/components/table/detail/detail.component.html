@@ -4,7 +4,7 @@
         <ng-container matColumnDef="Test">
             <th mat-header-cell *matHeaderCellDef> Test </th>
             <td mat-cell *matCellDef="let element">
-                {{element['test']}}
+                {{ element['index'] > 0 ? '' : element['test'] }}
             </td>
         </ng-container>
         <ng-container matColumnDef="Lower Interval">
@@ -19,28 +19,16 @@
                 <ng-container *ngIf="ranges.hasOwnProperty(element['test'])">
                     <ng-container
                         *ngIf="element['value'] < ranges[element['test']]['lowab'] || element['value'] > ranges[element['test']]['uppab']; else elseTemplate">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#e53935"
-                            viewBox="0 0 24 24">
-                            <path d="M0 0h24v24H0z" fill="none" />
-                            <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" /></svg>
+                            <mat-icon class="warning-icon">warning</mat-icon>
                     </ng-container>
                     <ng-template #elseTemplate>
                         <ng-container
                             *ngIf="element['value'] < ranges[element['test']]['lower'] || element['value'] > ranges[element['test']]['upper']">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#ffb300"
-                                viewBox="0 0 24 24">
-                                <path d="M0 0h24v24H0z" fill="none" />
-                                <path
-                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                            </svg>
+                            <mat-icon class="caution-icon">error</mat-icon>
                         </ng-container>
                     </ng-template>
                 </ng-container>
-                <span (keyup)="changeValue(element['test'], $event)" (blur)="updateList(element['test'], $event)"
-                    contenteditable="true">
-                    {{element['value']}}
-                </span>
-                {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
+                    {{element['value']}} {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
             </td>
         </ng-container>
         <ng-container matColumnDef="Upper Interval">
@@ -68,7 +56,7 @@
             <ng-container matColumnDef="Test">
                 <th mat-header-cell *matHeaderCellDef> Test </th>
                 <td mat-cell *matCellDef="let element">
-                    {{element['test']}}
+                    {{ element['index'] > 0 ? '' : element['test'] }}
                 </td>
             </ng-container>
             <ng-container matColumnDef="Lower Interval">
@@ -83,28 +71,16 @@
                     <ng-container *ngIf="ranges.hasOwnProperty(element['test'])">
                         <ng-container
                             *ngIf="element['value'] < ranges[element['test']]['lowab'] || element['value'] > ranges[element['test']]['uppab']; else elseTemplate">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#e53935"
-                                viewBox="0 0 24 24">
-                                <path d="M0 0h24v24H0z" fill="none" />
-                                <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z" /></svg>
+                            <mat-icon class="warning-icon">warning</mat-icon>
                         </ng-container>
                         <ng-template #elseTemplate>
                             <ng-container
                                 *ngIf="element['value'] < ranges[element['test']]['lower'] || element['value'] > ranges[element['test']]['upper']">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="#ffb300"
-                                    viewBox="0 0 24 24">
-                                    <path d="M0 0h24v24H0z" fill="none" />
-                                    <path
-                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
-                                </svg>
+                            <mat-icon class="caution-icon">error</mat-icon>
                             </ng-container>
                         </ng-template>
                     </ng-container>
-                    <span (keyup)="changeValue(element['test'], $event)" (blur)="updateList(element['test'], $event)"
-                        contenteditable="true">
-                        {{element['value']}}
-                    </span>
-                    {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
+                        {{element['value']}} {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
                 </td>
             </ng-container>
             <ng-container matColumnDef="Upper Interval">
@@ -123,7 +99,4 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         </table>
     </ng-container>
-    <div class="suspect-container">
-        <mat-checkbox>Clinically Suspected of Sepsis</mat-checkbox>
-    </div>
 </div>
