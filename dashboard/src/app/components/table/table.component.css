@@ -20,10 +20,34 @@
     display: none;
   }
 
-  .seenBG {
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
+
+
+  mat-icon {
+    vertical-align: -4px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .warning-icon {
+    color: #f03b20;
+  }
+
+  .caution-icon {
+    color: #feb24c;
+  }
+
+  .highlight {
     background-color: #d9d9d9;
-    border-radius: 5px;
-    padding: 2px;
+    border-radius: 35px;
+    width: fit-content;
+    height: fit-content;
+    padding: 2px 7px 0px 4px;
   }
 
   @media screen and (max-width: 766px) {
@@ -113,20 +137,6 @@
   
   .ats5 {
     fill: #43a047;
-  }
-
-  .delta {
-    min-width: 100px;
-  }
-
-  .delta-data {
-    float: left;
-    position: relative;
-    top: 6px;
-  }
-
-  .delta-indicator {
-    float: right;
   }
 
   ::ng-deep .red-snackbar {
