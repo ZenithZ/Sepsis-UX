@@ -9,7 +9,6 @@ import sampleRanges from '../../../../../REST-ranges.json';
 })
 export class DetailComponent implements OnInit {
 
-  checked = false;
 
   @Input() patient: any;
 
@@ -18,21 +17,6 @@ export class DetailComponent implements OnInit {
   bgSource: MatTableDataSource<any>;
 
   ranges: any = sampleRanges;
-  zoneCol: string[] = ['none', 'YELLOW', 'RED'];
-  lactateU: number = 2; // Greater than 4 mmol/L RED ZONE
-  val: number = 3;
-  selected: string = "Yes";
-  loC: string = "Alert";
-  editField: number;
-  fullname: string;
-  // Flag used for sorting
-  static readonly FLAGS = {
-    CRITICAL: 2,
-    ABNORMAL: 1,
-    NORMAL: 0
-  };
-
-  constructor() { }
 
   ngOnInit() {
     // add vital information
@@ -41,38 +25,40 @@ export class DetailComponent implements OnInit {
       let vitals: string[] = Object.keys(this.patient['Vitals']);
       let vitalLength = vitals.length;
       for (let i = 0; i < vitalLength; i++) {
-        vitalDataArray.push({
-          'test': vitals[i],
-          'value': this.patient['Vitals'][vitals[i]]['value'],
-          'time': this.patient['Vitals'][vitals[i]]['time'],
-        })
+        let test = this.patient['Vitals'][vitals[i]];
+        let testLength = test.length;
+        for (let j = 0; j < testLength; j++) {
+          let vitalData = {
+            'index': j,
+            'test': vitals[i],
+            'value': test[j]['value'],
+            'time': test[j]['time'],
+          }
+          vitalDataArray.push(vitalData);
+        }
       }
     }
     this.vitalSource = new MatTableDataSource(vitalDataArray);
 
     // add bloodgas information 
-  let bloodgasDataArray = []
+    let bloodgasDataArray = []
     if (this.patient['Bloodgas']) {
       let bloodgases: string[] = Object.keys(this.patient['Bloodgas']);
       let bloodgasLength = bloodgases.length;
       for (let i = 0; i < bloodgasLength; i++) {
-        bloodgasDataArray.push({
-          'test': bloodgases[i],
-          'value': this.patient['Bloodgas'][bloodgases[i]]['value'],
-          'time': this.patient['Bloodgas'][bloodgases[i]]['time'],
-        })
+        let test = this.patient['Bloodgas'][bloodgases[i]];
+        let testLength = test.length;
+        for (let j = 0; j < testLength; j++) {
+          let bloodData = {
+            'index': j,
+            'test': bloodgases[i],
+            'value': this.patient['Bloodgas'][bloodgases[i]]['value'],
+            'time': this.patient['Bloodgas'][bloodgases[i]]['time'],
+          }
+          bloodgasDataArray.push(bloodData);
+        }
       }
     }
     this.bgSource = new MatTableDataSource(bloodgasDataArray);
   }
-
-  changeValue(property: string, event: any) {
-    this.editField = event.target.textContent;
-  }
-
-  updateList(property: string, event: any) {
-    const editField = parseFloat(event.target.textContent);
-    this.patient['Vitals'][property] = editField;
-  }
-  
 }
