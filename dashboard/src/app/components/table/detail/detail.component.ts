@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import sampleRanges from '../../../../../REST-ranges.json';
 
@@ -11,6 +11,7 @@ export class DetailComponent implements OnInit {
 
 
   @Input() patient: any;
+  @Output() patientRanges = new EventEmitter();
 
   displayedColumns: string[] = ['Test', 'Value', 'Lower Interval', 'Upper Interval', 'Time'];
   vitalSource: MatTableDataSource<any>;
@@ -20,6 +21,11 @@ export class DetailComponent implements OnInit {
 
   ngOnInit() {
     // add vital information
+    let outPatientRanges = {
+      'key': this.patient['MRN'] + this.patient['Name'] + this.patient['Registration'],
+      'numVitals': 0,
+      'numBloodgas': 0,
+    };
     let vitalDataArray = [];
     if (this.patient['Vitals']) {
       let vitals: string[] = Object.keys(this.patient['Vitals']);
@@ -33,6 +39,17 @@ export class DetailComponent implements OnInit {
             'test': vitals[i],
             'value': test[j]['value'],
             'time': test[j]['time'],
+          }
+          if (test[j]['value'] < this.ranges[vitals[i]]['lowab'] || test[j]['value'] > this.ranges[vitals[i]]['uppab']) {
+            outPatientRanges['maxVitals'] = 'warning'
+            outPatientRanges['numVitals'] += 1
+          } else {
+            if (test[j]['value'] < this.ranges[vitals[i]]['lower'] || test[j]['value'] > this.ranges[vitals[i]]['upper']) {
+              outPatientRanges['numVitals'] += 1
+              if (outPatientRanges['maxVitals'] != 'warning') {
+                outPatientRanges['maxVitals'] = 'caution'
+              }
+            }
           }
           vitalDataArray.push(vitalData);
         }
@@ -55,10 +72,22 @@ export class DetailComponent implements OnInit {
             'value': this.patient['Bloodgas'][bloodgases[i]]['value'],
             'time': this.patient['Bloodgas'][bloodgases[i]]['time'],
           }
+          if (test[j]['value'] < this.ranges[bloodgases[i]]['lowab'] || test[j]['value'] > this.ranges[bloodgases[i]]['uppab']) {
+            outPatientRanges['maxBloodgas'] = 'warning'
+            outPatientRanges['numBloodgas'] += 1
+          } else {
+            if (test[j]['value'] < this.ranges[bloodgases[i]]['lower'] || test[j]['value'] > this.ranges[bloodgases[i]]['upper']) {
+              outPatientRanges['numBloodgas'] += 1
+              if (outPatientRanges['maxBloodgas'] != 'warning') {
+                outPatientRanges['maxBloodgas'] = 'caution'
+              }
+            }
+          }
           bloodgasDataArray.push(bloodData);
         }
       }
     }
+    this.patientRanges.emit(outPatientRanges)
     this.bgSource = new MatTableDataSource(bloodgasDataArray);
   }
 }
