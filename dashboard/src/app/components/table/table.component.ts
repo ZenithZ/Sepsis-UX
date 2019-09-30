@@ -79,7 +79,7 @@ export class TableComponent implements OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.hasOwnProperty('push')) {
-      if (changes.push.currentValue !== undefined) {
+      if (changes.push.currentValue !== undefined && !changes.push.firstChange) {
         this.initialPush = false;
         this.dataSource.data.push(changes.push.currentValue);
         this.dataSource.data = [...this.dataSource.data]
