@@ -3,8 +3,6 @@ import { animate, state, style, transition, trigger, sequence } from '@angular/a
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { NgModule }             from '@angular/core';
-import { RouterModule, Routes, Router, RouterLinkWithHref, RouterLink } from '@angular/router';
 
 
 @Component({
@@ -38,7 +36,6 @@ export class TableComponent implements OnChanges {
   @Input() title: string;
   @Input() patients: any[];
   @Input() filter: string;
-  @Input() push: any[];
 
   
   initialPush: boolean = true;
@@ -85,11 +82,10 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('push')) {
-      if (changes.push.currentValue !== undefined && !changes.push.firstChange) {
+    if (changes.hasOwnProperty('patients')) {
+      if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
         this.initialPush = false;
-        this.dataSource.data.push(changes.push.currentValue);
-        this.dataSource.data = [...this.dataSource.data]
+        this.dataSource.data = [...this.dataSource.data];
       }
     }
     if (changes.hasOwnProperty('filter')) {
@@ -104,7 +100,7 @@ export class TableComponent implements OnChanges {
     config.verticalPosition = 'bottom';
     config.duration = 5000;
 
-    let res = this.snackBar.open((patient['seen'] ? 'Seen' : 'Unseen') + " " + patient['First Name'] + " " + patient['Last Name'], 'Undo', config);
+    let res = this.snackBar.open((patient['seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
 
     res.onAction().subscribe(() => {
       patient['seen'] = !patient['seen'];

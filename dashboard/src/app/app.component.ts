@@ -19,10 +19,9 @@ export class AppComponent implements OnInit {
     6: [],
   }
   combinedats = []
-  pushCombined;
 
   combined: boolean = true;
-  data = sampleData.slice(20, 35);
+  data = sampleData.slice(0, 5);
   filter: string;
   last;
 
@@ -31,21 +30,21 @@ export class AppComponent implements OnInit {
     let dLen = this.data.length;
     let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
-      let r = Math.floor((Math.random() * 6) + 1);
-      this.data[i]['ATS'] = r == 1 ? 2 : r;
-      this.data[i]['seen'] = false;
-      this.data[i]['Name'] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
-      if (!this.data[i]['LOC']) {
-        this.data[i]['LOC'] = 15
-      }
-      this.ats[r == 1 ? 2 : r].push(this.data[i]);
       this.last = this.data[i];
+      this.ats[this.data[i]['ATS']].push(this.data[i]);
       this.combinedats.push(this.data[i]);
     }
 
     setTimeout(() => {
-      this.pushCombined = this.last;
+      this.addPatient(this.last);
     }, 2000);
+  }
+
+  addPatient(patient: any) {
+    this.combinedats.push(patient);
+    this.combinedats = [...this.combinedats];
+    this.ats[patient['ATS']].push(patient);
+    this.ats[patient['ATS']] = [...this.ats[patient['ATS']]];
   }
 
   sendFilter(filterValue: string) {
