@@ -3,6 +3,9 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import { NgModule }             from '@angular/core';
+import { RouterModule, Routes, Router, RouterLinkWithHref, RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-table',
@@ -30,6 +33,7 @@ export class TableComponent implements OnChanges {
   myInterval;
   currentTime: Date;
   deltaTimeString: string;
+  selectedRowIndex: number = -1;
 
   TREATMENT_ACUITY = {
     1: 0,
@@ -131,9 +135,41 @@ export class TableComponent implements OnChanges {
 
   exceedsAcuity(patient: any) {
     let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
+    console.log("Patient Notified" + patient['notified']);
+    if (exceeds && patient['notified'] == null) {
+      this.notifyPatientWaiting(patient);
+      patient['notified'] = true;
+      console.log("Patient Notified" + patient['notified']);
+    } 
     return exceeds;
   }
 
+
+  notifyPatientWaiting(patient: any) {
+    let config = new MatSnackBarConfig();
+    config.verticalPosition = 'top';
+    config.horizontalPosition = 'right';
+    config.duration = 10000;
+    let time: String = this.formatWaitTime(patient);
+    let res = this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + "has exceeded wait threshold! ("+time+")", 'Show', config);
+    var elmnt = document.getElementById(patient['MRN']);
+    
+    res.onAction().subscribe(() => {
+      elmnt.scrollIntoView();
+      this.setExpanded(patient);
+      this.highlight(patient);
+    });
+    
+  }
+
+  highlight(patient: any) {
+    patient['highlight'] = true;
+  }
+
+  undoHighlight(patient: any) {
+    patient['highlight'] = false;
+  }
+  
   setPatientRanges(ranges) {
     let key = ranges['key'];
     delete ranges['key'];

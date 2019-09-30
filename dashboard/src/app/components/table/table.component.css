@@ -26,7 +26,6 @@
     user-select: none;
   }
 
-
   mat-icon {
     vertical-align: -4px;
     font-size: 20px;
@@ -164,6 +163,10 @@
   
   .ats5Border {
     border-left-color: #43a047;
+  }
+
+  .highlight-row{
+    background: #42A948; /* green */
   }
 
   ::ng-deep .red-snackbar {
