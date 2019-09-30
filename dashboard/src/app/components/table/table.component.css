@@ -169,8 +169,8 @@
     background: rgb(253, 255, 146); /* light yellow */
   }
   ::ng-deep .patient-waiting-snack-bar {
-    color: black;
-    background-color: rgb(255, 138, 138);
+    color: black !important;
+    background-color: rgb(255, 165, 92);
     
   }
   
