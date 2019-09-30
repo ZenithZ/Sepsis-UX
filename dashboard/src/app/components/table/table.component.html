@@ -15,8 +15,10 @@
         class="example-container mat-elevation-z8">
         <!-- columns -->
         <ng-container matColumnDef="ATS">
-            <th mat-header-cell *matHeaderCellDef> ATS </th>
-            <td mat-cell *matCellDef="let patient"> {{ patient['ATS'] }} </td>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="ATS"> ATS </th>
+            <td mat-cell *matCellDef="let patient"
+                [ngClass]="{'ats1Border': patient['ATS'] == 1, 'ats2Border': patient['ATS'] == 2, 'ats3Border': patient['ATS'] == 3, 'ats4Border': patient['ATS'] == 4, 'ats5Border': patient['ATS'] == 5}"
+                class="atsBorder"> {{ patient['ATS'] }} </td>
         </ng-container>
         <ng-container matColumnDef="Seen">
             <th mat-header-cell *matHeaderCellDef> Seen </th>
@@ -41,13 +43,17 @@
         </ng-container>
         <ng-container matColumnDef="LOC">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="LOC"> LOC </th>
-            <td mat-cell *matCellDef="let patient"> {{ patient['LOC'] ? patient['LOC'] : 15 }}</td>
+            <td mat-cell *matCellDef="let patient"> {{ patient['LOC'] }}</td>
         </ng-container>
         <ng-container matColumnDef="Vitals">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="Vitals"> Vitals </th>
             <td mat-cell class="no-select" *matCellDef="let patient">
                 <ng-container *ngIf="patient.hasOwnProperty('Vitals'); else elseTemplate">
-                    <mat-icon>done</mat-icon> <mat-icon [ngClass]="{'warning-icon': true}">insert_drive_file</mat-icon>
+                    <div
+                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxVitals'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxVitals'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? false : true : false}">
+                        <mat-icon>done</mat-icon> <sub
+                            *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] : '' }}</sub>
+                    </div>
                 </ng-container>
                 <ng-template #elseTemplate>
                     <mat-icon>clear</mat-icon>
@@ -59,11 +65,19 @@
             <td mat-cell class="no-select" *matCellDef="let patient">
                 <ng-container
                     *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
-                   <mat-icon>done_all</mat-icon>
+                    <div
+                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? false : true : false}">
+                        <mat-icon>done_all</mat-icon> <sub
+                            *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] : '' }}</sub>
+                    </div>
                 </ng-container>
                 <ng-template #elseTemplate>
                     <ng-container *ngIf="patient.hasOwnProperty('Bloodgas'); else elseTemplate">
-                        <mat-icon>done</mat-icon>
+                        <div
+                            [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? false : true : false}">
+                            <mat-icon>done</mat-icon> <sub
+                                *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] : '' }}</sub>
+                        </div>
                     </ng-container>
                     <ng-template #elseTemplate>
                         <mat-icon>clear</mat-icon>
@@ -74,15 +88,16 @@
         </ng-container>
 
         <ng-container matColumnDef="Registration">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Registration </th>
+            <th mat-header-cell *matHeaderCellDef> Registration </th>
             <td mat-cell *matCellDef="let patient"> {{ patient['Registration'] }} </td>
         </ng-container>
 
         <ng-container matColumnDef="Delta">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header="Delta"> Δ Waiting Time </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header="Registration"> Δ Waiting Time </th>
             <td mat-cell *matCellDef="let patient">
                 <div [class.highlight]="patient['seen']">
-                        <mat-icon *ngIf="exceedsAcuity(patient)" class="warning-icon no-select">error</mat-icon> {{ formatWaitTime(patient) }}
+                    <mat-icon *ngIf="exceedsAcuity(patient)" class="warning-icon no-select">error</mat-icon>
+                    {{ formatWaitTime(patient) }}
                 </div>
             </td>
         </ng-container>
@@ -92,13 +107,13 @@
             <td mat-cell *matCellDef="let patient" [attr.colspan]="displayedColumns.length">
                 <div class="example-element-detail"
                     [@detailExpand]="patient == expandedElement ? 'expanded' : 'collapsed'">
-                    <app-detail [patient]="patient"></app-detail>
+                    <app-detail (patientRanges)="setPatientRanges($event)" [patient]="patient"></app-detail>
                 </div>
             </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
-        <tr mat-row *matRowDef="let patient; columns: displayedColumns;" class="example-element-row"
+        <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}" class="example-element-row"
             [class.expanded-row]="expandedElement === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
             [class.seen]="patient['seen'] && this.filter.length <= 0"
