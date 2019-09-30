@@ -12,25 +12,17 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 })
 export class AppComponent implements OnInit {
   ats = {
-    1: [],
     2: [],
     3: [],
     4: [],
     5: [],
     6: [],
   }
+  combinedats = []
 
-  data = sampleData.slice(1, 50);
+  combined: boolean = true;
+  data = sampleData.slice(20, 40);
   filter: string;
-  myControl = new FormControl();
-  private debounce: number = 400;
-  options: any[] = [];
-  filteredOptions: Observable<string[]>;
-
-  over;
-
-  checkboxs: boolean[] = [true, true, true, true, true, true, true]
-  disabled = true;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -38,52 +30,14 @@ export class AppComponent implements OnInit {
     let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
       let r = Math.floor((Math.random() * 6) + 1);
-      this.data[i]['ATS'] = r;
+      this.data[i]['ATS'] = r == 1 ? 2 : r;
       this.data[i]['seen'] = false;
       this.data[i]['Name'] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
-      this.options[i] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
-      this.options[temp] = this.data[i]['MRN']
-      temp -= 1;
-      this.data[i]['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
-      this.ats[r].push(this.data[i]);
-    }
-  }
-
-  displayTable(table: string) {
-
-    if (this.disabled == true) {
-      for (let i = 1; i < this.checkboxs.length; ++i) {
-        this.checkboxs[i] = true;
+      if (!this.data[i]['LOC']) {
+        this.data[i]['LOC'] = 15
       }
-    }
-
-    for (let i = 1; i < this.checkboxs.length; ++i) {
-      var temp = document.getElementById("d" + i)
-      switch (table) {
-        case 'c1':
-          // this.checkboxs[1] = !this.checkboxs[1];
-          break;
-        case 'c2':
-          this.checkboxs[2] = !this.checkboxs[2];
-          break;
-        case 'c3':
-          // this.checkboxs[3] = !this.checkboxs[3];
-          break;
-        case 'c4':
-          this.checkboxs[4] = !this.checkboxs[4];
-          break;
-        case 'c5':
-          // this.checkboxs[5] = !this.checkboxs[5];
-          break;
-        case 'c6':
-          this.checkboxs[6] = !this.checkboxs[6];
-          break;
-        default:
-          break;
-      }
-
-      if (this.checkboxs[i] == true) temp.style.display = "block";
-      else temp.style.display = "none";
+      this.ats[r == 1 ? 2 : r].push(this.data[i]);
+      this.combinedats.push(this.data[i]);
     }
   }
 
