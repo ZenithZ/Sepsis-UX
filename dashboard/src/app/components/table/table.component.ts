@@ -154,7 +154,7 @@ export class TableComponent implements OnChanges {
   exceedsAcuity(patient: any) {
     let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
    
-    if (this.initialPush == false && (exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
+    if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
       this.notifyPatientWaiting(patient);
       patient['notified'] = true;
    
