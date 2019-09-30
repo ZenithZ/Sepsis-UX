@@ -42,12 +42,15 @@
     color: #feb24c;
   }
 
+.good-icon {
+    color: #31a354;
+  }
   .highlight {
     background-color: #d9d9d9;
     border-radius: 35px;
     width: fit-content;
     height: fit-content;
-    padding: 2px 7px 0px 4px;
+    padding: 2px 6px 2px 3px;
   }
 
   @media screen and (max-width: 766px) {
