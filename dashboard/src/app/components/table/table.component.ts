@@ -1,11 +1,8 @@
-import { Component, ViewChild, Input, OnInit, OnChanges, SimpleChanges, QueryList, forwardRef } from '@angular/core';
+import { Component, ViewChild, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { MatTableDataSource, MatTable } from '@angular/material/table';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { DataSource } from '@angular/cdk/collections';
-import { FormControl, Validators } from '@angular/forms';
-import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragHandle } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-table',
@@ -22,7 +19,8 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragHandle } from '
 
 export class TableComponent implements OnChanges {
 
-  constructor(private snackBar: MatSnackBar) { }
+  constructor(private snackBar: MatSnackBar,
+    private changeDetector: ChangeDetectorRef) { }
 
   @Input() title: string;
   @Input() patients: any[];
@@ -40,10 +38,13 @@ export class TableComponent implements OnChanges {
     5: 60 * 120,
   };
 
+  patientRanges = {};
+
   atsGroup: number;
-  displayedColumns: string[] = ['Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
+  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
+  ranges;
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -118,5 +119,12 @@ export class TableComponent implements OnChanges {
   exceedsAcuity(patient: any) {
     let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
     return exceeds;
+  }
+
+  setPatientRanges(ranges) {
+    let key = ranges['key'];
+    delete ranges['key'];
+    this.patientRanges[key] = ranges
+    this.changeDetector.detectChanges()
   }
 }
