@@ -27,10 +27,8 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     let dLen = this.data.length;
-    let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
-      this.ats[this.data[i]['ATS']].push(this.data[i]);
-      this.combinedats.push(this.data[i]);
+      this.addPatient(this.data[i])
     }
 
     setTimeout(() => {
