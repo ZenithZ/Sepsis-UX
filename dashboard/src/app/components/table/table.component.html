@@ -114,6 +114,8 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}" class="example-element-row"
+            [@.disabled]="initialPush"
+            [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
             [class.seen]="patient['seen'] && this.filter.length <= 0"
