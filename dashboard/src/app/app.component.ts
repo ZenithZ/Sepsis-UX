@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
     let dLen = this.data.length;
     let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
-      this.ats[this.data[i]['ATS']].push(this.data[i]);
       this.last = this.data[i];
+      this.ats[this.data[i]['ATS']].push(this.data[i]);
       this.combinedats.push(this.data[i]);
     }
 
