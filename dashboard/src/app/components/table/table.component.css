@@ -139,6 +139,30 @@
     fill: #43a047;
   }
 
+  .atsBorder {
+    border-left: 7px solid black;
+  }
+
+.ats1Border {
+    border-left-color: #e53935;
+  }
+  
+  .ats2Border {
+    border-left-color: #e53935;
+  }
+  
+  .ats3Border {
+    border-left-color: #fb8c00;
+  }
+  
+  .ats4Border {
+    border-left-color: #002664;
+  }
+  
+  .ats5Border {
+    border-left-color: #43a047;
+  }
+
   ::ng-deep .red-snackbar {
     color: white;
     background: rgb(255, 78, 78);
