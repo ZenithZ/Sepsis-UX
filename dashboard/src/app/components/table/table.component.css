@@ -166,9 +166,14 @@
   }
 
   .highlight-row{
-    background: #42A948; /* green */
+    background: rgb(253, 255, 146); /* light yellow */
   }
-
+  ::ng-deep .patient-waiting-snack-bar {
+    color: black;
+    background-color: rgb(255, 138, 138);
+    
+  }
+  
   ::ng-deep .red-snackbar {
     color: white;
     background: rgb(255, 78, 78);
