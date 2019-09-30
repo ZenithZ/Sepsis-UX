@@ -50,7 +50,7 @@
     <div class="spacer"></div>
 
     <!-- bloodgas -->
-    <ng-container *ngIf="patient.hasOwnProperty('Bloodgas')">
+    <ng-container *ngIf="patient.hasOwnProperty('Bloodgas['pH']')">
         <div class="title">Bloodgas</div>
         <table mat-table [dataSource]="bgSource">
             <ng-container matColumnDef="Test">

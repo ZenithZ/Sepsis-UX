@@ -33,9 +33,15 @@ export class AppComponent implements OnInit {
       let r = Math.floor((Math.random() * 6) + 1);
       this.data[i]['ATS'] = r == 1 ? 2 : r;
       this.data[i]['seen'] = false;
-      this.data[i]['Name'] = this.data[i]['First Name'] + ' ' + this.data[i]['Last Name']
+      this.data[i]['Name'] = this.data[i]['FirstName'] + ' ' + this.data[i]['LastName'];
       if (!this.data[i]['LOC']) {
-        this.data[i]['LOC'] = 15
+        this.data[i]['LOC'] = 15;
+      }
+      if (this.data[i]['Bloodgas'] == null) {
+        delete this.data[i]['Bloodgas'];
+      }
+      if (this.data[i]['Vitals'] == null) {
+        delete this.data[i]['Vitals'];
       }
       this.ats[r == 1 ? 2 : r].push(this.data[i]);
       this.last = this.data[i];
@@ -43,7 +49,7 @@ export class AppComponent implements OnInit {
     }
 
     setTimeout(() => {
-      this.addPatient(this.last)
+      this.addPatient(this.last);
     }, 2000);
   }
 
