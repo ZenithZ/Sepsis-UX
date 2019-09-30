@@ -35,7 +35,6 @@ export class TableComponent implements OnChanges {
   @Input() title: string;
   @Input() patients: any[];
   @Input() filter: string;
-  @Input() push: any[];
 
   initialPush: boolean = true;
   myInterval;
@@ -78,11 +77,11 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('push')) {
-      if (changes.push.currentValue !== undefined && !changes.push.firstChange) {
+    console.log(changes)
+    if (changes.hasOwnProperty('patients')) {
+      if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
         this.initialPush = false;
-        this.dataSource.data.push(changes.push.currentValue);
-        this.dataSource.data = [...this.dataSource.data]
+        this.dataSource.data = [...this.dataSource.data];
       }
     }
     if (changes.hasOwnProperty('filter')) {
