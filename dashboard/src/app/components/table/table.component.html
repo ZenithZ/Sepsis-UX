@@ -106,7 +106,7 @@
         <ng-container matColumnDef="expandedDetail">
             <td mat-cell *matCellDef="let patient" [attr.colspan]="displayedColumns.length">
                 <div class="example-element-detail"
-                    [@detailExpand]="patient == expandedElement ? 'expanded' : 'collapsed'">
+                    [@detailExpand]="expandedElement === patient ? 'expanded' : 'collapsed'">
                     <app-detail (patientRanges)="setPatientRanges($event)" [patient]="patient"></app-detail>
                 </div>
             </td>
@@ -117,7 +117,7 @@
             [class.expanded-row]="expandedElement === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
             [class.seen]="patient['seen'] && this.filter.length <= 0"
-            (click)="expandedElement = expandedElement === patient ? null : (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas') ? patient : expandedElement)">
+            (click)="setExpanded(patient) ">
         </tr>
         <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
             [class.seen]="patient['seen'] && this.filter.length <= 0">

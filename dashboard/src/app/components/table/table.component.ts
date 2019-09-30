@@ -10,9 +10,10 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
   styleUrls: ['./table.component.css'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
+      state('collapsed, void', style({ height: '0px', minHeight: '0', visibility: 'hidden' })),
       state('expanded', style({ height: '*', visibility: 'visible' })),
       transition('expanded <=> collapsed', animate('250ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+      transition('expanded <=> void', animate('250ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
 })
@@ -81,6 +82,18 @@ export class TableComponent implements OnChanges {
     res.onAction().subscribe(() => {
       patient['seen'] = !patient['seen'];
     });
+  }
+
+  setExpanded(patient: any) {
+    if (this.expandedElement === patient) {
+      this.expandedElement = null;
+    } else {
+      if (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')) {
+        this.expandedElement = patient;
+      }
+    }
+    this.changeDetector.detectChanges()
+    console.log(this.expandedElement)
   }
 
   setCurrentTime() {
