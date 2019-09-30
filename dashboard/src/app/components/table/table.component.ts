@@ -4,7 +4,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -56,6 +55,8 @@ export class TableComponent implements OnChanges {
 
   waitTimePatients = new Array<any>();
   waitTimeMessageDisplayed: boolean = false;
+  waitTimeSnackActioned: boolean = false;
+
   atsGroup: number;
   displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Registration', 'Delta'];
   expandedElement: any | null;
@@ -167,7 +168,7 @@ export class TableComponent implements OnChanges {
 
   notifyPatientWaiting(patient: any) {
       
-
+    this.waitTimeSnackActioned = false;
     if (patient != null) { // Patient is given to check
       this.waitTimePatients.push(patient);
     } 
@@ -195,11 +196,14 @@ export class TableComponent implements OnChanges {
         this.setExpanded(patient);
         this.highlight(patient);
         this.waitTimeMessageDisplayed = false;
+        this.waitTimeSnackActioned = true;
         this.notifyPatientWaiting(null); // Go to the next message in line.
       });
-      res.afterDismissed().subscribe(() => {
-        this.waitTimeMessageDisplayed = false;
-        this.notifyPatientWaiting(null);
+      res.afterDismissed().subscribe((info) => {
+        if (info.dismissedByAction === false) {
+          this.waitTimeMessageDisplayed = false;
+          this.notifyPatientWaiting(null);
+        } 
       })
     
     } else {
