@@ -82,10 +82,12 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes)
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
+        console.log('changed!!')
         this.initialPush = false;
-        this.dataSource.data = [...this.dataSource.data];
+        this.dataSource.data = [...changes.patients.currentValue]
       }
     }
     if (changes.hasOwnProperty('filter')) {

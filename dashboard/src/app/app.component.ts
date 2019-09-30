@@ -32,29 +32,26 @@ export class AppComponent implements OnInit {
     }
 
     setTimeout(() => {
-      this.addPatient(sampleData[22]);
+      this.addPatient(sampleData[21]);
     }, 10000);
     setTimeout(() => {
       this.addPatient(sampleData[22]);
-    }, 10000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[23]);
-    // }, 15000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[37]);
-    // }, 17000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[38]);
-    // }, 23000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[46]);
-    // }, 30000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[49]);
-    // }, 35000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[117]);
-    // }, 38000);
+    }, 15000);
+    setTimeout(() => {
+      this.addPatient(sampleData[36]);
+    }, 17000);
+    setTimeout(() => {
+      this.addPatient(sampleData[37]);
+    }, 23000);
+    setTimeout(() => {
+      this.addPatient(sampleData[45]);
+    }, 30000);
+    setTimeout(() => {
+      this.addPatient(sampleData[48]);
+    }, 35000);
+    setTimeout(() => {
+      this.addPatient(sampleData[115]);
+    }, 38000);
   }
 
   addPatient(patient: any) {
