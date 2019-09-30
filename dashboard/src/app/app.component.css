@@ -1,4 +1,4 @@
-mat-drawer-content {
+.container {
     max-width: 1024px;
     min-height: 100%;
     margin: auto;
@@ -9,10 +9,6 @@ mat-form-field {
     max-width: 1024px;
     width: 100%;
     font-size: 14px;
-}
-
-.filter_section {
-    display: block;
 }
 
 .one_per_row{ 
