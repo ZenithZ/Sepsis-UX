@@ -155,7 +155,7 @@ export class TableComponent implements OnChanges {
   exceedsAcuity(patient: any) {
     let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
    
-    if (this.initialPush == false && (exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
+    if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
       this.notifyPatientWaiting(patient);
       patient['notified'] = true;
    
@@ -187,7 +187,7 @@ export class TableComponent implements OnChanges {
       let patient = this.waitTimePatients.shift();
 
       let time: String = this.formatWaitTime(patient);
-      let message: String = patient['First Name'] + " " + patient['Last Name'] + "has exceeded wait threshold! ("+time+")";
+      let message: String = patient['First Name'] + " " + patient['Last Name'] + " has exceeded wait threshold! ("+time+")";
       let MRN: String = patient['MRN'];
       let res = this.snackBar.open(message.toString(), 'Show', config);
       var elmnt = document.getElementById(MRN.toString());
