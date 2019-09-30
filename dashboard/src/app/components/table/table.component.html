@@ -118,6 +118,8 @@
             [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
+            (click)="undoHighlight(patient)"
+            [ngClass]="{'highlight-row': patient['highlight'] == true}"
             [class.seen]="patient['seen'] && this.filter.length <= 0"
             (click)="setExpanded(patient) ">
         </tr>
