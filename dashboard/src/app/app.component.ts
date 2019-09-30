@@ -19,10 +19,9 @@ export class AppComponent implements OnInit {
     6: [],
   }
   combinedats = []
-  pushCombined;
 
   combined: boolean = true;
-  data = sampleData.slice(20, 35);
+  data = sampleData.slice(0, 5);
   filter: string;
   last;
 
@@ -44,8 +43,13 @@ export class AppComponent implements OnInit {
     }
 
     setTimeout(() => {
-      this.pushCombined = this.last;
+      this.addPatient(this.last)
     }, 2000);
+  }
+
+  addPatient(patient: any) {
+    this.combinedats.push(patient);
+    this.combinedats = [...this.combinedats];
   }
 
   sendFilter(filterValue: string) {
