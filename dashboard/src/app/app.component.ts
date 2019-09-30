@@ -23,24 +23,44 @@ export class AppComponent implements OnInit {
   combined: boolean = true;
   data = sampleData.slice(0, 5);
   filter: string;
-  last;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     let dLen = this.data.length;
     let temp = 2 * dLen;
     for (let i = 0; i < dLen; i++) {
-      this.last = this.data[i];
       this.ats[this.data[i]['ATS']].push(this.data[i]);
       this.combinedats.push(this.data[i]);
     }
 
     setTimeout(() => {
-      this.addPatient(this.last);
-    }, 2000);
+      this.addPatient(sampleData[22]);
+    }, 10000);
+    setTimeout(() => {
+      this.addPatient(sampleData[22]);
+    }, 10000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[23]);
+    // }, 15000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[37]);
+    // }, 17000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[38]);
+    // }, 23000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[46]);
+    // }, 30000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[49]);
+    // }, 35000);
+    // setTimeout(() => {
+    //   this.addPatient(sampleData[117]);
+    // }, 38000);
   }
 
   addPatient(patient: any) {
+    console.log(patient)
     this.combinedats.push(patient);
     this.combinedats = [...this.combinedats];
     this.ats[patient['ATS']].push(patient);
