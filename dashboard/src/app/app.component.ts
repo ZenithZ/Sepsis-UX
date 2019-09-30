@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
     }
 
     setTimeout(() => {
-      this.addPatient(this.last)
+      this.addPatient(this.last);
     }, 2000);
   }
 

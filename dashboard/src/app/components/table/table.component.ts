@@ -99,7 +99,7 @@ export class TableComponent implements OnChanges {
     config.verticalPosition = 'bottom';
     config.duration = 5000;
 
-    let res = this.snackBar.open((patient['seen'] ? 'Seen' : 'Unseen') + " " + patient['First Name'] + " " + patient['Last Name'], 'Undo', config);
+    let res = this.snackBar.open((patient['seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
 
     res.onAction().subscribe(() => {
       patient['seen'] = !patient['seen'];
