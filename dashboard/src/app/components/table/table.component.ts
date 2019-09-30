@@ -169,7 +169,7 @@ export class TableComponent implements OnChanges {
     let config = new MatSnackBarConfig();
     config.verticalPosition = 'top';
     config.horizontalPosition = 'right';
-    config.duration = 1000000;
+    config.duration = 10000;
     config.panelClass = ['patient-waiting-snack-bar'];
     let time: String = this.formatWaitTime(patient);
     let res = this.snackBar.open(patient['First Name'] + " " + patient['Last Name'] + "has exceeded wait threshold! ("+time+")", 'Show', config);
