@@ -11,6 +11,10 @@ mat-form-field {
     font-size: 14px;
 }
 
+.unseen {
+    display: none;
+}
+
 .one_per_row{ 
     float:left;
     display:table-column;

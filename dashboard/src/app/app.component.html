@@ -5,14 +5,10 @@
     <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)">
     <mat-icon matSuffix (click)="combined = !combined;$event.stopPropagation()">code</mat-icon>
   </mat-form-field>
-  <ng-container *ngIf="!combined">
-    <app-table [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
-    <app-table [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
-    <app-table [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
-    <app-table [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
-    <app-table [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
-  </ng-container>
-  <ng-container *ngIf="combined">
-    <app-table [title]="'Combined'" [patients]="combinedats" [filter]="filter"></app-table>
-  </ng-container>
+    <app-table [class.unseen]="combined" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
+    <app-table [class.unseen]="combined" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
+    <app-table [class.unseen]="combined" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
+    <app-table [class.unseen]="combined" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
+    <app-table [class.unseen]="combined" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table>
+    <app-table [class.unseen]="!combined" [title]="'Combined'" [patients]="combinedats" [filter]="filter"></app-table>
 </div>
