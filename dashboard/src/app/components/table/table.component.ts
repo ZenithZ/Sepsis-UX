@@ -81,7 +81,6 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
         this.initialPush = false;
@@ -153,11 +152,9 @@ export class TableComponent implements OnChanges {
 
   exceedsAcuity(patient: any) {
     let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
-    console.log("Patient Notified" + patient['notified']);
     if (exceeds && patient['notified'] == null || exceeds && patient['notified'] == false) {
       this.notifyPatientWaiting(patient);
       patient['notified'] = true;
-      console.log("Patient Notified" + patient['notified']);
     } else if (exceeds == false) {
       patient['notified'] = false;
     }

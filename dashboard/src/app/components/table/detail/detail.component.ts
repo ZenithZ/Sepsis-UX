@@ -69,8 +69,8 @@ export class DetailComponent implements OnInit {
           let bloodData = {
             'index': j,
             'test': bloodgases[i],
-            'value': this.patient['Bloodgas'][bloodgases[i]]['value'],
-            'time': this.patient['Bloodgas'][bloodgases[i]]['time'],
+            'value': test[j]['value'],
+            'time': test[j]['time'],
           }
           if (test[j]['value'] < this.ranges[bloodgases[i]]['lowab'] || test[j]['value'] > this.ranges[bloodgases[i]]['uppab']) {
             outPatientRanges['maxBloodgas'] = 'warning'
