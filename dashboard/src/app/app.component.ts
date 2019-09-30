@@ -19,10 +19,12 @@ export class AppComponent implements OnInit {
     6: [],
   }
   combinedats = []
+  pushCombined;
 
   combined: boolean = true;
-  data = sampleData.slice(20, 40);
+  data = sampleData.slice(20, 35);
   filter: string;
+  last;
 
   ngOnInit(): void {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
@@ -37,8 +39,13 @@ export class AppComponent implements OnInit {
         this.data[i]['LOC'] = 15
       }
       this.ats[r == 1 ? 2 : r].push(this.data[i]);
+      this.last = this.data[i];
       this.combinedats.push(this.data[i]);
     }
+
+    setTimeout(() => {
+      this.pushCombined = this.last;
+    }, 2000);
   }
 
   sendFilter(filterValue: string) {

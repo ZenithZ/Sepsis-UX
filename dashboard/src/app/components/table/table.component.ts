@@ -1,5 +1,5 @@
 import { Component, ViewChild, Input, OnChanges, SimpleChanges, ChangeDetectorRef } from '@angular/core';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, state, style, transition, trigger, sequence } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
@@ -18,7 +18,16 @@ import { RouterModule, Routes, Router, RouterLinkWithHref, RouterLink } from '@a
       transition('expanded <=> collapsed', animate('250ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
       transition('expanded <=> void', animate('250ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
-  ],
+    trigger('rowsAnimation', [
+      transition('void => *', [
+        style({ height: '*', opacity: '0', transform: 'translateX(-550px)', 'box-shadow': 'none' }),
+        sequence([
+          animate(".35s ease", style({ height: '*', opacity: '.2', transform: 'translateX(0)', 'box-shadow': 'none' })),
+          animate(".35s ease", style({ height: '*', opacity: 1, transform: 'translateX(0)' }))
+        ])
+      ])
+    ]),
+  ]
 })
 
 export class TableComponent implements OnChanges {
@@ -29,7 +38,9 @@ export class TableComponent implements OnChanges {
   @Input() title: string;
   @Input() patients: any[];
   @Input() filter: string;
+  @Input() push: any[];
 
+  initialPush: boolean = true;
   myInterval;
   currentTime: Date;
   deltaTimeString: string;
@@ -71,8 +82,17 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.filter.currentValue !== undefined) {
-      this.applyFilter(changes.filter.currentValue)
+    if (changes.hasOwnProperty('push')) {
+      if (changes.push.currentValue !== undefined && !changes.push.firstChange) {
+        this.initialPush = false;
+        this.dataSource.data.push(changes.push.currentValue);
+        this.dataSource.data = [...this.dataSource.data]
+      }
+    }
+    if (changes.hasOwnProperty('filter')) {
+      if (changes.filter.currentValue !== undefined) {
+        this.applyFilter(changes.filter.currentValue);
+      }
     }
   }
 
@@ -97,7 +117,6 @@ export class TableComponent implements OnChanges {
       }
     }
     this.changeDetector.detectChanges()
-    console.log(this.expandedElement)
   }
 
   setCurrentTime() {
