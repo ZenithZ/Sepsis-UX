@@ -1,0 +1,10 @@
+[93mMoving to [1m[36mdashboard[0m
+[93mRunning [1m[91mbuild[39m[0m
+Traceback (most recent call last):
+  File "runner.py", line 26, in <module>
+    run_test(testcase.name, testcase.test, testcase.message)
+  File "runner.py", line 12, in run_test
+    res = testcase()
+  File "/home/ubuntu/Documents/School/COMP3888/testing/test.py", line 34, in test_build
+    os.waitpid(pid, status)
+KeyboardInterrupt
