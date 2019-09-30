@@ -170,8 +170,7 @@
   }
   ::ng-deep .patient-waiting-snack-bar {
     color: black !important;
-    background-color: rgb(255, 165, 92);
-    
+    background-color: rgb(255, 255, 255);    
   }
   
   ::ng-deep .red-snackbar {
