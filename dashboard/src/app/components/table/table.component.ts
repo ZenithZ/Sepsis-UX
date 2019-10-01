@@ -189,7 +189,7 @@ export class TableComponent implements OnChanges {
       let patient = this.waitTimePatients.shift();
 
       let time: String = this.formatWaitTime(patient);
-      let message: String = patient['First Name'] + " " + patient['Last Name'] + " has exceeded wait threshold! ("+time+")";
+      let message: String = patient['First Name'] + " " + patient['Last Name'] + " has exceeded the waiting threshold! ("+time+")";
       let MRN: String = patient['MRN'];
       let res = this.snackBar.open(message.toString(), 'Show', config);
       var elmnt = document.getElementById(MRN.toString());

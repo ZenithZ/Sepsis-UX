@@ -96,8 +96,8 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header="Registration"> Δ Waiting Time </th>
             <td mat-cell *matCellDef="let patient">
                 <div [class.highlight]="patient['seen']">
-                    <mat-icon *ngIf="exceedsAcuity(patient)" class="warning-icon no-select">error</mat-icon>
                     {{ formatWaitTime(patient) }}
+                    <mat-icon *ngIf="exceedsAcuity(patient)" class="warning-icon no-select">error</mat-icon>
                 </div>
             </td>
         </ng-container>
