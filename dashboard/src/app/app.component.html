@@ -3,7 +3,7 @@
 <div class="container">
   <mat-form-field>
     <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)">
-    <mat-icon matSuffix (click)="combined = !combined;$event.stopPropagation()">code</mat-icon>
+    <button class="style-button" matSuffix (click)="combined = !combined;$event.stopPropagation()">Combined/Seperate View</button>
   </mat-form-field>
     <app-table [class.unseen]="combined" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
     <app-table [class.unseen]="combined" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>

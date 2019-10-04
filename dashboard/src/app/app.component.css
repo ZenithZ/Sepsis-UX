@@ -15,8 +15,16 @@ mat-form-field {
     display: none;
 }
 
-.one_per_row{ 
+.one_per_row { 
     float:left;
     display:table-column;
     width:100%;
  }
+
+.style-button {
+    cursor: pointer;
+    color: white;
+    text-align: center;
+    background-color: #002664;
+    padding: 5px 15px;
+}
