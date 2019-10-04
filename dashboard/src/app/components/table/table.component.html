@@ -104,7 +104,10 @@
 
         <ng-container matColumnDef="Sepsis">
             <th mat-header-cell *matHeaderCellDef> Sepsis Suspect </th>
-            <td mat-cell *matCellDef="let patient"> {{ patient['Sepsis'] }} </td>
+            <td mat-cell *matCellDef="let patient">
+                <mat-checkbox (change)="patient.sepsis = !patient.sepsis" class="warning-icon no-select"></mat-checkbox>
+                <mat-icon *ngIf="patient.sepsis" class="warning-icon no-select">error</mat-icon>
+            </td>
         </ng-container>
 
         <!-- expanded detail -->

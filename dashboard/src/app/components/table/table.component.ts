@@ -167,7 +167,6 @@ export class TableComponent implements OnChanges {
     return exceeds;
   }
 
-
   notifyPatientWaiting(patient: any) {
       
     this.waitTimeSnackActioned = false;
