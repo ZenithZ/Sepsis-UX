@@ -82,3 +82,11 @@ svg {
 .mat-column-Time {
     width: 25%;
 }
+
+.orange-background {
+    background-color: coral;
+}
+
+.red-backgound {
+    background-color: red;
+}
