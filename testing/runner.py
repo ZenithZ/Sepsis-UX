@@ -1,11 +1,11 @@
 import test
 
-green = '\033[92m'
-red = '\033[91m'
-blue = '\033[94m'
-cyan = '\033[36m'
-bold = '\033[1m'
-default = '\033[0m'
+green = '\x1B[92m'
+red = '\x1B[91m'
+blue = '\x1B[94m'
+cyan = '\x1B[36m'
+bold = '\x1B[1m'
+default = '\x1B[0m'
 
 def run_test(name, testcase, message):
     print(f'{blue}Running test: {bold}{cyan}{name}{default}')
@@ -19,13 +19,20 @@ def run_test(name, testcase, message):
     return res
 
 if __name__ == '__main__':
-    test.before()
+    try:
+        test.before()
+    except:
+        tests.after()
+        exit()
 
     tests = test.get_testcases()
     for testcase in tests:
-        run_test(testcase.name, testcase.test, testcase.message)
+        try:
+            run_test(testcase.name, testcase.test, testcase.message)
+        except:
+            tests.after()
+            exit()
     
     test.after()
     
-    print('done')
-    
+    print(f"{bold}{blue}TESTS COMPLETED{default}")

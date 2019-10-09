@@ -1,10 +1,14 @@
 [93mMoving to [1m[36mdashboard[0m
 [93mRunning [1m[91mbuild[39m[0m
-Traceback (most recent call last):
-  File "runner.py", line 26, in <module>
-    run_test(testcase.name, testcase.test, testcase.message)
-  File "runner.py", line 12, in run_test
-    res = testcase()
-  File "/home/ubuntu/Documents/School/COMP3888/testing/test.py", line 34, in test_build
-    os.waitpid(pid, status)
-KeyboardInterrupt
+
+chunk {0} runtime-es2015.d61f42a1e4be5689ac82.js (runtime) 1.41 kB [entry] [rendered]
+chunk {1} main-es2015.bf7b057de11969b91d20.js (main) 784 kB [initial] [rendered]
+chunk {2} polyfills-es2015.a8cf2d3dc3edef6712e4.js (polyfills) 36.4 kB [initial] [rendered]
+chunk {3} styles.74d7cdd29a83b45f68c5.css (styles) 61 kB [initial] [rendered]
+Date: 2019-10-09T10:39:40.872Z - Hash: 589bd71e9a89bd62d3fa - Time: 15707ms
+
+chunk {0} runtime-es5.0c5226cce70e491b47d0.js (runtime) 1.41 kB [entry] [rendered]
+chunk {1} main-es5.3cebf2d334244e31df31.js (main) 869 kB [initial] [rendered]
+chunk {2} polyfills-es5.a110209613c679b5e7b9.js (polyfills) 119 kB [initial] [rendered]
+Date: 2019-10-09T10:39:52.760Z - Hash: f3d122b6fe774b58b8d3 - Time: 11846ms
+[1m[92mBuild successful[0m
