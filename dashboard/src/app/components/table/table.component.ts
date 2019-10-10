@@ -141,7 +141,12 @@ export class TableComponent implements OnChanges {
 
     let ret = ""
     if (days !== 0) {
-      ret += days + "d ";
+      if (days < 10) {
+        ret += "0" + days + "d ";
+      }
+      else {
+        ret += days + "d ";
+      }
     }
     if (hrs <= 9) {
       ret += "0";
