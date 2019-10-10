@@ -28,6 +28,8 @@ export class DetailComponent implements OnInit {
     };
     let vitalDataArray = [];
     if (this.patient['Vitals']) {
+      this.patient['vitalsStatusWarning'] = 0;
+      this.patient['vitalsStatusCaution'] = 0;
       let vitals: string[] = Object.keys(this.patient['Vitals']);
       let vitalLength = vitals.length;
       for (let i = 0; i < vitalLength; i++) {
@@ -41,13 +43,15 @@ export class DetailComponent implements OnInit {
             'time': test[j]['time'],
           }
           if (test[j]['value'] < this.ranges[vitals[i]]['lowab'] || test[j]['value'] > this.ranges[vitals[i]]['uppab']) {
-            outPatientRanges['maxVitals'] = 'warning'
-            outPatientRanges['numVitals'] += 1
+            outPatientRanges['maxVitals'] = 'warning';
+            outPatientRanges['numVitals'] += 1;
+            this.patient['vitalsStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[vitals[i]]['lower'] || test[j]['value'] > this.ranges[vitals[i]]['upper']) {
-              outPatientRanges['numVitals'] += 1
+              outPatientRanges['numVitals'] += 1;
+              this.patient['vitalsStatusCaution'] += 1;
               if (outPatientRanges['maxVitals'] != 'warning') {
-                outPatientRanges['maxVitals'] = 'caution'
+                outPatientRanges['maxVitals'] = 'caution';
               }
             }
           }
@@ -60,6 +64,8 @@ export class DetailComponent implements OnInit {
     // add bloodgas information 
     let bloodgasDataArray = []
     if (this.patient['Bloodgas']) {
+      this.patient['bloodgasStatusWarning'] = 0;
+      this.patient['bloodgasStatusCaution'] = 0;
       let bloodgases: string[] = Object.keys(this.patient['Bloodgas']);
       let bloodgasLength = bloodgases.length;
       for (let i = 0; i < bloodgasLength; i++) {
@@ -73,13 +79,15 @@ export class DetailComponent implements OnInit {
             'time': test[j]['time'],
           }
           if (test[j]['value'] < this.ranges[bloodgases[i]]['lowab'] || test[j]['value'] > this.ranges[bloodgases[i]]['uppab']) {
-            outPatientRanges['maxBloodgas'] = 'warning'
-            outPatientRanges['numBloodgas'] += 1
+            outPatientRanges['maxBloodgas'] = 'warning';
+            outPatientRanges['numBloodgas'] += 1;
+            this.patient['bloodgasStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[bloodgases[i]]['lower'] || test[j]['value'] > this.ranges[bloodgases[i]]['upper']) {
               outPatientRanges['numBloodgas'] += 1
+            this.patient['bloodgasStatusCaution'] += 1;
               if (outPatientRanges['maxBloodgas'] != 'warning') {
-                outPatientRanges['maxBloodgas'] = 'caution'
+                outPatientRanges['maxBloodgas'] = 'caution';
               }
             }
           }

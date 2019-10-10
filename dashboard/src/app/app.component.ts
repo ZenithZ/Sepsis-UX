@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   }
 
   addPatient(patient: any) {
-    console.log(patient)
+    // console.log(patient)
     this.combinedats.push(patient);
     this.combinedats = [...this.combinedats];
     this.ats[patient['ATS']].push(patient);

@@ -83,10 +83,10 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
+    // console.log(changes)
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
-        console.log('changed!!')
+        // console.log('changed!!')
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
       }
@@ -170,6 +170,27 @@ export class TableComponent implements OnChanges {
       patient['notified'] = false;
     }
     return exceeds;
+  }
+
+  getStatus(patient: any) {
+    let color = "whitesmoke";
+    if (patient['Vitals']) {
+      if (patient['vitalsStatusWarning'] > 0) {
+        return "#e53935";
+      } else if (patient['vitalsStatusCaution'] > 0) {
+        color = "#fed44c";
+      }
+    }
+
+    if (patient['Bloodgas']) {
+      if (patient['bloodgasStatusWarning'] > 0) {
+        return "#e53935";
+      } else if (patient['bloodgasStatusCaution']) {
+        return "#fed44c";
+      }
+    }
+
+    return color;
   }
 
   notifyPatientWaiting(patient: any) {
