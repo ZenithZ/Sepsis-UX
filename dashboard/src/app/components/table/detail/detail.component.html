@@ -1,54 +1,55 @@
 <div class="detail-container">
-    <div class="title">Vitals</div>
-    <table mat-table [dataSource]="vitalSource">
-        <ng-container matColumnDef="Test">
-            <th mat-header-cell *matHeaderCellDef> Test </th>
-            <td mat-cell *matCellDef="let element">
-                {{ element['index'] > 0 ? '' : element['test'] }}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="Lower Interval">
-            <th mat-header-cell *matHeaderCellDef> Lower Interval </th>
-            <td mat-cell *matCellDef="let element">
-                {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['lower'] : '-'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="Value">
-            <th mat-header-cell *matHeaderCellDef> Value </th>
-            <td mat-cell *matCellDef="let element">
-                <ng-container *ngIf="ranges.hasOwnProperty(element['test'])">
-                    <ng-container
-                        *ngIf="element['value'] < ranges[element['test']]['lowab'] || element['value'] > ranges[element['test']]['uppab']; else elseTemplate">
-                            <mat-icon class="warning-icon">warning</mat-icon>
-                    </ng-container>
-                    <ng-template #elseTemplate>
+    <ng-container *ngIf="patient.hasOwnProperty('Vitals')">
+        <div class="title">Vitals</div>
+        <table mat-table [dataSource]="vitalSource">
+            <ng-container matColumnDef="Test">
+                <th mat-header-cell *matHeaderCellDef> Test </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ element['index'] > 0 ? '' : element['test'] }}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Lower Interval">
+                <th mat-header-cell *matHeaderCellDef> Lower Interval </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['lower'] : '-'}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Value">
+                <th mat-header-cell *matHeaderCellDef> Value </th>
+                <td mat-cell *matCellDef="let element">
+                    <ng-container *ngIf="ranges.hasOwnProperty(element['test'])">
                         <ng-container
-                            *ngIf="element['value'] < ranges[element['test']]['lower'] || element['value'] > ranges[element['test']]['upper']">
-                            <mat-icon class="caution-icon">error</mat-icon>
+                            *ngIf="element['value'] < ranges[element['test']]['lowab'] || element['value'] > ranges[element['test']]['uppab']; else elseTemplate">
+                                <mat-icon class="warning-icon">warning</mat-icon>
                         </ng-container>
-                    </ng-template>
-                </ng-container>
-                {{element['value']}} {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="Upper Interval">
-            <th mat-header-cell *matHeaderCellDef> Upper Interval </th>
-            <td mat-cell *matCellDef="let element">
-                {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['upper'] : '-'}}
-            </td>
-        </ng-container>
-        <ng-container matColumnDef="Time">
-            <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let element">
-                {{element['time']}}
-            </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
+                        <ng-template #elseTemplate>
+                            <ng-container
+                                *ngIf="element['value'] < ranges[element['test']]['lower'] || element['value'] > ranges[element['test']]['upper']">
+                                <mat-icon class="caution-icon">error</mat-icon>
+                            </ng-container>
+                        </ng-template>
+                    </ng-container>
+                    {{element['value']}} {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['units'] : ''}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Upper Interval">
+                <th mat-header-cell *matHeaderCellDef> Upper Interval </th>
+                <td mat-cell *matCellDef="let element">
+                    {{ranges.hasOwnProperty(element['test']) ? ranges[element['test']]['upper'] : '-'}}
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="Time">
+                <th mat-header-cell *matHeaderCellDef> Time </th>
+                <td mat-cell *matCellDef="let element">
+                    {{element['time']}}
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
 
-    <div class="spacer"></div>
-
+        <div class="spacer"></div>
+    </ng-container>
     <!-- bloodgas -->
     <ng-container *ngIf="patient.hasOwnProperty('Bloodgas')">
         <div class="title">Bloodgas</div>
