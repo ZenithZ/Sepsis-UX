@@ -55,5 +55,11 @@
         "upper": 100,
         "lower": 94,
         "units": "%"
+    },
+    "Lactate": {
+        "uppab": 4.0,
+        "upper": 1.0,
+        "lower": 0.5,
+        "units": "mmol/L"
     }
 }
