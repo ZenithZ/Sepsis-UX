@@ -129,7 +129,5 @@ export class DetailComponent implements OnInit {
     }
   }
 
-  forceML(patient) {
-    console.log(patient);
-  }
+  
 }
