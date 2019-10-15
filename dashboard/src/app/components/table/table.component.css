@@ -45,7 +45,8 @@
     color: #31a354;
   }
   .highlight {
-    background-color: #d9d9d9;
+    background-color: whitesmoke;
+    color: grey;
     border-radius: 35px;
     width: fit-content;
     height: fit-content;
