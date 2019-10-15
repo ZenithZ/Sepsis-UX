@@ -89,8 +89,15 @@ export class DetailComponent implements OnInit {
             this.patient['bloodgasStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[bloodgases[i]]['lower'] || test[j]['value'] > this.ranges[bloodgases[i]]['upper']) {
-              outPatientRanges['numBloodgas'] += 1
-            this.patient['bloodgasStatusCaution'] += 1;
+              outPatientRanges['numBloodgas'] += 1;
+              this.patient['bloodgasStatusCaution'] += 1;
+                if (bloodData['test'] == "Lactate") {
+                  if (this.patient['ML'] != null) {
+                  this.patient['ML'] += (0.4*(1-this.patient['ML']));
+                } else {
+                  this.patient['ML'] = 0.4;
+                } 
+              }
               if (outPatientRanges['maxBloodgas'] != 'warning') {
                 outPatientRanges['maxBloodgas'] = 'caution';
               }

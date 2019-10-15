@@ -181,7 +181,7 @@ export class TableComponent implements OnChanges {
       return color;
     } else if (patient['ML'] >= 0.8) {
         return "#e53935"; // RED
-    } else if (patient['ML'] < 0.4) {
+    } else if (patient['ML'] > 0.4) {
         color = "#fed44c"; // YELLOW
     }
     return color;
@@ -251,14 +251,16 @@ export class TableComponent implements OnChanges {
   }
 
   forceML(patient) {
-    console.log(patient); 
-    if (patient['ML'] < 0.8 || patient['previousML'] != null) {
+    
+    if (patient['ML'] <= 0.5 || patient['previousML'] != null) {
       if (patient.sepsis == true) {
         patient['previousML'] = patient['ML'];
-        patient['ML'] = 0.8;
+        patient['ML'] = 0.5;
       } else {
         patient['ML'] = patient['previousML'];
       }
+    } else {
+      patient.sepsis = false;
     }
   }
 }
