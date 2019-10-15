@@ -3,6 +3,8 @@ import { animate, state, style, transition, trigger, sequence } from '@angular/a
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import {MatIconRegistry} from '@angular/material/icon';
+import { isNull } from 'util';
 
 @Component({
   selector: 'app-table',
@@ -58,7 +60,7 @@ export class TableComponent implements OnChanges {
   waitTimeSnackActioned: boolean = false;
 
   atsGroup: number;
-  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Delta', 'Sepsis'];
+  displayedColumns: string[] = ['ML', 'ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Delta', 'Sepsis'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
@@ -74,6 +76,7 @@ export class TableComponent implements OnChanges {
   ngOnInit() {
     this.atsGroup = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
+    this.sort.sort({ id: "ML", start: 'desc', disableClear: true});
     this.dataSource.sort = this.sort;
     this.filter = "";
     this.currentTime = new Date();
@@ -174,22 +177,13 @@ export class TableComponent implements OnChanges {
 
   getStatus(patient: any) {
     let color = "whitesmoke";
-    if (patient['Vitals']) {
-      if (patient['vitalsStatusWarning'] > 0) {
-        return "#e53935";
-      } else if (patient['vitalsStatusCaution'] > 0) {
-        color = "#fed44c";
-      }
+    if (patient['ML'] < 0.1) {
+      return color;
+    } else if (patient['ML'] >= 0.8) {
+        return "#e53935"; // RED
+    } else if (patient['ML'] < 0.4) {
+        color = "#fed44c"; // YELLOW
     }
-
-    if (patient['Bloodgas']) {
-      if (patient['bloodgasStatusWarning'] > 0) {
-        return "#e53935";
-      } else if (patient['bloodgasStatusCaution']) {
-        return "#fed44c";
-      }
-    }
-
     return color;
   }
 
@@ -254,5 +248,17 @@ export class TableComponent implements OnChanges {
     delete ranges['key'];
     this.patientRanges[key] = ranges
     this.changeDetector.detectChanges()
+  }
+
+  forceML(patient) {
+    console.log(patient); 
+    if (patient['ML'] < 0.8 || patient['previousML'] != null) {
+      if (patient.sepsis == true) {
+        patient['previousML'] = patient['ML'];
+        patient['ML'] = 0.8;
+      } else {
+        patient['ML'] = patient['previousML'];
+      }
+    }
   }
 }

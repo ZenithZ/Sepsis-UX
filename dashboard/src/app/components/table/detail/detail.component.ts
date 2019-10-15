@@ -27,6 +27,7 @@ export class DetailComponent implements OnInit {
       'numBloodgas': 0,
     };
     let vitalDataArray = [];
+    this.patient['ML'] = 0.0;
     if (this.patient['Vitals']) {
       this.patient['vitalsStatusWarning'] = 0;
       this.patient['vitalsStatusCaution'] = 0;
@@ -46,10 +47,12 @@ export class DetailComponent implements OnInit {
             outPatientRanges['maxVitals'] = 'warning';
             outPatientRanges['numVitals'] += 1;
             this.patient['vitalsStatusWarning'] += 1;
+            this.checkSP(vitalData);
           } else {
             if (test[j]['value'] < this.ranges[vitals[i]]['lower'] || test[j]['value'] > this.ranges[vitals[i]]['upper']) {
               outPatientRanges['numVitals'] += 1;
               this.patient['vitalsStatusCaution'] += 1;
+              this.checkAbnormal(vitalData);
               if (outPatientRanges['maxVitals'] != 'warning') {
                 outPatientRanges['maxVitals'] = 'caution';
               }
@@ -78,9 +81,11 @@ export class DetailComponent implements OnInit {
             'value': test[j]['value'],
             'time': test[j]['time'],
           }
+          
           if (test[j]['value'] < this.ranges[bloodgases[i]]['lowab'] || test[j]['value'] > this.ranges[bloodgases[i]]['uppab']) {
             outPatientRanges['maxBloodgas'] = 'warning';
             outPatientRanges['numBloodgas'] += 1;
+            this.checkBEAndLactate(bloodData);
             this.patient['bloodgasStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[bloodgases[i]]['lower'] || test[j]['value'] > this.ranges[bloodgases[i]]['upper']) {
@@ -97,5 +102,34 @@ export class DetailComponent implements OnInit {
     }
     this.patientRanges.emit(outPatientRanges)
     this.bgSource = new MatTableDataSource(bloodgasDataArray);
+  }
+  private checkAbnormal(vitalData: { 'index': number; 'test': string; 'value': any; 'time': any; }) {
+    if (vitalData['test'] == "Respiration Rate" || vitalData['test'] == "Pulse Rate" || vitalData['test'] == "Body Temperature") {    
+      this.patient['ML'] += (0.4*(1-this.patient['ML']));
+    } else if (this.patient['LOC'] < 13) { // critical range for BE and Lactate
+      let tot = 15-3; 
+      let add = (tot - (this.patient['LOC'] - 3))/tot * 0.15;
+      this.patient['ML'] += (add*(1-this.patient['ML']));
+    }
+  }
+
+  private checkSP(vitalData: { 'index': number; 'test': string; 'value': any; 'time': any; }) {
+    if (vitalData['test'] == "Systolic Pressure") { // Critical Range for SP
+      this.patient['ML'] += (0.9*(1-this.patient['ML']));
+    }
+  }
+
+  private checkBEAndLactate(bloodData: { 'index': number; 'test': string; 'value': any; 'time': any; }) {
+    if (bloodData['test'] == "BE" || bloodData['test'] == "Lactate") { // critical range for BE and Lactate
+      if (this.patient['ML'] != 0 || this.patient['ML'] != null) { 
+        this.patient['ML'] += (0.9*(1-this.patient['ML']));
+      } else {
+        this.patient['ML'] = 0.9;
+      }
+    }
+  }
+
+  forceML(patient) {
+    console.log(patient);
   }
 }
