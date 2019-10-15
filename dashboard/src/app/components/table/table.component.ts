@@ -60,7 +60,7 @@ export class TableComponent implements OnChanges {
   waitTimeSnackActioned: boolean = false;
 
   atsGroup: number;
-  displayedColumns: string[] = ['ML', 'ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Delta', 'Sepsis'];
+  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Delta', 'Sepsis'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
