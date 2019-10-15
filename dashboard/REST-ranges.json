@@ -61,5 +61,11 @@
         "upper": 1.0,
         "lower": 0.5,
         "units": "mmol/L"
+    },
+    "BE": {
+        "upper": 3.0,
+        "lower": -3.0,
+        "lowab": -4.9,
+        "units": "mmol/L"
     }
 }
