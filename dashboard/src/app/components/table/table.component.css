@@ -40,7 +40,10 @@
   .caution-icon {
     color: #feb24c;
   }
-
+  .eye-icon {
+    color: rgb(0, 69, 158);
+  }
+  
 .good-icon {
     color: #31a354;
   }

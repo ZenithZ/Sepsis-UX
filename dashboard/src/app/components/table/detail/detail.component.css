@@ -33,6 +33,9 @@ mat-icon {
     color: #f03b20;
 }
 
+.eye-icon {
+    color: rgb(0, 110, 255);
+}
 @media screen and (max-width: 766px) {
     .mat-column-Time {
         display: none;
