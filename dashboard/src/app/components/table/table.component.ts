@@ -60,7 +60,7 @@ export class TableComponent implements OnChanges {
   waitTimeSnackActioned: boolean = false;
 
   atsGroup: number;
-  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Delta', 'Sepsis'];
+  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
@@ -106,10 +106,10 @@ export class TableComponent implements OnChanges {
     config.verticalPosition = 'bottom';
     config.duration = 5000;
 
-    let res = this.snackBar.open((patient['seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
+    let res = this.snackBar.open((patient['Seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
 
     res.onAction().subscribe(() => {
-      patient['seen'] = !patient['seen'];
+      patient['Seen'] = !patient['Seen'];
     });
   }
 
