@@ -212,6 +212,8 @@ export class TableComponent implements OnChanges {
 
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
+      positionClass: 'toast-top-right',
+      closeButton: true,
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
 
