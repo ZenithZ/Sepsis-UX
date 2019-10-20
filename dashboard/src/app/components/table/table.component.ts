@@ -263,4 +263,40 @@ export class TableComponent implements OnChanges {
       patient.sepsis = false;
     }
   }
+
+  onLOCChange(value, patient, i) {
+    let config = new MatSnackBarConfig();
+    config.verticalPosition = 'bottom';
+    config.duration = 3000;
+    config.panelClass = 'red-snackbar';
+    //let locValue = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
+    if (value > 15) {
+      patient.LOC = 15;
+    } else if (value < 1) {
+      patient.LOC = 1;
+    } else {
+      patient.LOC = value;
+      this.dataSource.data = this.dataSource.data.concat();
+    }
+  }
+
+  getErrorMessage(patient) {
+    if (patient['locValue'].hasError('required')) {
+      return 'Value required'
+    }
+    if (patient['locValue'].value > 99) {
+      patient['locValue'].reset('99')
+      patient['locValue'].setErrors({'max': true});
+    }
+
+    if (patient['locValue'].value < 1) {
+      patient['locValue'].reset('1')
+      patient['locValue'].setErrors({'min': true, 'required': false})
+    }    
+    return patient['locValue'].hasError('required') ? 'Value required' :
+        patient['locValue'].hasError('max') ? 'Too large' :
+        patient['locValue'].hasError('min') ? 'Too small' :
+            '';
+  }
+  
 }
