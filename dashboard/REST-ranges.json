@@ -63,6 +63,7 @@
         "units": "mmol/L"
     },
     "BE": {
+        "uppab": 5,
         "upper": 3.0,
         "lower": -3.0,
         "lowab": -4.9,
