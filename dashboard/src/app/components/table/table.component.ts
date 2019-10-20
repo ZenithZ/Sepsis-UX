@@ -5,6 +5,8 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import {MatIconRegistry} from '@angular/material/icon';
 import { isNull } from 'util';
+import { ToastrService } from 'ngx-toastr';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-table',
@@ -32,7 +34,21 @@ import { isNull } from 'util';
 export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef) { }
+    private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
+  showExceeded(message, patientName, patient) {
+    this.toastr.warning(message, patientName, {
+      titleClass: 'toast-title',
+      onActivateTick: true
+    }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
+
+  }
+  toasterClickedHandler(patient) {
+    let MRN: string = patient['MRN'];
+    var elmnt = document.getElementById(MRN);
+    elmnt.scrollIntoView(false);
+    this.setExpanded(patient);
+    this.highlight(patient);
+  }
 
   @Input() title: string;
   @Input() patients: any[];
@@ -107,7 +123,7 @@ export class TableComponent implements OnChanges {
     config.duration = 5000;
 
     let res = this.snackBar.open((patient['Seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
-
+    
     res.onAction().subscribe(() => {
       patient['Seen'] = !patient['Seen'];
     });
@@ -168,6 +184,7 @@ export class TableComponent implements OnChanges {
     if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
       this.notifyPatientWaiting(patient);
       patient['notified'] = true;
+     
    
     } else if (exceeds == false) {
       patient['notified'] = false;
@@ -188,51 +205,16 @@ export class TableComponent implements OnChanges {
   }
 
   notifyPatientWaiting(patient: any) {
-      
-    this.waitTimeSnackActioned = false;
-    if (patient != null) { // Patient is given to check
-      this.waitTimePatients.push(patient);
-    } 
+    let time: string = this.formatWaitTime(patient);
+    let message: string = "Exceeded the waiting threshold! ("+time+")";
+    let patientName: string = patient['First Name'] + " " + patient['Last Name'];
     
-    
-    if (this.waitTimeMessageDisplayed == false && this.waitTimePatients.length >= 1) {
-      
-      this.waitTimeMessageDisplayed = true;
 
-      let config = new MatSnackBarConfig();
-      config.verticalPosition = 'top';
-      config.horizontalPosition = 'right';
-      config.duration = 10000;
-      config.panelClass = ['patient-waiting-snack-bar'];
+    this.toastr.warning(message, patientName, {
+      titleClass: 'toast-title',
+      onActivateTick: true
+    }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
 
-      let patient = this.waitTimePatients.shift();
-
-      let time: String = this.formatWaitTime(patient);
-      let message: String = patient['First Name'] + " " + patient['Last Name'] + " has exceeded the waiting threshold! ("+time+")";
-      let MRN: String = patient['MRN'];
-      let res = this.snackBar.open(message.toString(), 'Show', config);
-      var elmnt = document.getElementById(MRN.toString());
-      res.onAction().subscribe(() => {
-        elmnt.scrollIntoView();
-        this.setExpanded(patient);
-        this.highlight(patient);
-        this.waitTimeMessageDisplayed = false;
-        this.waitTimeSnackActioned = true;
-        this.notifyPatientWaiting(null); // Go to the next message in line.
-      });
-      res.afterDismissed().subscribe((info) => {
-        if (info.dismissedByAction === false) {
-          this.waitTimeMessageDisplayed = false;
-          this.notifyPatientWaiting(null);
-        } 
-      })
-    
-    } else {
-
-    }
-    
-    
-    
   }
 
   highlight(patient: any) {
