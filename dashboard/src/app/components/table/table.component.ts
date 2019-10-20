@@ -265,11 +265,10 @@ export class TableComponent implements OnChanges {
   }
 
   onLOCChange(value, patient, i) {
-    let config = new MatSnackBarConfig();
-    config.verticalPosition = 'bottom';
-    config.duration = 3000;
-    config.panelClass = 'red-snackbar';
-    //let locValue = new FormControl('', [Validators.required, Validators.max(15), Validators.min(3)]);
+    // let config = new MatSnackBarConfig();
+    // config.verticalPosition = 'bottom';
+    // config.duration = 3000;
+    // config.panelClass = 'red-snackbar';
     if (value > 15) {
       patient.LOC = 15;
     } else if (value < 1) {
@@ -298,5 +297,5 @@ export class TableComponent implements OnChanges {
         patient['locValue'].hasError('min') ? 'Too small' :
             '';
   }
-  
+
 }
