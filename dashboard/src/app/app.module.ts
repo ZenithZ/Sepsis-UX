@@ -21,12 +21,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-
+import { CommonModule } from '@angular/common';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { TableComponent } from './components/table/table.component';
 import { DetailComponent } from './components/table/detail/detail.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,17 @@ import { DetailComponent } from './components/table/detail/detail.component';
     MatAutocompleteModule,
     MatSlideToggleModule,
     MatSidenavModule,
+    CommonModule,
+    ToastrModule.forRoot({
+      maxOpened: 0,
+      autoDismiss: true,
+      newestOnTop: false,
+      timeOut: 10000,
+      positionClass: 'toast-top-right',
+      disableTimeOut: true,
+      closeButton: true,
+      preventDuplicates: true,
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
