@@ -29,7 +29,7 @@ export class AppComponent implements OnInit {
     let dLen = this.data.length;
     for (let i = 0; i < dLen; i++) {
       let p = this.data[i]
-      p['Registration'] = '2019-10-21 13:00:00' 
+      p['Registration'] = '2019-10-21 15:00:00' 
       this.addPatient(p)
     }
 
