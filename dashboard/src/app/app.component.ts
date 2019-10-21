@@ -58,7 +58,7 @@ export class AppComponent implements OnInit {
 
   addPatient(patient: any) {
     // console.log(patient)
-    patient['locValue'] = new FormControl('15', [Validators.required, Validators.min(3), Validators.max(15)]);
+    patient['Registration'] = '2019-10-21 13:00:00' 
     this.combinedats.push(patient);
     this.combinedats = [...this.combinedats];
     this.ats[patient['ATS']].push(patient);
