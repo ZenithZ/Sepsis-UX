@@ -76,7 +76,7 @@ export class TableComponent implements OnChanges {
   waitTimeSnackActioned: boolean = false;
 
   atsGroup: number;
-  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'LOC', 'Vitals', 'BG', 'Team', 'Delta', 'Sepsis'];
+  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
@@ -280,6 +280,20 @@ export class TableComponent implements OnChanges {
         patient['locValue'].hasError('max') ? 'Too large' :
         patient['locValue'].hasError('min') ? 'Too small' :
             '';
+  }
+
+  calculateAge (patient) {
+
+    var parts = patient['DOB'].split("/");
+    var dt = new Date(parseInt(parts[2], 10),
+                  parseInt(parts[1], 10) - 1,
+                  parseInt(parts[0], 10));
+    console.log(patient['First Name'], patient['DOB'], dt)
+
+    let ageInSec = Math.floor((this.currentTime.getTime() - dt.getTime()) / 1000);
+    let age = Math.floor(ageInSec/31536000);
+    console.log(patient['First Name'], ageInSec)
+    return age;
   }
 
 }
