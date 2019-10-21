@@ -179,16 +179,26 @@ export class TableComponent implements OnChanges {
   }
 
   exceedsAcuity(patient: any) {
-    let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
+    // let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
    
-    if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
-      this.notifyPatientWaiting(patient);
-      patient['notified'] = true;
+    // if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
+    //   this.notifyPatientWaiting(patient);
+    //   patient['notified'] = true;
      
    
+    // } else if (exceeds == false) {
+    //   patient['notified'] = false;
+    // }
+    // return exceeds;
+    let exceeds = patient['ML'] >= 0.8;
+
+    if (exceeds == true) {
+      this.notifyPatientRisk(patient);
+      patient['notified'] = true;
     } else if (exceeds == false) {
       patient['notified'] = false;
     }
+
     return exceeds;
   }
 
@@ -207,6 +217,21 @@ export class TableComponent implements OnChanges {
   notifyPatientWaiting(patient: any) {
     let time: string = this.formatWaitTime(patient);
     let message: string = "Exceeded the waiting threshold! ("+time+")";
+    let patientName: string = patient['First Name'] + " " + patient['Last Name'];
+    
+
+    this.toastr.warning(message, patientName, {
+      titleClass: 'toast-title',
+      positionClass: 'toast-top-right',
+      closeButton: true,
+      onActivateTick: true
+    }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
+
+  }
+
+  notifyPatientRisk(patient: any) {
+    let risk: number = patient['ML']
+    let message: string = "is now having a sepsis risk of " + Math.ceil(risk*100) + "%.";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
     
 
@@ -288,11 +313,9 @@ export class TableComponent implements OnChanges {
     var dt = new Date(parseInt(parts[2], 10),
                   parseInt(parts[1], 10) - 1,
                   parseInt(parts[0], 10));
-    console.log(patient['First Name'], patient['DOB'], dt)
 
     let ageInSec = Math.floor((this.currentTime.getTime() - dt.getTime()) / 1000);
     let age = Math.floor(ageInSec/31536000);
-    console.log(patient['First Name'], ageInSec)
     return age;
   }
 
