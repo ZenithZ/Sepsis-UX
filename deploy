@@ -1,0 +1,5 @@
+#!/bin/bash
+cd testing
+python3 runner.py
+cd ..
+git subtree push --prefix dashboard heroku master

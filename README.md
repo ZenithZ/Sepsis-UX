@@ -9,7 +9,11 @@ The JSON data, while there is no backend can be automatically updated with ```./
 Use ```chmod +x getdata``` or ```bash getdata``` to ensure that the file has the correct permissions to run
 
 # Testing
-Testing is done in Python with Selenium. Testing can be run with runner.py in the testing directory. This requires selenium, and ChromeDriver (https://chromedriver.chromium.org/downloads).
+Testing is done in Python with Selenium. Testing can be run with runner.py in the testing directory. This requires selenium (```pip install selenium```), and ChromeDriver (https://chromedriver.chromium.org/downloads).
+
+# Heroku Deployment
+For automatic deployment, the deploy script (which will run tests locally first) can be run with the appropriate permissions provided that heroku has been added as a remote repository.
+To push to Heroku, login (```heroku login```) and add the remote with ```heroku git:remote -a sepsis-ux```.
 
 ## Team Members
 - Mark Dagher - mdag4370@uni.sydney.edu.au
