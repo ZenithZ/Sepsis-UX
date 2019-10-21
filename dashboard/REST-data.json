@@ -1,6 +1,7 @@
 [
     {
       "MRN": 1091439687,
+      "Team": "A",
       "First Name": "John",
       "Last Name": "Spicer",
       "DOB": "30/11/2002",
@@ -49,6 +50,7 @@
     },
     {
       "MRN": 3245321980,
+      "Team": "B",
       "First Name": "Mark",
       "Last Name": "Dagher",
       "DOB": "23/12/1947",
@@ -107,6 +109,7 @@
     },
     {
       "MRN": 1423017529,
+      "Team": "B",
       "First Name": "Phillip",
       "Last Name": "Porteous",
       "DOB": "11/5/1962",
@@ -155,6 +158,7 @@
     },
     {
       "MRN": 7092666054,
+      "Team": "A",
       "First Name": "Allen",
       "Last Name": "Guo",
       "DOB": "4/2/1963",
@@ -213,6 +217,7 @@
     },
     {
       "MRN": 7917279390,
+      "Team": "A",
       "First Name": "Flynn",
       "Last Name": "Fu",
       "DOB": "2/5/1946",
@@ -271,6 +276,7 @@
     },
     {
       "MRN": 6781046174,
+      "Team": "B",
       "First Name": "Vern",
       "Last Name": "Crean",
       "DOB": "28/5/1950",
@@ -315,6 +321,7 @@
     },
     {
       "MRN": 5107150910,
+      "Team": "A",
       "First Name": "Boote",
       "Last Name": "Bratty",
       "DOB": "21/6/1971",
@@ -359,6 +366,7 @@
     },
     {
       "MRN": 4006111184,
+      "Team": "A",
       "First Name": "Rhetta",
       "Last Name": "Murney",
       "DOB": "7/9/1973",
@@ -403,6 +411,7 @@
     },
     {
       "MRN": 7921649812,
+      "Team": "B",
       "First Name": "Augusta",
       "Last Name": "Kluss",
       "DOB": "24/6/1995",
@@ -447,6 +456,7 @@
     },
     {
       "MRN": 9269007879,
+      "Team": "B",
       "First Name": "Virginie",
       "Last Name": "Runciman",
       "DOB": "5/7/2014",
@@ -491,6 +501,7 @@
     },
     {
       "MRN": 8534205879,
+      "Team": "A",
       "First Name": "Kasper",
       "Last Name": "Pankhurst.",
       "DOB": "10/7/2005",
@@ -535,6 +546,7 @@
     },
     {
       "MRN": 7072154511,
+      "Team": "A",
       "First Name": "Clem",
       "Last Name": "Horstead",
       "DOB": "7/1/1942",
@@ -583,6 +595,7 @@
     },
     {
       "MRN": 3802443620,
+      "Team": "B",
       "First Name": "Vin",
       "Last Name": "Coste",
       "DOB": "13/12/2007",
@@ -631,6 +644,7 @@
     },
     {
       "MRN": 6207010224,
+      "Team": "B",
       "First Name": "Jacques",
       "Last Name": "Beynon",
       "DOB": "24/12/1950",
@@ -679,6 +693,7 @@
     },
     {
       "MRN": 8711359817,
+      "Team": "A",
       "First Name": "Quincey",
       "Last Name": "Cervantes",
       "DOB": "2/3/2002",

@@ -28,7 +28,9 @@ export class AppComponent implements OnInit {
     //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
     let dLen = this.data.length;
     for (let i = 0; i < dLen; i++) {
-      this.addPatient(this.data[i])
+      let p = this.data[i]
+      p['Registration'] = '2019-10-21 13:00:00' 
+      this.addPatient(p)
     }
 
     setTimeout(() => {
