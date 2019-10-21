@@ -145,7 +145,13 @@
             <td mat-cell *matCellDef="let patient">
                 <mat-form-field class="input-field" (click)="$event.stopPropagation()">
                     <mat-label></mat-label>
-                    <input placeholder="A/B/C" #team value="{{patient['Team']}}" matInput type="text" maxlength="1">
+                    <mat-select [(value)]="patient['Team']">
+                        <mat-option value="A">A</mat-option>
+                        <mat-option value="B">B</mat-option>
+                        <mat-option value="UCC">UCC</mat-option>
+                        <mat-option value="FOH">FOH</mat-option>
+                    </mat-select>
+                    <!-- <input placeholder="A/B/C" #team value="{{patient['Team']}}" matInput type="text" maxlength="1"> -->
                 </mat-form-field>
             </td>
         </ng-container>
