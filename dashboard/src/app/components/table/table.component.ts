@@ -192,7 +192,7 @@ export class TableComponent implements OnChanges {
     // return exceeds;
     let exceeds = patient['ML'] >= 0.8;
 
-    if (exceeds == true) {
+    if (exceeds == true && patient['notified'] == false) {
       this.notifyPatientRisk(patient);
       patient['notified'] = true;
     } else if (exceeds == false) {
@@ -231,7 +231,7 @@ export class TableComponent implements OnChanges {
 
   notifyPatientRisk(patient: any) {
     let risk: number = patient['ML']
-    let message: string = "is now having a sepsis risk of " + Math.ceil(risk*100) + "%.";
+    let message: string = "is now having a sepsis risk of " + Math.ceil(risk*100) + "%." + "\n" + "Click to view";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
     
 
