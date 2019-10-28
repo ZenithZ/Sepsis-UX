@@ -131,16 +131,16 @@
                 </ng-container>
                 <ng-template #elseTemplate>
                     <!-- RED -->
-                    <mat-icon *ngIf="getStatus(patient) == '#e53935'" (click)="patient.sepsis = !patient.sepsis"
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#e53935'" (click)="patient.sepsis = !patient.sepsis"
                         (click)="$event.stopPropagation();" (click)="forceML(patient)" class="warning-icon no-select"
-                        title="{{patient['ML']}}">warning</mat-icon>
+                        >warning</mat-icon>
                     <!-- YELLOW -->
-                    <mat-icon *ngIf="getStatus(patient) == '#fed44c'" (click)="patient.sepsis = !patient.sepsis"
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#fed44c'" (click)="patient.sepsis = !patient.sepsis"
                         (click)="$event.stopPropagation();" (click)="forceML(patient)" class="caution-icon mat-icon"
-                        title="{{patient['ML']}}">error</mat-icon>
+                        >error</mat-icon>
                     <!-- NOTHING -->
-                    <mat-icon *ngIf="getStatus(patient) == 'whitesmoke'" (click)="patient.sepsis = !patient.sepsis"
-                        (click)="$event.stopPropagation();" (click)="forceML(patient)" title="{{patient['ML']}}">
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" (click)="patient.sepsis = !patient.sepsis"
+                        (click)="$event.stopPropagation();" (click)="forceML(patient)">
                         radio_button_unchecked</mat-icon>
                 </ng-template>
             </td>

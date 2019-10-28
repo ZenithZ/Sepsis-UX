@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'
 import { MatSliderModule } from '@angular/material/slider';
@@ -51,6 +52,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatInputModule,
     MatSliderModule,
     MatSelectModule,
+MatTooltipModule,
     MatSortModule,
     MatBadgeModule,
     MatTabsModule,
