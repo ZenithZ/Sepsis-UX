@@ -45,7 +45,8 @@ export class TableComponent implements OnChanges {
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
-    elmnt.scrollIntoView(false);
+    console.log(elmnt);
+    elmnt.scrollIntoView(true);
     this.setExpanded(patient);
     this.highlight(patient);
   }
@@ -272,6 +273,7 @@ export class TableComponent implements OnChanges {
     } else {
       patient.sepsis = false;
     }
+    this.dataSource._updateChangeSubscription();
   }
 
   onLOCChange(value, patient, i) {
