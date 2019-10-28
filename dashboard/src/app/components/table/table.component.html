@@ -50,7 +50,7 @@
             <td mat-cell *matCellDef="let patient"> {{ patient['DOB'] }} </td>
         </ng-container> -->
         <ng-container matColumnDef="DOB">
-                <th mat-header-cell *matHeaderCellDef> Age </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header="DOB"> Age </th>
                 <!-- <td mat-cell *matCellDef="let patient"> {{ patient['DOB'] }} </td> -->
                 <td mat-cell *matCellDef="let patient"> {{ calculateAge(patient) }} </td>
             </ng-container>
@@ -177,8 +177,9 @@
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}"
             class="example-element-row" [@.disabled]="initialPush" [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient"
+            [class.highlight-row]="highlighted === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
-            (click)="undoHighlight(patient)" [ngClass]="{'highlight-row': patient['highlight'] == true}"
+            (click)="highlighted = null"
             [class.seen]="patient['Seen'] && this.filter.length <= 0" (click)="setExpanded(patient) ">
         </tr>
         <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"

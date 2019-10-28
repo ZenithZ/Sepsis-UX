@@ -40,20 +40,11 @@ export class TableComponent implements OnChanges {
       titleClass: 'toast-title',
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
-
-  }
-  toasterClickedHandler(patient) {
-    let MRN: string = patient['MRN'];
-    var elmnt = document.getElementById(MRN);
-    elmnt.scrollIntoView(false);
-    this.setExpanded(patient);
-    this.highlight(patient);
   }
 
   @Input() title: string;
   @Input() patients: any[];
   @Input() filter: string;
-
   
   initialPush: boolean = true;
   myInterval;
@@ -78,6 +69,7 @@ export class TableComponent implements OnChanges {
   atsGroup: number;
   displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
+  highlighted: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
 
@@ -85,7 +77,6 @@ export class TableComponent implements OnChanges {
 
   applyFilter(filterValue: string) {
     filterValue = filterValue.trim().toLowerCase();
-
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
@@ -101,14 +92,21 @@ export class TableComponent implements OnChanges {
     }, 60000)
   }
 
+  toasterClickedHandler(patient) {
+    let MRN: string = patient['MRN'];
+    var elmnt = document.getElementById(MRN);
+    elmnt.scrollIntoView(true);
+    this.setExpanded(patient);
+    this.highlighted = patient;
+    console.log(this.highlighted)
+  }
+
   ngOnChanges(changes: SimpleChanges) {
-    // console.log(changes)
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
-        // console.log('changed!!')
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
-    this.changeDetector.detectChanges()
+      this.changeDetector.detectChanges()
       }
     }
     if (changes.hasOwnProperty('filter')) {
@@ -245,14 +243,6 @@ export class TableComponent implements OnChanges {
 
   }
 
-  highlight(patient: any) {
-    patient['highlight'] = true;
-  }
-
-  undoHighlight(patient: any) {
-    patient['highlight'] = false;
-  }
-  
   setPatientRanges(ranges) {
     let key = ranges['key'];
     delete ranges['key'];
