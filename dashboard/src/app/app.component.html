@@ -4,7 +4,7 @@
   <mat-form-field>
     <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)">
     <!-- <button class="style-button" matSuffix (click)="combined = !combined;$event.stopPropagation()">Combined/Seperate View</button> -->
-    <button class="style-button" matSuffix mat-button [matMenuTriggerFor]="menu">View</button>
+    <mat-icon class="clickable" matSuffix [matMenuTriggerFor]="menu">view_day</mat-icon>
     <mat-menu #menu="matMenu">
       <button mat-menu-item  (click)="combined = true;$event.stopPropagation()" >Combined</button>
       <button mat-menu-item  (click)="combined = false;$event.stopPropagation()">Seperate</button>

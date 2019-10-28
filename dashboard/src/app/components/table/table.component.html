@@ -126,7 +126,7 @@
                 <ng-container *ngIf="patient.sepsis; else elseTemplate">
                     <mat-icon (click)="patient.sepsis = !patient.sepsis" class="caution-icon mat-icon"
                         (click)="$event.stopPropagation();" (click)="forceML(patient)">error</mat-icon>
-                    <mat-icon (click)="patient.sepsis = !patient.sepsis" class="eye-icon mat-icon"
+                    <mat-icon (click)="patient.sepsis = !patient.sepsis" class="eye-icon mat-icon clickable"
                         (click)="$event.stopPropagation();" (click)="forceML(patient)">remove_red_eye</mat-icon>
                 </ng-container>
                 <ng-template #elseTemplate>
@@ -139,7 +139,7 @@
                         (click)="$event.stopPropagation();" (click)="forceML(patient)" class="caution-icon mat-icon"
                         >error</mat-icon>
                     <!-- NOTHING -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" (click)="patient.sepsis = !patient.sepsis"
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="patient.sepsis = !patient.sepsis"
                         (click)="$event.stopPropagation();" (click)="forceML(patient)">
                         radio_button_unchecked</mat-icon>
                 </ng-template>

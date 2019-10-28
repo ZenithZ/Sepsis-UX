@@ -108,6 +108,7 @@ export class TableComponent implements OnChanges {
         // console.log('changed!!')
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
+    this.changeDetector.detectChanges()
       }
     }
     if (changes.hasOwnProperty('filter')) {

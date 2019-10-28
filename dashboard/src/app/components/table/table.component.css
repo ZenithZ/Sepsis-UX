@@ -16,6 +16,10 @@
     height: 0;
   }
 
+  .clickable {
+    cursor: pointer;
+  }
+
   .seen {
     display: none;
   }
