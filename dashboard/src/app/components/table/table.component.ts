@@ -40,6 +40,7 @@ export class TableComponent implements OnChanges {
       titleClass: 'toast-title',
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
+
   }
 
   @Input() title: string;
@@ -262,6 +263,7 @@ export class TableComponent implements OnChanges {
     } else {
       patient.sepsis = false;
     }
+    this.dataSource._updateChangeSubscription();
   }
 
   onLOCChange(value, patient, i) {
