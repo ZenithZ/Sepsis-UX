@@ -3,7 +3,7 @@ import { animate, state, style, transition, trigger, sequence } from '@angular/a
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import {MatIconRegistry} from '@angular/material/icon';
+import { MatIconRegistry } from '@angular/material/icon';
 import { isNull } from 'util';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
@@ -45,8 +45,9 @@ export class TableComponent implements OnChanges {
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
-    console.log(elmnt);
+
     elmnt.scrollIntoView(true);
+    this.expandedElement = patient;
     this.setExpanded(patient);
     this.highlight(patient);
   }
@@ -55,7 +56,7 @@ export class TableComponent implements OnChanges {
   @Input() patients: any[];
   @Input() filter: string;
 
-  
+
   initialPush: boolean = true;
   myInterval;
   currentTime: Date;
@@ -93,13 +94,31 @@ export class TableComponent implements OnChanges {
   ngOnInit() {
     this.atsGroup = parseInt(this.title.split(" ")[1])
     this.dataSource = new MatTableDataSource(this.patients);
-    this.sort.sort({ id: "ML", start: 'desc', disableClear: true});
+    this.sort.sort({ id: "ML", start: 'desc', disableClear: true });
+    this.dataSource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        case 'DOB': return this.calculateAge(item['DOB']);
+        case 'Registration': return item['Registration'];
+        case 'Vitals': return this.getVitalIndicatorValue(item);
+        default: return item[property];
+      }
+    }
     this.dataSource.sort = this.sort;
+
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
       this.setCurrentTime()
     }, 60000)
+  }
+
+  getVitalIndicatorValue(patient) {
+    if (this.patientRanges != null && this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']] != undefined) {
+      let ret = this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']]['numVitals'] > 0 ? this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']]['numVitals'] : 0;
+      return ret;
+    } else {
+      return ''
+    }
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -109,7 +128,7 @@ export class TableComponent implements OnChanges {
         // console.log('changed!!')
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
-    this.changeDetector.detectChanges()
+        this.changeDetector.detectChanges()
       }
     }
     if (changes.hasOwnProperty('filter')) {
@@ -125,13 +144,15 @@ export class TableComponent implements OnChanges {
     config.duration = 5000;
 
     let res = this.snackBar.open((patient['Seen'] ? 'Seen' : 'Unseen') + " " + patient['Name'], 'Undo', config);
-    
+
     res.onAction().subscribe(() => {
       patient['Seen'] = !patient['Seen'];
     });
   }
 
   setExpanded(patient: any) {
+    console.log(patient);
+
     if (this.expandedElement === patient) {
       this.expandedElement = null;
     } else {
@@ -182,12 +203,12 @@ export class TableComponent implements OnChanges {
 
   exceedsAcuity(patient: any) {
     // let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
-   
+
     // if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
     //   this.notifyPatientWaiting(patient);
     //   patient['notified'] = true;
-     
-   
+
+
     // } else if (exceeds == false) {
     //   patient['notified'] = false;
     // }
@@ -209,18 +230,18 @@ export class TableComponent implements OnChanges {
     if (patient['ML'] < 0.1) {
       return color;
     } else if (patient['ML'] >= 0.8) {
-        return "#e53935"; // RED
+      return "#e53935"; // RED
     } else if (patient['ML'] > 0.4) {
-        color = "#fed44c"; // YELLOW
+      color = "#fed44c"; // YELLOW
     }
     return color;
   }
 
   notifyPatientWaiting(patient: any) {
     let time: string = this.formatWaitTime(patient);
-    let message: string = "Exceeded the waiting threshold! ("+time+")";
+    let message: string = "Exceeded the waiting threshold! (" + time + ")";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
-    
+
 
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
@@ -233,9 +254,9 @@ export class TableComponent implements OnChanges {
 
   notifyPatientRisk(patient: any) {
     let risk: number = patient['ML']
-    let message: string = "has a sepsis risk of " + Math.ceil(risk*100) + "%." + "\n" + "Click to view";
+    let message: string = "has a sepsis risk of " + Math.ceil(risk * 100) + "%." + "\n" + "Click to view";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
-    
+
 
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
@@ -253,7 +274,7 @@ export class TableComponent implements OnChanges {
   undoHighlight(patient: any) {
     patient['highlight'] = false;
   }
-  
+
   setPatientRanges(ranges) {
     let key = ranges['key'];
     delete ranges['key'];
@@ -262,7 +283,7 @@ export class TableComponent implements OnChanges {
   }
 
   forceML(patient) {
-    
+
     if (patient['ML'] <= 0.5 || patient['previousML'] != null) {
       if (patient.sepsis == true) {
         patient['previousML'] = patient['ML'];
@@ -297,28 +318,28 @@ export class TableComponent implements OnChanges {
     }
     if (patient['locValue'].value > 99) {
       patient['locValue'].reset('99')
-      patient['locValue'].setErrors({'max': true});
+      patient['locValue'].setErrors({ 'max': true });
     }
 
     if (patient['locValue'].value < 1) {
       patient['locValue'].reset('1')
-      patient['locValue'].setErrors({'min': true, 'required': false})
-    }    
+      patient['locValue'].setErrors({ 'min': true, 'required': false })
+    }
     return patient['locValue'].hasError('required') ? 'Value required' :
-        patient['locValue'].hasError('max') ? 'Too large' :
+      patient['locValue'].hasError('max') ? 'Too large' :
         patient['locValue'].hasError('min') ? 'Too small' :
-            '';
+          '';
   }
 
-  calculateAge (patient) {
-
-    var parts = patient['DOB'].split("/");
+  calculateAge(dob) {
+    var parts = dob.split("/");
     var dt = new Date(parseInt(parts[2], 10),
-                  parseInt(parts[1], 10) - 1,
-                  parseInt(parts[0], 10));
+      parseInt(parts[1], 10) - 1,
+      parseInt(parts[0], 10));
 
     let ageInSec = Math.floor((this.currentTime.getTime() - dt.getTime()) / 1000);
-    let age = Math.floor(ageInSec/31536000);
+    var age = Math.floor(ageInSec / 31536000);
+
     return age;
   }
 

@@ -53,7 +53,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatInputModule,
     MatSliderModule,
     MatSelectModule,
-MatTooltipModule,
+    MatTooltipModule,
     MatSortModule,
     MatBadgeModule,
     MatTabsModule,
