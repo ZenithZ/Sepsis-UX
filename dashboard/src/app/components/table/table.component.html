@@ -177,8 +177,9 @@
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}"
             class="example-element-row" [@.disabled]="initialPush" [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient"
+            [class.highlight-row]="highlighted === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
-            (click)="undoHighlight(patient)" [ngClass]="{'highlight-row': patient['highlight'] == true}"
+            (click)="highlighted = null"
             [class.seen]="patient['Seen'] && this.filter.length <= 0" (click)="setExpanded(patient) ">
         </tr>
         <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
