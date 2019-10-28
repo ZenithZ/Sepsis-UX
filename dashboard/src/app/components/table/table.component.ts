@@ -95,7 +95,6 @@ export class TableComponent implements OnChanges {
       }
     }
     this.dataSource.sort = this.sort;
-
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
@@ -113,11 +112,15 @@ export class TableComponent implements OnChanges {
   }
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
-    var elmnt = document.getElementById(MRN);
-    elmnt.scrollIntoView(true);
-    this.setExpanded(patient);
     this.highlighted = patient;
-    console.log(this.highlighted)
+    this.expandedElement = patient;
+    var elmnt = document.getElementById(MRN);
+    elmnt.scrollIntoView(
+      { 
+        behavior: 'smooth', 
+        block: 'start' 
+      },
+    );
   }
 
   ngOnChanges(changes: SimpleChanges) {
