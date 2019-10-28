@@ -28,6 +28,7 @@ import { TopbarComponent } from './components/topbar/topbar.component';
 import { TableComponent } from './components/table/table.component';
 import { DetailComponent } from './components/table/detail/detail.component';
 import { ToastrModule } from 'ngx-toastr';
+import {MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ToastrModule } from 'ngx-toastr';
     MatSlideToggleModule,
     MatSidenavModule,
     CommonModule,
+    MatMenuModule,
     ToastrModule.forRoot({
       maxOpened: 0,
       autoDismiss: true,
