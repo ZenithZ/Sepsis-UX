@@ -113,12 +113,11 @@ export class TableComponent implements OnChanges {
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     this.highlighted = patient;
-    this.expandedElement = patient;
     var elmnt = document.getElementById(MRN);
     elmnt.scrollIntoView(
       { 
         behavior: 'smooth', 
-        block: 'start' 
+        block: 'center' 
       },
     );
   }
