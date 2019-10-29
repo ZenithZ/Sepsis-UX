@@ -95,6 +95,7 @@ export class TableComponent implements OnChanges {
       }
     }
     this.dataSource.sort = this.sort;
+
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
@@ -112,7 +113,6 @@ export class TableComponent implements OnChanges {
   }
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
-    this.highlighted = patient;
     var elmnt = document.getElementById(MRN);
     elmnt.scrollIntoView(
       {
@@ -140,6 +140,14 @@ export class TableComponent implements OnChanges {
     }
   }
 
+  ngAfterViewChecked() {
+    
+    if (this.dataSource !== undefined) {
+      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
+      
+    }
+  }
+
   undoSeen(patient: any) {
     let config = new MatSnackBarConfig();
     config.verticalPosition = 'bottom';
@@ -152,17 +160,18 @@ export class TableComponent implements OnChanges {
     });
   }
 
-  setExpanded(patient: any) {
-    console.log(patient);
-
-    if (this.expandedElement === patient) {
+  setExpanded(patient: any, MRN: any) {
+    console.log(MRN);
+    console.log(this.expandedElement);
+    if (this.expandedElement != undefined && this.expandedElement === MRN) {
       this.expandedElement = null;
     } else {
       if (patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')) {
-        this.expandedElement = patient;
+        this.expandedElement = MRN;
       }
     }
-    this.changeDetector.detectChanges()
+    console.log(this.expandedElement);
+    
   }
 
   setCurrentTime() {
