@@ -281,55 +281,6 @@ export class TableComponent implements OnChanges {
     this.changeDetector.detectChanges()
   }
 
-  forceML(patient) {
-
-    if (patient['ML'] <= 0.5 || patient['previousML'] != null) {
-      if (patient.sepsis == true) {
-        patient['previousML'] = patient['ML'];
-        patient['ML'] = 0.5;
-      } else {
-        patient['ML'] = patient['previousML'];
-      }
-    } else {
-      patient.sepsis = false;
-    }
-    this.dataSource._updateChangeSubscription();
-  }
-
-  onLOCChange(value, patient, i) {
-    // let config = new MatSnackBarConfig();
-    // config.verticalPosition = 'bottom';
-    // config.duration = 3000;
-    // config.panelClass = 'red-snackbar';
-    if (value > 15) {
-      patient.LOC = 15;
-    } else if (value < 1) {
-      patient.LOC = 1;
-    } else {
-      patient.LOC = value;
-      this.dataSource.data = this.dataSource.data.concat();
-    }
-  }
-
-  getErrorMessage(patient) {
-    if (patient['locValue'].hasError('required')) {
-      return 'Value required'
-    }
-    if (patient['locValue'].value > 99) {
-      patient['locValue'].reset('99')
-      patient['locValue'].setErrors({ 'max': true });
-    }
-
-    if (patient['locValue'].value < 1) {
-      patient['locValue'].reset('1')
-      patient['locValue'].setErrors({ 'min': true, 'required': false })
-    }
-    return patient['locValue'].hasError('required') ? 'Value required' :
-      patient['locValue'].hasError('max') ? 'Too large' :
-        patient['locValue'].hasError('min') ? 'Too small' :
-          '';
-  }
-
   calculateAge(dob) {
     var parts = dob.split("/");
     var dt = new Date(parseInt(parts[2], 10),
