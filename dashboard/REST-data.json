@@ -365,51 +365,6 @@
       "ML": 0.0
     },
     {
-      "MRN": 4006111184,
-      "Team": "A",
-      "First Name": "Rhetta",
-      "Last Name": "Murney",
-      "DOB": "7/9/1973",
-      "ATS": 4,
-      "Registration": "2019-09-27 09:54:27",
-      "LOC": 15,
-"Vitals": {
-        "Body Temperature": [
-          {
-            "time": "2019-09-27 10:15:48",
-            "value": 36
-          }
-        ],
-        "Pulse Rate": [
-          {
-            "value": 57,
-            "time": "2019-09-27 10:15:48"
-          }
-        ],
-        "Respiration Rate": [
-          {
-            "value": 27,
-            "time": "2019-09-27 10:15:48"
-          }
-        ],
-        "Systolic Pressure": [
-          {
-            "value": 120,
-            "time": "2019-09-27 10:15:48"
-          }
-        ],
-        "Diastolic Pressure": [
-          {
-            "value": "68",
-            "time": "2019-09-27 10:15:48"
-          }
-        ]
-      },
-      "Name": "Rhetta Murney",
-      "Seen": false,
-      "ML": 0.0
-    },
-    {
       "MRN": 7921649812,
       "Team": "B",
       "First Name": "Augusta",

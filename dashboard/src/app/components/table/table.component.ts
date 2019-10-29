@@ -115,9 +115,9 @@ export class TableComponent implements OnChanges {
     this.highlighted = patient;
     var elmnt = document.getElementById(MRN);
     elmnt.scrollIntoView(
-      { 
-        behavior: 'smooth', 
-        block: 'center' 
+      {
+        behavior: 'smooth',
+        block: 'center'
       },
     );
   }
@@ -134,6 +134,9 @@ export class TableComponent implements OnChanges {
       if (changes.filter.currentValue !== undefined) {
         this.applyFilter(changes.filter.currentValue);
       }
+    }
+    if (this.dataSource !== undefined) {
+      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
     }
   }
 
@@ -235,6 +238,12 @@ export class TableComponent implements OnChanges {
     }
     return color;
   }
+  ngAfterViewInit() {
+    if (this.dataSource !== undefined) {
+      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
+    }
+  
+  }
 
   notifyPatientWaiting(patient: any) {
     let time: string = this.formatWaitTime(patient);
@@ -294,40 +303,6 @@ export class TableComponent implements OnChanges {
       patient.sepsis = false;
     }
     this.dataSource._updateChangeSubscription();
-  }
-
-  onLOCChange(value, patient, i) {
-    // let config = new MatSnackBarConfig();
-    // config.verticalPosition = 'bottom';
-    // config.duration = 3000;
-    // config.panelClass = 'red-snackbar';
-    if (value > 15) {
-      patient.LOC = 15;
-    } else if (value < 1) {
-      patient.LOC = 1;
-    } else {
-      patient.LOC = value;
-      this.dataSource.data = this.dataSource.data.concat();
-    }
-  }
-
-  getErrorMessage(patient) {
-    if (patient['locValue'].hasError('required')) {
-      return 'Value required'
-    }
-    if (patient['locValue'].value > 99) {
-      patient['locValue'].reset('99')
-      patient['locValue'].setErrors({ 'max': true });
-    }
-
-    if (patient['locValue'].value < 1) {
-      patient['locValue'].reset('1')
-      patient['locValue'].setErrors({ 'min': true, 'required': false })
-    }
-    return patient['locValue'].hasError('required') ? 'Value required' :
-      patient['locValue'].hasError('max') ? 'Too large' :
-        patient['locValue'].hasError('min') ? 'Too small' :
-          '';
   }
 
   calculateAge(dob) {
