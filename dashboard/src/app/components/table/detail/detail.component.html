@@ -4,7 +4,7 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="title">Vitals</mat-panel-title>
-                    <!-- <mat-panel-description class="description">Patient has {{ patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) }} {{ 1 }} out of range</mat-panel-description> -->
+                    <mat-panel-description class="description">{{ patient['First Name'] + ' has ' + patient['numVitals'] }} {{ patient['numVitals'] == 1 ? 'value' : 'values' }} out of range</mat-panel-description>
                 </mat-expansion-panel-header>
                 <table mat-table [dataSource]="vitalSource">
                     <ng-container matColumnDef="Test">
@@ -59,7 +59,7 @@
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
                     <mat-panel-title class="title">Bloodgas</mat-panel-title>
-                    <mat-panel-description>Description</mat-panel-description>
+                    <mat-panel-description class="description">{{ patient['First Name'] + ' has ' + patient['numBloodgas'] }} {{ patient['numBloodgas'] == 1 ? 'value' : 'values' }} out of range</mat-panel-description>
                 </mat-expansion-panel-header>
                 <table mat-table [dataSource]="bgSource">
                     <ng-container matColumnDef="Test">

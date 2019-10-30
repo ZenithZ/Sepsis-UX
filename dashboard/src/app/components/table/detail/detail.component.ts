@@ -46,6 +46,7 @@ export class DetailComponent implements OnInit {
           if (test[j]['value'] < this.ranges[vitals[i]]['lowab'] || test[j]['value'] > this.ranges[vitals[i]]['uppab']) {
             outPatientRanges['maxVitals'] = 'warning';
             outPatientRanges['numVitals'] += 1;
+            this.patient['outOfRangeVitals'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[vitals[i]]['lower'] || test[j]['value'] > this.ranges[vitals[i]]['upper']) {
               outPatientRanges['numVitals'] += 1;
@@ -57,6 +58,7 @@ export class DetailComponent implements OnInit {
           vitalDataArray.push(vitalData);
         }
       }
+      this.patient['numVitals'] = outPatientRanges['numVitals'];
     }
     this.vitalSource = new MatTableDataSource(vitalDataArray);
 
@@ -93,6 +95,7 @@ export class DetailComponent implements OnInit {
           bloodgasDataArray.push(bloodData);
         }
       }
+      this.patient['numBloodgas'] = outPatientRanges['numBloodgas'];
     }
     this.patientRanges.emit(outPatientRanges)
     this.bgSource = new MatTableDataSource(bloodgasDataArray);
