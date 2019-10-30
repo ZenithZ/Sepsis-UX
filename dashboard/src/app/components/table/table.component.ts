@@ -91,11 +91,11 @@ export class TableComponent implements OnChanges {
         case 'DOB': return this.calculateAge(item['DOB']);
         case 'Registration': return item['Registration'];
         case 'Vitals': return this.getVitalIndicatorValue(item);
+        case 'ML': return item['ML'] < 0 ? 1 : item['ML']
         default: return item[property];
       }
     }
     this.dataSource.sort = this.sort;
-
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
@@ -160,9 +160,8 @@ export class TableComponent implements OnChanges {
     });
   }
 
-  setExpanded(patient: any, MRN: any) {
-    console.log(MRN);
-    console.log(this.expandedElement);
+  setExpanded(patient: any) {
+    let MRN = patient['MRN'];
     if (this.expandedElement != undefined && this.expandedElement === MRN) {
       this.expandedElement = null;
     } else {
@@ -170,8 +169,6 @@ export class TableComponent implements OnChanges {
         this.expandedElement = MRN;
       }
     }
-    console.log(this.expandedElement);
-    
   }
 
   setCurrentTime() {

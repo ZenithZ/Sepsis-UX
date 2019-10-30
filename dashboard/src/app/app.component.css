@@ -21,6 +21,11 @@ mat-form-field {
     width:100%;
  }
 
+  .no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+  }
 .clickable {
     cursor: pointer;
 }

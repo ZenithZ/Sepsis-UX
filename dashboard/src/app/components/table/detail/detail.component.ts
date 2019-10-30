@@ -27,7 +27,6 @@ export class DetailComponent implements OnInit {
       'numBloodgas': 0,
     };
     let vitalDataArray = [];
-    this.patient['ML'] = 0.0;
     if (this.patient['Vitals']) {
       this.patient['vitalsStatusWarning'] = 0;
       this.patient['vitalsStatusCaution'] = 0;
