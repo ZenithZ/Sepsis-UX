@@ -24,7 +24,8 @@
         <ng-container matColumnDef="ATS">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="ATS"> ATS </th>
             <td mat-cell *matCellDef="let patient" [style.borderLeftColor]="getStatus(patient)" class="atsBorder">
-                {{ patient['ATS'] }} </td>
+                {{ patient['ATS'] }} 
+            </td>
             <!-- [ngClass]="{'criticalBorder': getStatus(patient, 'crit'), 'criticalBorder': }" -->
             <!-- [ngClass]="{'ats1Border': patient['ATS'] == 1, 'ats2Border': patient['ATS'] == 2, 'ats3Border': patient['ATS'] == 3, 'ats4Border': patient['ATS'] == 4, 'ats5Border': patient['ATS'] == 5}" -->
         </ng-container>
@@ -59,9 +60,9 @@
             <td mat-cell class="no-select" *matCellDef="let patient">
                 <ng-container *ngIf="patient.hasOwnProperty('Vitals'); else elseTemplate">
                     <div
-                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxVitals'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxVitals'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? false : true : false}">
+                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numVitals'] > 0 ? patientRanges[patient['MRN']]['maxVitals'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numVitals'] > 0 ? patientRanges[patient['MRN']]['maxVitals'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numVitals'] > 0 ? false : true : false}">
                         <mat-icon>done</mat-icon> <sub
-                            *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numVitals'] : '' }}</sub>
+                            *ngIf="patientRanges.hasOwnProperty(patient['MRN'])">{{ patientRanges[patient['MRN']]['numVitals'] > 0 ? patientRanges[patient['MRN']]['numVitals'] : '' }}</sub>
                     </div>
                 </ng-container>
                 <ng-template #elseTemplate>
@@ -75,17 +76,17 @@
                 <ng-container
                     *ngIf="patient.hasOwnProperty('Bloodgas') && patient.hasOwnProperty('Vitals'); else elseTemplate">
                     <div
-                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? false : true : false}">
+                        [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? false : true : false}">
                         <mat-icon>done_all</mat-icon> <sub
-                            *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] : '' }}</sub>
+                            *ngIf="patientRanges.hasOwnProperty(patient['MRN'])">{{ patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['numBloodgas'] : '' }}</sub>
                     </div>
                 </ng-container>
                 <ng-template #elseTemplate>
                     <ng-container *ngIf="patient.hasOwnProperty('Bloodgas'); else elseTemplate">
                         <div
-                            [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration']) ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? false : true : false}">
+                            [ngClass]="{'warning-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['maxBloodgas'] == 'warning' : false : false, 'caution-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['maxBloodgas'] == 'caution' : false : false,'good-icon': patientRanges.hasOwnProperty(patient['MRN']) ? patientRanges[patient['MRN']]['numBloodgas'] > 0 ? false : true : false}">
                             <mat-icon>done</mat-icon> <sub
-                                *ngIf="patientRanges.hasOwnProperty(patient['MRN']+patient['Name']+patient['Registration'])">{{ patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']+patient['Name']+patient['Registration']]['numBloodgas'] : '' }}</sub>
+                                *ngIf="patientRanges.hasOwnProperty(patient['MRN'])">{{ patientRanges[patient['MRN']]['numBloodgas'] > 0 ? patientRanges[patient['MRN']]['numBloodgas'] : '' }}</sub>
                         </div>
                     </ng-container>
                     <ng-template #elseTemplate>
@@ -111,11 +112,10 @@
         <ng-container matColumnDef="Delta">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="Registration"> Δ Waiting Time </th>
             <td mat-cell *matCellDef="let patient">
-                <ng-container [class.highlight]="patient['seen']">
+                <ng-container [class.highlight]="patient['Seen']">
                     {{ formatWaitTime(patient) }}
-                    <mat-icon *ngIf="!patient['seen'] && exceedsAcuity(patient)" class="caution-icon no-select">error
-                    </mat-icon>
-                    <mat-icon *ngIf="patient['seen']" class="no-select">pause_circle_outline</mat-icon>
+                    <mat-icon *ngIf="!patient['Seen'] && exceedsAcuity(patient)" class="caution-icon no-select">error</mat-icon>
+                    <mat-icon *ngIf="patient['Seen']" class="no-select">pause_circle_outline</mat-icon>
                 </ng-container>
             </td>
         </ng-container>
@@ -124,7 +124,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header="ML" start="desc" disableClear=true> Suspect? </th>
             <td mat-cell *matCellDef="let patient">
                 <ng-container *ngIf="patient['ML'] < 0; else elseTemplate">
-                    <mat-icon class="warning-icon mat-icon no-select">warning</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']*-1+'*'}}" class="warning-icon mat-icon no-select">warning</mat-icon>
                     <mat-icon (click)="patient['ML'] = patient['ML'] * -1" class="eye-icon mat-icon clickable no-select" (click)="$event.stopPropagation();">remove_red_eye</mat-icon>
                 </ng-container>
                 <ng-template #elseTemplate>
@@ -133,7 +133,7 @@
                     <!-- YELLOW -->
                     <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#fed44c'" (click)="$event.stopPropagation();" (click)="patient['ML'] = patient['ML'] * -1" class="caution-icon mat-icon">error</mat-icon>
                     <!-- NOTHING -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="$event.stopPropagation();" (click)="patient['ML'] = patient['ML'] * -1"> radio_button_unchecked</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="$event.stopPropagation()" (click)="patient['ML'] = patient['ML'] * -1"> radio_button_unchecked</mat-icon>
                 </ng-template>
             </td>
         </ng-container>
@@ -167,7 +167,7 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true;"></tr>
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}"
-            class="example-element-row" [@.disabled]="initialPush" [@rowsAnimation]
+            class="example-element-row" [@.disabled]="initialPush" [@rowsAnimation]="initialPush"
             [class.expanded-row]="expandedElement === patient['MRN']"
             [class.highlight-row]="highlighted === patient"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
