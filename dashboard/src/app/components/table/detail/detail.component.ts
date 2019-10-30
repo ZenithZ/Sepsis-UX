@@ -22,16 +22,17 @@ export class DetailComponent implements OnInit {
   ngOnInit() {
     // add vital information
     let outPatientRanges = {
-      'key': this.patient['MRN'] + this.patient['Name'] + this.patient['Registration'],
-      'numVitals': 0,
-      'numBloodgas': 0,
+      'key': this.patient['MRN'],
+      'numVitals': -1,
+      'numBloodgas': -1,
     };
     let vitalDataArray = [];
     if (this.patient['Vitals']) {
-      this.patient['vitalsStatusWarning'] = 0;
-      this.patient['vitalsStatusCaution'] = 0;
       let vitals: string[] = Object.keys(this.patient['Vitals']);
       let vitalLength = vitals.length;
+      if (vitalLength > 0) {
+        outPatientRanges['numVitals'] = 0
+      }
       for (let i = 0; i < vitalLength; i++) {
         let test = this.patient['Vitals'][vitals[i]];
         let testLength = test.length;
@@ -45,11 +46,9 @@ export class DetailComponent implements OnInit {
           if (test[j]['value'] < this.ranges[vitals[i]]['lowab'] || test[j]['value'] > this.ranges[vitals[i]]['uppab']) {
             outPatientRanges['maxVitals'] = 'warning';
             outPatientRanges['numVitals'] += 1;
-            this.patient['vitalsStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[vitals[i]]['lower'] || test[j]['value'] > this.ranges[vitals[i]]['upper']) {
               outPatientRanges['numVitals'] += 1;
-              this.patient['vitalsStatusCaution'] += 1;
               if (outPatientRanges['maxVitals'] != 'warning') {
                 outPatientRanges['maxVitals'] = 'caution';
               }
@@ -64,10 +63,11 @@ export class DetailComponent implements OnInit {
     // add bloodgas information 
     let bloodgasDataArray = []
     if (this.patient['Bloodgas']) {
-      this.patient['bloodgasStatusWarning'] = 0;
-      this.patient['bloodgasStatusCaution'] = 0;
       let bloodgases: string[] = Object.keys(this.patient['Bloodgas']);
       let bloodgasLength = bloodgases.length;
+      if (bloodgasLength > 0) {
+        outPatientRanges['numBloodgas'] = 0
+      }
       for (let i = 0; i < bloodgasLength; i++) {
         let test = this.patient['Bloodgas'][bloodgases[i]];
         let testLength = test.length;
@@ -82,11 +82,9 @@ export class DetailComponent implements OnInit {
           if (test[j]['value'] < this.ranges[bloodgases[i]]['lowab'] || test[j]['value'] > this.ranges[bloodgases[i]]['uppab']) {
             outPatientRanges['maxBloodgas'] = 'warning';
             outPatientRanges['numBloodgas'] += 1;
-            this.patient['bloodgasStatusWarning'] += 1;
           } else {
             if (test[j]['value'] < this.ranges[bloodgases[i]]['lower'] || test[j]['value'] > this.ranges[bloodgases[i]]['upper']) {
               outPatientRanges['numBloodgas'] += 1;
-              this.patient['bloodgasStatusCaution'] += 1;
               if (outPatientRanges['maxBloodgas'] != 'warning') {
                 outPatientRanges['maxBloodgas'] = 'caution';
               }
