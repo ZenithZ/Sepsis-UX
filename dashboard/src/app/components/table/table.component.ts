@@ -3,8 +3,6 @@ import { animate, state, style, transition, trigger, sequence } from '@angular/a
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { MatIconRegistry } from '@angular/material/icon';
-import { isNull } from 'util';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 
@@ -35,8 +33,8 @@ export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
     private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
-  showExceeded(message, patientName, patient) {
-    this.toastr.warning(message, patientName, {
+  showExceeded(message, patient) {
+    this.toastr.warning(message, patient['Name'], {
       titleClass: 'toast-title',
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
@@ -91,6 +89,7 @@ export class TableComponent implements OnChanges {
         case 'DOB': return this.calculateAge(item['DOB']);
         case 'Registration': return item['Registration'];
         case 'Vitals': return this.getVitalIndicatorValue(item);
+        case 'Bloodgas': return this.getBloodgasIndicatorValue(item);
         case 'ML': return item['ML'] < 0 ? 1 : item['ML']
         default: return item[property];
       }
@@ -99,18 +98,24 @@ export class TableComponent implements OnChanges {
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
-      this.setCurrentTime()
+      this.setCurrentTime();
     }, 60000)
   }
 
   getVitalIndicatorValue(patient) {
-    if (this.patientRanges != null && this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']] != undefined) {
-      let ret = this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']]['numVitals'] > 0 ? this.patientRanges[patient['MRN'] + patient['Name'] + patient['Registration']]['numVitals'] : 0;
-      return ret;
-    } else {
-      return ''
+    if (this.patientRanges != null && this.patientRanges[patient['MRN']] != undefined) {
+      return this.patientRanges[patient['MRN']]['numVitals']
     }
+    return -1
   }
+
+  getBloodgasIndicatorValue(patient) {
+    if (this.patientRanges != null && this.patientRanges[patient['MRN']] != undefined) {
+      return this.patientRanges[patient['MRN']]['numBloodgas']
+    }
+    return -1
+  }
+
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
@@ -135,13 +140,9 @@ export class TableComponent implements OnChanges {
         this.applyFilter(changes.filter.currentValue);
       }
     }
-    if (this.dataSource !== undefined) {
-      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
-    }
   }
 
   ngAfterViewChecked() {
-    
     if (this.dataSource !== undefined) {
       setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
       
@@ -210,27 +211,7 @@ export class TableComponent implements OnChanges {
   }
 
   exceedsAcuity(patient: any) {
-    // let exceeds = this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
-
-    // if ((exceeds && patient['notified'] == null || exceeds && patient['notified'] == false)) {
-    //   this.notifyPatientWaiting(patient);
-    //   patient['notified'] = true;
-
-
-    // } else if (exceeds == false) {
-    //   patient['notified'] = false;
-    // }
-    // return exceeds;
-    let exceeds = patient['ML'] >= 0.8;
-
-    if (exceeds == true && patient['notified'] == false) {
-      this.notifyPatientRisk(patient);
-      patient['notified'] = true;
-    } else if (exceeds == false) {
-      patient['notified'] = false;
-    }
-
-    return exceeds;
+    return this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];;
   }
 
   getStatus(patient: any) {
@@ -241,7 +222,7 @@ export class TableComponent implements OnChanges {
       return "#e53935"; // RED
     } else if (patient['ML'] > 0.4) {
       color = "#fed44c"; // YELLOW
-    }
+    };
     return color;
   }
   ngAfterViewInit() {
