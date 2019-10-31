@@ -278,13 +278,15 @@ export class TableComponent implements OnChanges {
     let message: string = "has a sepsis risk of " + Math.ceil(risk * 100) + "%." + "\n" + "Click to view";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
 
+    if (!patient['Notified']) {
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
       positionClass: 'toast-top-right',
       closeButton: true,
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
-
+    patient['Notified'] = true;
+    }
   }
 
   setPatientRanges(ranges) {
