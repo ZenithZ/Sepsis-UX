@@ -6,6 +6,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
+import { PassThrough } from 'stream';
 
 @Component({
   selector: 'app-table',
@@ -96,21 +97,21 @@ export class TableComponent implements OnChanges {
         default: return item[property];
       }
     }
-    for(let i=0; i<this.patients.length; ++i) {
-      console.log(this.patients[i]['Name'])
-    }
 
     this.dataSource.sort = this.sort;
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
-      // console.log ("Interval")
-      // for(let i=0; i<this.patients.length; ++i) {
-      //   if (this.exceedsRisk(this.patients[i])) {
-      //     this.notifyPatientRisk(this.patients[i])
-      //   }
-      // }
+      for(let i=0; i<this.patients.length; ++i) {
+        if (this.getWaitTime(this.patients[i]) > 86400) {
+          delete this.patients[i];
+        }
+
+        // if (this.exceedsRisk(this.patients[i])) {
+        //   this.notifyPatientRisk(this.patients[i])
+        // }
+      }
     }, 60000)
   }
 
@@ -156,14 +157,6 @@ export class TableComponent implements OnChanges {
     for(let i=0; i<this.patients.length; ++i) {
       if (this.exceedsRisk(this.patients[i])) {
         this.notifyPatientRisk(this.patients[i])
-      }
-
-      if (this.removePaitent(this.patients[i])) {
-        // this.patients.map(item => {
-        //   delete item;
-        //   return item;
-        // });
-        // this.patients.splice(this.patients.indexOf(this.patients), 1);
       }
     }
   }
@@ -342,13 +335,4 @@ export class TableComponent implements OnChanges {
 
     return age;
   }
-
-//Return true if should be removed, false otherwise
-  removePaitent(patient: any) {
-    if(this.getWaitTime(patient) > 86400) {
-      return true;
-    }
-    return false;
-  }
-
 }
