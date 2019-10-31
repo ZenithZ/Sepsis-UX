@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-table',
@@ -151,10 +152,14 @@ export class TableComponent implements OnChanges {
         this.applyFilter(changes.filter.currentValue);
       }
     }
-    
+
     for(let i=0; i<this.patients.length; ++i) {
       if (this.exceedsRisk(this.patients[i])) {
         this.notifyPatientRisk(this.patients[i])
+      }
+
+      if (this.removePaitent(this.patients[i])) {
+        this.patients.splice(this.patients[i],1);
       }
     }
   }
@@ -332,6 +337,14 @@ export class TableComponent implements OnChanges {
     var age = Math.floor(ageInSec / 31536000);
 
     return age;
+  }
+
+//Return true if should be removed, false otherwise
+  removePaitent(patient: any) {
+    if(this.getWaitTime(patient) > 86400) {
+      return true;
+    }
+    return false;
   }
 
 }
