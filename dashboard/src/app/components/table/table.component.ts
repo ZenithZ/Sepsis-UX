@@ -32,7 +32,7 @@ import { take } from 'rxjs/operators';
 export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
+    public changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
   
   showExceeded(message, patient) {
     this.toastr.warning(message, patient['Name'], {

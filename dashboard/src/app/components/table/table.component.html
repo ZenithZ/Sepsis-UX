@@ -34,7 +34,7 @@
             <td mat-cell *matCellDef="let patient">
                 <mat-checkbox color="primary" (click)="$event.stopPropagation();"
                     (change)="patient.hasOwnProperty('Seen') ? patient['Seen'] = !patient['Seen'] : patient['Seen'] = true; undoSeen(patient); " 
-                    [checked]="patient['seen']">
+                    [checked]="patient['Seen']">
                 </mat-checkbox>
             </td>
         </ng-container>
