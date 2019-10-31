@@ -5,8 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { NONE_TYPE } from '@angular/compiler/src/output/output_ast';
-import { PassThrough } from 'stream';
 
 @Component({
   selector: 'app-table',
@@ -72,7 +70,6 @@ export class TableComponent implements OnChanges {
   atsGroup: number;
   displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
-  highlighted: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
 
@@ -103,15 +100,6 @@ export class TableComponent implements OnChanges {
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
-      for(let i=0; i<this.patients.length; ++i) {
-        if (this.getWaitTime(this.patients[i]) > 86400) {
-          delete this.patients[i];
-        }
-
-        // if (this.exceedsRisk(this.patients[i])) {
-        //   this.notifyPatientRisk(this.patients[i])
-        // }
-      }
     }, 60000)
   }
 
@@ -151,6 +139,7 @@ export class TableComponent implements OnChanges {
     if (changes.hasOwnProperty('filter')) {
       if (changes.filter.currentValue !== undefined) {
         this.applyFilter(changes.filter.currentValue);
+        this.changeDetector.detectChanges()
       }
     }
 
@@ -158,13 +147,6 @@ export class TableComponent implements OnChanges {
       if (this.exceedsRisk(this.patients[i])) {
         this.notifyPatientRisk(this.patients[i])
       }
-    }
-  }
-
-  ngAfterViewChecked() {
-    if (this.dataSource !== undefined) {
-      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
-      
     }
   }
 
@@ -256,12 +238,6 @@ export class TableComponent implements OnChanges {
       color = "#fed44c"; // YELLOW
     };
     return color;
-  }
-  ngAfterViewInit() {
-    if (this.dataSource !== undefined) {
-      setTimeout(() => this.dataSource._updateChangeSubscription(), 200);
-    }
-  
   }
 
   notifyPatientWaiting(patient: any) {

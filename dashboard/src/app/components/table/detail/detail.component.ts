@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import sampleRanges from '../../../../../REST-ranges.json';
-import { keyframes } from '@angular/animations';
 
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
-  styleUrls: ['./detail.component.css']
+  styleUrls: ['./detail.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DetailComponent implements OnInit {
 
@@ -15,8 +15,6 @@ export class DetailComponent implements OnInit {
   @Output() patientRanges = new EventEmitter();
 
   displayedColumns: string[] = ['Test', 'Value', 'Lower Interval', 'Upper Interval', 'Time'];
-  // vitalSource: MatTableDataSource<any>;
-  // bgSource: MatTableDataSource<any>;
 
   ranges: any = sampleRanges;
   vitalsTests: any;

@@ -2,7 +2,7 @@
     <ng-container *ngIf="patient.hasOwnProperty('Vitals')">
         <div class="title">Vitals</div>
         <mat-accordion>
-            <mat-expansion-panel *ngFor="let testIndex of vitalsTimes">
+            <mat-expansion-panel *ngFor="let testIndex of vitalsTimes" class="mat-elevation-z0 light-grey">
                 <mat-expansion-panel-header>
                     <mat-panel-title class="title">{{ vitalsTests[testIndex][0]['time'] }}</mat-panel-title>
                     <mat-panel-description class="description">{{ patient['First Name'] + ' has ' + countOutOfRange(vitalsTests[testIndex]) }} {{ countOutOfRange(vitalsTests[testIndex]) == 1 ? 'value' : 'values' }} out of range</mat-panel-description>
@@ -60,7 +60,7 @@
     <ng-container *ngIf="patient.hasOwnProperty('Bloodgas')">
         <div class="title">Bloodgas</div>
         <mat-accordion>
-            <mat-expansion-panel *ngFor="let testIndex of bloodgasTimes">
+            <mat-expansion-panel *ngFor="let testIndex of bloodgasTimes" class="mat-elevation-z0 light-grey">
                 <mat-expansion-panel-header>
                     <mat-panel-title class="title">{{ bloodgasTests[testIndex][0]['time'] }}</mat-panel-title>
                     <mat-panel-description class="description">{{ patient['First Name'] + ' has ' + countOutOfRange(bloodgasTests[testIndex]) }} {{ countOutOfRange(bloodgasTests[testIndex]) == 1 ? 'value' : 'values' }} out of range</mat-panel-description>

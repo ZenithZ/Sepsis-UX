@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
     let dLen = this.data.length;
     for (let i = 0; i < dLen; i++) {
       let p = this.data[i]
-      p['Registration'] = '2019-10-21 15:00:00' 
       this.addPatient(p)
     }
 
@@ -55,7 +54,6 @@ export class AppComponent implements OnInit {
 
   addPatient(patient: any) {
     // console.log(patient)
-    patient['Registration'] = '2019-10-31 15:00:00' 
     this.combinedats.push(patient);
     this.combinedats = [...this.combinedats];
     this.ats[patient['ATS']].push(patient);

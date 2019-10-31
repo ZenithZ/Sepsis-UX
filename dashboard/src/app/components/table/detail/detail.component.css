@@ -6,6 +6,14 @@
     background-color: transparent;
 }
 
+.light-grey {
+    background-color: #eceff1;
+}
+
+div.mat-expansion-panel-body {
+    background-color: white;
+}
+
 .title {
     font-weight: 600;
     padding: 15px 0px;
@@ -19,12 +27,12 @@
     margin: 20px 0 0 20px;
 }
 
-mat-icon {
-    width: 18px;
-    font-size: 18px;
-    height: 18px;
-    vertical-align: -3px;
-}
+.mat-icon {
+    vertical-align: -4px;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
 
 .caution-icon {
     color: #feb24c;
