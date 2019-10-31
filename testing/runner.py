@@ -22,7 +22,7 @@ if __name__ == '__main__':
     try:
         test.before()
     except:
-        tests.after()
+        test.after()
         exit()
 
     tests = test.get_testcases()
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         try:
             run_test(testcase.name, testcase.test, testcase.message)
         except:
-            tests.after()
+            test.after()
             exit()
     
     test.after()
