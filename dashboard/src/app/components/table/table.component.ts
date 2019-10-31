@@ -105,11 +105,11 @@ export class TableComponent implements OnChanges {
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
       // console.log ("Interval")
-      for(let i=0; i<this.patients.length; ++i) {
-        if (this.exceedsRisk(this.patients[i])) {
-          this.notifyPatientRisk(this.patients[i])
-        }
-      }
+      // for(let i=0; i<this.patients.length; ++i) {
+      //   if (this.exceedsRisk(this.patients[i])) {
+      //     this.notifyPatientRisk(this.patients[i])
+      //   }
+      // }
     }, 60000)
   }
 
@@ -149,6 +149,12 @@ export class TableComponent implements OnChanges {
     if (changes.hasOwnProperty('filter')) {
       if (changes.filter.currentValue !== undefined) {
         this.applyFilter(changes.filter.currentValue);
+      }
+    }
+    
+    for(let i=0; i<this.patients.length; ++i) {
+      if (this.exceedsRisk(this.patients[i])) {
+        this.notifyPatientRisk(this.patients[i])
       }
     }
   }
