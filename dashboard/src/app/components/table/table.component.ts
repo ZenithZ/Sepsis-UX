@@ -150,6 +150,11 @@ export class TableComponent implements OnChanges {
     }
   }
 
+  overrideRisk(patient: any) {
+    patient['ML'] = patient['ML'] * -1
+    this.dataSource._updateChangeSubscription();
+  }
+
   undoSeen(patient: any) {
     let config = new MatSnackBarConfig();
     config.verticalPosition = 'bottom';

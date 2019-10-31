@@ -125,15 +125,15 @@
             <td mat-cell *matCellDef="let patient">
                 <ng-container *ngIf="patient['ML'] < 0; else elseTemplate">
                     <mat-icon matTooltip="{{patient['ML']*-1+'*'}}" class="warning-icon mat-icon no-select">warning</mat-icon>
-                    <mat-icon (click)="patient['ML'] = patient['ML'] * -1" class="eye-icon mat-icon clickable no-select" (click)="$event.stopPropagation();">remove_red_eye</mat-icon>
+                    <mat-icon (click)="overrideRisk(patient)" class="eye-icon mat-icon clickable no-select" (click)="$event.stopPropagation();">remove_red_eye</mat-icon>
                 </ng-container>
                 <ng-template #elseTemplate>
                     <!-- RED -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#e53935'" (click)="$event.stopPropagation();" (click)="patient['ML'] = patient['ML'] * -1" class="warning-icon no-select">warning</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#e53935'" (click)="$event.stopPropagation();" (click)="overrideRisk(patient)" class="warning-icon no-select">warning</mat-icon>
                     <!-- YELLOW -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#fed44c'" (click)="$event.stopPropagation();" (click)="patient['ML'] = patient['ML'] * -1" class="caution-icon mat-icon">error</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#fed44c'" (click)="$event.stopPropagation();" (click)="overrideRisk(patient)" class="caution-icon mat-icon">error</mat-icon>
                     <!-- NOTHING -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="$event.stopPropagation()" (click)="patient['ML'] = patient['ML'] * -1"> radio_button_unchecked</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="$event.stopPropagation()" (click)="overrideRisk(patient)"> radio_button_unchecked</mat-icon>
                 </ng-template>
             </td>
         </ng-container>
