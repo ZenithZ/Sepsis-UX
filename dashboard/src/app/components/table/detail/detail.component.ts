@@ -132,11 +132,7 @@ export class DetailComponent implements OnInit {
         testTimes.push(index);
         testsByTime[index] = [tests[i]];
       } else {
-        if (!tests[i]['outOfRange']) {
-          testsByTime[index].push(tests[i]);
-        } else {
-          testsByTime[index].unshift(tests[i]);
-        }
+        testsByTime[index].push(tests[i]);
       }
     }
 
