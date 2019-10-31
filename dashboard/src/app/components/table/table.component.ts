@@ -163,7 +163,7 @@ export class TableComponent implements OnChanges {
         //   delete item;
         //   return item;
         // });
-        this.patients.splice(this.patients.indexOf(this.patients), 1);
+        // this.patients.splice(this.patients.indexOf(this.patients), 1);
       }
     }
   }
