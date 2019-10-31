@@ -90,7 +90,7 @@ export class TableComponent implements OnChanges {
         case 'Registration': return item['Registration'];
         case 'Vitals': return this.getVitalIndicatorValue(item);
         case 'Bloodgas': return this.getBloodgasIndicatorValue(item);
-        case 'ML': return item['ML'] < 0 ? 1 : item['ML']
+        case 'ML': return item.hasOwnProperty('Overridden') ? item['Overridden'] ? 1 : item['ML'] : item['ML']
         default: return item[property];
       }
     }
@@ -152,7 +152,11 @@ export class TableComponent implements OnChanges {
   }
 
   overrideRisk(patient: any) {
-    patient['ML'] = patient['ML'] * -1
+    if (!patient.hasOwnProperty('Overridden')) {
+      patient['Overridden'] = true;
+    } else {
+      patient['Overridden'] = !patient['Overridden'];
+    }
     this.dataSource._updateChangeSubscription();
   }
 
