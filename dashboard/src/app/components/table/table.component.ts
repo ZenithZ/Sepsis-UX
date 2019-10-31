@@ -32,14 +32,13 @@ import { take } from 'rxjs/operators';
 export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
-    public changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
+    private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
 
   showExceeded(message, patient) {
     this.toastr.warning(message, patient['Name'], {
       titleClass: 'toast-title',
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
-
   }
 
   @Input() title: string;
@@ -70,6 +69,7 @@ export class TableComponent implements OnChanges {
   atsGroup: number;
   displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
+  highlighted: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
 
@@ -103,6 +103,12 @@ export class TableComponent implements OnChanges {
     }, 60000)
   }
 
+  ngAfterViewChecked(): void {
+    //Called after every check of the component's view. Applies to components only.
+    //Add 'implements AfterViewChecked' to the class.
+
+  }
+
   getVitalIndicatorValue(patient) {
     if (this.patientRanges != null && this.patientRanges[patient['MRN']] != undefined) {
       return this.patientRanges[patient['MRN']]['numVitals']
@@ -120,6 +126,7 @@ export class TableComponent implements OnChanges {
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
+    this.highlighted = patient;
     elmnt.scrollIntoView(
       {
         behavior: 'smooth',
@@ -135,10 +142,11 @@ export class TableComponent implements OnChanges {
         this.dataSource.data = [...changes.patients.currentValue]
         this.changeDetector.detectChanges()
 
-        for (let i = 1; i < this.patients.length; ++i) {
-          if (this.exceedsRisk(this.patients[i])) {
-            this.notifyPatientRisk(this.patients[i])
-          }
+
+      }
+      for (let i = 1; i < this.patients.length; ++i) {
+        if (this.exceedsRisk(this.patients[i])) {
+          this.notifyPatientRisk(this.patients[i])
         }
       }
     }
@@ -270,7 +278,6 @@ export class TableComponent implements OnChanges {
     let message: string = "has a sepsis risk of " + Math.ceil(risk * 100) + "%." + "\n" + "Click to view";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
 
-
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
       positionClass: 'toast-top-right',
@@ -278,14 +285,6 @@ export class TableComponent implements OnChanges {
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
 
-  }
-
-  highlight(patient: any) {
-    patient['highlight'] = true;
-  }
-
-  undoHighlight(patient: any) {
-    patient['highlight'] = false;
   }
 
   setPatientRanges(ranges) {
