@@ -159,7 +159,11 @@ export class TableComponent implements OnChanges {
       }
 
       if (this.removePaitent(this.patients[i])) {
-        this.patients.splice(this.patients[i],1);
+        // this.patients.map(item => {
+        //   delete item;
+        //   return item;
+        // });
+        this.patients.splice(this.patients.indexOf(this.patients[i]), 1);
       }
     }
   }
