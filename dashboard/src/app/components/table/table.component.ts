@@ -33,7 +33,7 @@ export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
     public changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
-  
+
   showExceeded(message, patient) {
     this.toastr.warning(message, patient['Name'], {
       titleClass: 'toast-title',
@@ -134,20 +134,21 @@ export class TableComponent implements OnChanges {
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
         this.changeDetector.detectChanges()
+
+        for (let i = 1; i < this.patients.length; ++i) {
+          if (this.exceedsRisk(this.patients[i])) {
+            this.notifyPatientRisk(this.patients[i])
+          }
+        }
       }
     }
     if (changes.hasOwnProperty('filter')) {
       if (changes.filter.currentValue !== undefined) {
         this.applyFilter(changes.filter.currentValue);
-        this.changeDetector.detectChanges()
+        this.dataSource._updateChangeSubscription();
       }
     }
 
-    for(let i=0; i<this.patients.length; ++i) {
-      if (this.exceedsRisk(this.patients[i])) {
-        this.notifyPatientRisk(this.patients[i])
-      }
-    }
   }
 
   overrideRisk(patient: any) {
