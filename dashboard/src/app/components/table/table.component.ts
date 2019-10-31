@@ -303,5 +303,4 @@ export class TableComponent implements OnChanges {
 
     return age;
   }
-
 }
