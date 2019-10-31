@@ -33,6 +33,7 @@ export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
     private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
+  
   showExceeded(message, patient) {
     this.toastr.warning(message, patient['Name'], {
       titleClass: 'toast-title',
@@ -94,11 +95,21 @@ export class TableComponent implements OnChanges {
         default: return item[property];
       }
     }
+    for(let i=0; i<this.patients.length; ++i) {
+      console.log(this.patients[i]['Name'])
+    }
+
     this.dataSource.sort = this.sort;
     this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
+      // console.log ("Interval")
+      for(let i=0; i<this.patients.length; ++i) {
+        if (this.exceedsRisk(this.patients[i])) {
+          this.notifyPatientRisk(this.patients[i])
+        }
+      }
     }, 60000)
   }
 
@@ -211,7 +222,20 @@ export class TableComponent implements OnChanges {
   }
 
   exceedsAcuity(patient: any) {
-    return this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];;
+    return this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
+  }
+
+  exceedsRisk(patient: any) {
+    let exceeds = patient['ML'] >= 0.8;
+
+    if (exceeds == true && patient['notified'] == false) {
+      this.notifyPatientRisk(patient);
+      patient['notified'] = true;
+    } else if (exceeds == false) {
+      patient['notified'] = false;
+    }
+
+    return exceeds;
   }
 
   getStatus(patient: any) {
