@@ -14,9 +14,9 @@ def get_driver():
     capabilities = DesiredCapabilities.CHROME
     capabilities['loggingPrefs'] = {'browser': 'ALL'}
     options = webdriver.ChromeOptions()
-    options.add_argument("headless")
+    # options.add_argument("headless")
     options.add_argument("window-size=1200x600")
-    return webdriver.Chrome(desired_capabilities=capabilities, options=options)
+    return webdriver.Chrome(executable_path="./chromedriver", desired_capabilities=capabilities, options=options)
 
 class Test:
     def __init__(self, name, test, message):
