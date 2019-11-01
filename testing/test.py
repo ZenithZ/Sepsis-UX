@@ -25,10 +25,9 @@ def get_driver():
     raise Exception("Failed to instantiate driver")
 
 class Test:
-    def __init__(self, name, test, message):
+    def __init__(self, name, test):
         self.name = name
         self.test = test
-        self.message = message
 
 def test_build():
     stdout = os.dup(sys.stdout.fileno())
@@ -56,7 +55,8 @@ def test_build():
     log_file.close()
     log_file = open(file_loc + '/tests.log')
     
-    return ' successful' in log_file.readlines()[-1].lower()
+    res = ' successful' in log_file.readlines()[-1].lower()
+    return res, 'Build unsuccessful' if not res else None
 
 def test_page_load():
     global DRIVER
@@ -64,7 +64,8 @@ def test_page_load():
 
     DRIVER.get(URL)
     errors = DRIVER.get_log('browser')
-    return len(errors) == 0
+    res = len(errors) == 0
+    return res, 'Console errors present' if not res else None
 
 def test_view_toggle():
     global DRIVER
@@ -75,17 +76,13 @@ def test_view_toggle():
     orig_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     orig_unseen_tables = DRIVER.find_elements_by_xpath("/html/body/div[2]/div[2]/div/div")
     if not button or not orig_all_tables or not orig_unseen_tables:
-        print(f'{not button}')
-        print(f'{not orig_all_tables}')
-        print(f'{not orig_unseen_tables}')
-        return False
+        return False, 'Button, or table not present'
     
     n_tables = len(orig_all_tables)
     orig_diff = n_tables - len(orig_unseen_tables)
     new_diff = len(orig_all_tables) - orig_diff
     if orig_diff != 1 and orig_diff != 4:
-        print('here 1')
-        return False
+        return False, 'Incorrect number of tables'
 
     button.click()
     
@@ -93,12 +90,10 @@ def test_view_toggle():
     new_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     new_unseen_tables = DRIVER.find_elements_by_xpath("//app-table[contains(@class, 'unseen')]")
     if not new_all_tables or not new_unseen_tables or not len(new_all_tables) == n_tables:
-        print('here 3')
-        return False
+        return False, 'At least one table that should be present is not present'
     change = len(new_all_tables) - len(new_unseen_tables)
     if not change == new_diff:
-        print('here 4')
-        return False
+        return False, 'Incorrect number of tables'
 
     button.click()
 
@@ -106,21 +101,19 @@ def test_view_toggle():
     final_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     final_unseen_tables = DRIVER.find_elements_by_xpath("//app-table[contains(@class, 'unseen')]")
     if not final_all_tables or not new_unseen_tables or not len(final_all_tables) == n_tables:
-        print('here 5')
-        return False
+        return False, 'At least one table that should be present is not present'
     change = len(final_all_tables) - len(final_unseen_tables)
     if not change == orig_diff:
-        print('here 6')
-        return False
+        return False, 'Incorrect number of tables'
     
-    return True
+    return True, None
 
 def test_name_search():
     global DRIVER
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
-        return False
+        return False, 'Search did not produce correct results'
 
     search.clear()
     search_name = "john"
@@ -129,7 +122,7 @@ def test_name_search():
     if len(names) > 0:
         for name in names:
             if len(name.text) > 1 and not search_name in name.text.lower():
-                return False
+                return False, 'Search did not produce correct results'
 
     search.clear()
     search_name = "ee"
@@ -138,25 +131,25 @@ def test_name_search():
     if len(names) > 0:
         for name in names:
             if not search_name in name.text.lower():
-                return False
+                return False, 'Search did not produce correct results'
 
     search.clear()
     search_name = "asjdfioasjfioejaiofjsiofjoi"
     search.send_keys(search_name)
     names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
     if len(names) > 0:
-        return False
+        return False, 'Search did not produce correct results'
 
     search.clear()
     search.send_keys(Keys.BACKSPACE)
-    return True
+    return True, None
 
 def test_MRN_search():
     global DRIVER
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
-        return False
+        return False, 'Search did not produce correct results'
     
     search.clear()
     search_MRN = "1091439687"
@@ -165,19 +158,19 @@ def test_MRN_search():
     if len(mrns) > 0:
         for mrn in mrns:
             if len(mrn.text) > 1 and not search_MRN in mrn.text.lower():
-                return False
+                return False, 'Search did not produce correct results'
 
     search.clear()
     search_MRN = "99999999999999999999999999"
     search.send_keys(search_MRN)
     mrns = DRIVER.find_elements_by_xpath("//td[contains(@class, 'MRN')]")
     if len(mrns) > 0:
-        return False
+        return False, 'Search did not produce correct results'
 
     search.clear()
     search.send_keys(Keys.BACKSPACE)
 
-    return True
+    return True, None
 
 def test_sort_waittime():
     global DRIVER
@@ -205,11 +198,11 @@ def test_sort_waittime():
         current_wait = days + hours + minutes
         if current_wait > wait:
             print(prev, time, current_wait, wait)
-            return False
+            return False, 'Waiting time does not get correctly sorted'
         wait = current_wait
         prev = time
 
-    return True
+    return True, None
 
 def before():
     global DRIVER
@@ -217,14 +210,21 @@ def before():
 
     loc = '/bin/bash'
     
-    pid = os.fork()
-    if pid == 0:
-        os.execl(loc, 'bash', 'serve.sh')
+    try:
+        pid = os.fork()
+        if pid == 0:
+            os.execl(loc, 'bash', 'serve.sh')
+    except:
+        return False, 'Failed to run ng serve'
 
-    DRIVER = get_driver()
+    try:
+        DRIVER = get_driver()
+    except:
+        return False, 'Could not instantiate ChromeDriver'
+    
     DRIVER.get(URL)
 
-    return True
+    return True, None
 
 def after():
     global DRIVER
@@ -239,11 +239,11 @@ def after():
 
 def get_testcases():
     tests = []
-    tests.append(Test('Build', test_build, 'Build unsuccessful'))
-    tests.append(Test('Test Page Load', test_page_load, 'Console errors present'))
-    # tests.append(Test('Test Tables Toggle', test_view_toggle, 'Failed to toggle views'))
-    tests.append(Test('Test Name Search', test_name_search, 'Search did not produce correct results'))
-    tests.append(Test('Test MRN Search', test_MRN_search, 'Search did not produce correct results'))
-    # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime, 'Waiting time does not get correctly sorted'))
+    tests.append(Test('Build', test_build))
+    tests.append(Test('Test Page Load', test_page_load))
+    # tests.append(Test('Test Tables Toggle', test_view_toggle)
+    tests.append(Test('Test Name Search', test_name_search))
+    tests.append(Test('Test MRN Search', test_MRN_search))
+    # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
 
     return tests

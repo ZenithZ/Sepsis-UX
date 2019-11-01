@@ -7,9 +7,9 @@ cyan = '\x1B[36m'
 bold = '\x1B[1m'
 default = '\x1B[0m'
 
-def run_test(name, testcase, message):
+def run_test(name, testcase):
     print(f'{blue}Running test: {bold}{cyan}{name}{default}')
-    res = testcase()
+    res, message = testcase()
 
     if res:
         print(f'{bold}{blue}TEST: {green}PASS{default}')
@@ -28,7 +28,7 @@ if __name__ == '__main__':
     tests = test.get_testcases()
     for testcase in tests:
         try:
-            run_test(testcase.name, testcase.test, testcase.message)
+            run_test(testcase.name, testcase.test)
         except Exception as e:
             print(f'{bold}{red}Error running test {testcase.name}: {e}')
             test.after()
