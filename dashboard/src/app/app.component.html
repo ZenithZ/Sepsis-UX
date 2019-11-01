@@ -6,15 +6,18 @@
     <!-- <button class="style-button" matSuffix (click)="combined = !combined;$event.stopPropagation()">Combined/Seperate View</button> -->
     <mat-icon class="clickable no-select" (click)="$event.stopPropagation();" matSuffix [matMenuTriggerFor]="menu">view_day</mat-icon>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item  (click)="combined = true;$event.stopPropagation()" >Combined</button>
-      <button mat-menu-item  (click)="combined = false;$event.stopPropagation()">Separate</button>
+      <button mat-menu-item  (click)="view = 'combined';$event.stopPropagation()" >Combined</button>
+      <button mat-menu-item  (click)="view = 'separate';$event.stopPropagation()">Separate</button>
     </mat-menu>
 
   </mat-form-field>
-    <!-- <app-table [class.unseen]="combined" [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
-    <app-table [class.unseen]="combined" [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
-    <app-table [class.unseen]="combined" [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
-    <app-table [class.unseen]="combined" [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table> -->
-    <!-- <app-table [class.unseen]="combined" [title]="'Uncategorised'" [patients]="ats[6]" [filter]="filter"></app-table> -->
-    <app-table [class.unseen]="!combined" [title]="'Combined'" [patients]="combinedats" [filter]="filter"></app-table>
+  <div *ngIf="view == 'separate'">
+    <app-table [title]="'ATS 2'" [patients]="ats[2]" [filter]="filter"></app-table>
+    <app-table [title]="'ATS 3'" [patients]="ats[3]" [filter]="filter"></app-table>
+    <app-table [title]="'ATS 4'" [patients]="ats[4]" [filter]="filter"></app-table>
+    <app-table [title]="'ATS 5'" [patients]="ats[5]" [filter]="filter"></app-table>
+  </div>
+  <div *ngIf="view == 'combined'">
+    <app-table [title]="'Combined'" [patients]="combinedats" [filter]="filter"></app-table>
+  </div>
 </div>

@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   }
   combinedats = []
 
-  combined: boolean = true;
+  view: string = 'combined';
   data = sampleData.slice(0, 7);
   filter: string;
 

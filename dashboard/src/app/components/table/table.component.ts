@@ -69,7 +69,6 @@ export class TableComponent implements OnChanges {
   atsGroup: number;
   displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
-  highlighted: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
 
@@ -126,7 +125,7 @@ export class TableComponent implements OnChanges {
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
-    this.highlighted = patient;
+    patient['Highlight'] = true;
     elmnt.scrollIntoView(
       {
         behavior: 'smooth',
@@ -141,13 +140,9 @@ export class TableComponent implements OnChanges {
         this.initialPush = false;
         this.dataSource.data = [...changes.patients.currentValue]
         this.changeDetector.detectChanges()
-
-
       }
       for (let i = 1; i < this.patients.length; ++i) {
-        if (this.exceedsRisk(this.patients[i])) {
-          this.notifyPatientRisk(this.patients[i])
-        }
+        this.exceedsRisk(this.patients[i]);
       }
     }
     if (changes.hasOwnProperty('filter')) {
@@ -236,13 +231,10 @@ export class TableComponent implements OnChanges {
   exceedsRisk(patient: any) {
     let exceeds = patient['ML'] >= 0.8;
 
-    if (exceeds == true && patient['notified'] == false) {
+    if (exceeds == true && !patient['Notified']) {
       this.notifyPatientRisk(patient);
-      patient['notified'] = true;
-    } else if (exceeds == false) {
-      patient['notified'] = false;
+      patient['Notified'] = true;
     }
-
     return exceeds;
   }
 
@@ -278,15 +270,12 @@ export class TableComponent implements OnChanges {
     let message: string = "has a sepsis risk of " + Math.ceil(risk * 100) + "%." + "\n" + "Click to view";
     let patientName: string = patient['First Name'] + " " + patient['Last Name'];
 
-    if (!patient['Notified']) {
     this.toastr.warning(message, patientName, {
       titleClass: 'toast-title',
       positionClass: 'toast-top-right',
       closeButton: true,
       onActivateTick: true
     }).onTap.pipe(take(1)).subscribe(() => this.toasterClickedHandler(patient));
-    patient['Notified'] = true;
-    }
   }
 
   setPatientRanges(ranges) {

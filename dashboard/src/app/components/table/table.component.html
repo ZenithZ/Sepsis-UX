@@ -169,9 +169,9 @@
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}"
             class="example-element-row" [@.disabled]="initialPush || this.filter.length > 0" [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient['MRN']"
-            [class.highlight-row]="highlighted === patient"
+            [class.highlight-row]="patient['Highlight']"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
-            (click)="highlighted = null"
+            (click)="patient['Highlight'] = false"
             [class.seen]="patient['Seen'] && this.filter.length <= 0" (click)="setExpanded(patient) ">
         </tr>
         <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
