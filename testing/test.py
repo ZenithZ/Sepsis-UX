@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 import sys
 import psutil
 import time
+import string
 
 URL = 'http://localhost:4200'
 PROCNAME = "ng serve"
@@ -295,7 +296,7 @@ def test_sort_name():
     # ## Test descending order
     button.click()
     tables_r = DRIVER.find_elements_by_tag_name("app-table")
-    tables_r = [t for t in tables if "unseen" not in t.get_attribute('class')]
+    tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
     
     patients_r = []
     for t in tables:
