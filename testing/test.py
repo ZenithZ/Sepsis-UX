@@ -204,6 +204,66 @@ def test_sort_waittime():
 
     return True, None
 
+#------_---_---_---@ZenithZ---_---_---_----- -
+# Item 5, 10, 14, 17
+# Item 5: Test results of a patient are indicated (by colour) on the left of the patient summary.
+# Test 12: Red if any test results are critically out of range.
+def test_critically_outofrange_red():
+    global DRIVER
+    return True, None
+# Test 13: Yellow if any test results are out of range and no results are critically out of range.
+def test_normal_outofrange_yellow():
+    global DRIVER
+    return True, None
+
+# Item 10: A nurse can toggle whether a patient has been seen
+# Test 26: Search ' ' will reveal all patients, both seen and unseen.
+def test_reveal_all():
+    global DRIVER
+    return True, None
+# Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients).
+def test_unseentoseen():
+    global DRIVER
+    return True, None
+# Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients).
+def test_seentounseen():
+    global DRIVER
+    return True, None
+# Test 29: Patients will remain seen if views are switched back and forth.
+def seen_switching_views():
+    global DRIVER
+    return True, None
+
+# Item 14: Patients can be sorted by their age
+# Test 43: Clicking on the age column will sort patients by their age. (then every third click).
+def test_age_sort():
+    global DRIVER
+    return True, None
+# Test 44: Clicking on the age column twice will sort patients in reverse order by their age. (then every third click).
+def test_age_reverse_sort():
+    global DRIVER
+    return True, None
+# Test 45: Order is preserved when switching views.
+def test_age_preserved_order():
+    global DRIVER
+    return True, None
+
+# Item 17: Patients can be sorted by their LOC
+# Test 52: Clicking on the LOC column will sort patients by their LOC. (then every third click).
+def test_LOC_sort():
+    global DRIVER
+    return True, None
+# Test 53: Clicking on the LOC column twice will sort patients in reverse order by their LOC. (then every third click).
+def test_LOC_reverse_sort():
+    global DRIVER
+    return True, None
+# Test 54: Order is preserved when switching views.
+def test_LOC_preserved_order():
+    global DRIVER
+    return True, None
+
+#------_---_---_---@ZenithZ---_---_---_------
+
 def before():
     global DRIVER
     global URL
@@ -245,5 +305,23 @@ def get_testcases():
     tests.append(Test('Test Name Search', test_name_search))
     tests.append(Test('Test MRN Search', test_MRN_search))
     # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
+
+    # -----_------@ZenithZ------_-------
+    #Item 5
+    tests.append(Test('Test Critically Out of Range Display Red', test_critically_outofrange_red)) #Test 13
+    tests.append(Test('Test Normal Out of Range Display Yellow', test_normal_outofrange_yellow)) #Test 14
+    #Item 10
+    tests.append(Test('Test Removing seen paitents from view', test_reveal_all)) #Test 27
+    tests.append(Test('Test Unremoving unseen paitents to view', test_seentounseen)) #Test 28
+    tests.append(Test('Test perserving seen/unseen status toggling between views', test_critically_outofrange_red)) #Test 29
+    #Item 14
+    tests.append(Test('Test Sort by Age, Assending 1/3 click', test_age_sort)) #Test 43
+    tests.append(Test('Test Sort by Age, Desending 2/4 click', test_age_reverse_sort)) #Test 44
+    tests.append(Test('Test Sort of Age preserved toggling between views', test_age_preserved_order)) #Test 45
+    #Item 17
+    tests.append(Test('Test Sort by LOC, Assending 1/3 click', test_LOC_sort)) #Test 52
+    tests.append(Test('Test Sort by LOC, Desending 2/4 click', test_LOC_reverse_sort)) #Test 53
+    tests.append(Test('Test Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
+    # -----_------@ZenithZ------_-------
 
     return tests
