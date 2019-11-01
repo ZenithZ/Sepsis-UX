@@ -29,7 +29,8 @@ if __name__ == '__main__':
     for testcase in tests:
         try:
             run_test(testcase.name, testcase.test, testcase.message)
-        except:
+        except Exception as e:
+            print(f'{bold}{red}Error running test {testcase.name}: {e}')
             test.after()
             exit()
     
