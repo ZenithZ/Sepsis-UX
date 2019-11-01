@@ -5,7 +5,6 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
-import { MatTab } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-table',
@@ -141,11 +140,11 @@ export class TableComponent implements OnChanges {
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
         this.initialPush = false;
-        this.dataSource.data = [...this.dataSource.data];
-        this.changeDetector.detectChanges()
-      }
-      for (let i = 0; i < this.patients.length; i++) {
-        this.exceedsRisk(this.patients[i]);
+        this.dataSource.data = [...this.patients];
+        this.dataSource._updateChangeSubscription();
+        for (let i = 0; i < this.patients.length; i++) {
+          this.exceedsRisk(this.patients[i]);
+        }
       }
     }
     if (changes.hasOwnProperty('filter')) {

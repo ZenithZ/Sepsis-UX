@@ -7,13 +7,6 @@ import sampleData from '../../REST-data.json';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  ats = {
-    2: [],
-    3: [],
-    4: [],
-    5: [],
-    // 6: [],
-  }
   combinedats = []
 
   view: string = 'Combined';
@@ -28,32 +21,30 @@ export class AppComponent implements OnInit {
       this.addPatient(p)
     }
 
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[8]);
-    // }, 10000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[9]);
-    // }, 15000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[10]);
-    // }, 17000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[11]);
-    // }, 23000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[12]);
-    // }, 30000);
-    // setTimeout(() => {
-    //   this.addPatient(sampleData[13]);
-    // }, 35000);
+    setTimeout(() => {
+      this.addPatient(sampleData[8]);
+    }, 10000);
+    setTimeout(() => {
+      this.addPatient(sampleData[9]);
+    }, 15000);
+    setTimeout(() => {
+      this.addPatient(sampleData[10]);
+    }, 17000);
+    setTimeout(() => {
+      this.addPatient(sampleData[11]);
+    }, 23000);
+    setTimeout(() => {
+      this.addPatient(sampleData[12]);
+    }, 30000);
+    setTimeout(() => {
+      this.addPatient(sampleData[13]);
+    }, 35000);
   }
 
   addPatient(patient: any) {
     // console.log(patient)
     this.combinedats.push(patient);
     this.combinedats = [...this.combinedats];
-    this.ats[patient['ATS']].push(patient);
-    this.ats[patient['ATS']] = [...this.ats[patient['ATS']]];
   }
 
   sendFilter(filterValue: string) {
