@@ -53,6 +53,7 @@ export class TableComponent implements OnChanges {
   currentTime: Date;
   deltaTimeString: string;
   selectedRowIndex: number = -1;
+  initialised = false;
 
   TREATMENT_ACUITY = {
     1: 0,
@@ -102,6 +103,7 @@ export class TableComponent implements OnChanges {
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
     }, 60000)
+    this.initialised = true;
   }
 
   ngAfterViewChecked(): void {
@@ -137,20 +139,22 @@ export class TableComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.hasOwnProperty('patients')) {
-      if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
-        this.initialPush = false;
-        this.dataSource.data = [...this.patients];
-        this.dataSource._updateChangeSubscription();
-        for (let i = 0; i < this.patients.length; i++) {
-          this.exceedsRisk(this.patients[i]);
+    if (this.initialised) {
+      if (changes.hasOwnProperty('patients')) {
+        if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
+          this.initialPush = false;
+          this.dataSource.data = [...this.patients];
+          this.dataSource._updateChangeSubscription();
+          for (let i = 0; i < this.patients.length; i++) {
+            this.exceedsRisk(this.patients[i]);
+          }
         }
       }
-    }
-    if (changes.hasOwnProperty('filter')) {
-      if (changes.filter.currentValue !== undefined) {
-        this.applyFilter(changes.filter.currentValue);
-        this.dataSource._updateChangeSubscription();
+      if (changes.hasOwnProperty('filter')) {
+        if (changes.filter.currentValue !== undefined) {
+          this.applyFilter(changes.filter.currentValue);
+          this.dataSource._updateChangeSubscription();
+        }
       }
     }
   }
