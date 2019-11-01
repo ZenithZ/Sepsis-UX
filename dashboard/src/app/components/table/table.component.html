@@ -169,12 +169,14 @@
         <tr mat-row *matRowDef="let patient; columns: displayedColumns;" id="{{patient['MRN']}}"
             class="example-element-row" [@.disabled]="initialPush || this.filter.length > 0" [@rowsAnimation]
             [class.expanded-row]="expandedElement === patient['MRN']"
+            [class.display]="patient.hasOwnProperty(this.view) ? ('' + patient[this.view]) != this.title : false"
             [class.highlight-row]="patient['Highlight']"
             [class.expandable]="patient.hasOwnProperty('Vitals') || patient.hasOwnProperty('Bloodgas')"
             (click)="patient['Highlight'] = false"
             [class.seen]="patient['Seen'] && this.filter.length <= 0" (click)="setExpanded(patient) ">
         </tr>
         <tr mat-row *matRowDef="let patient; let row; columns: ['expandedDetail']" class="example-detail-row"
+            [class.display]="patient.hasOwnProperty(this.view) ? ('' + patient[this.view]) != this.title : false"
             [class.seen]="patient['Seen'] && this.filter.length <= 0">
         </tr>
 

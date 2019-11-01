@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { MatTab } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-table',
@@ -43,10 +44,12 @@ export class TableComponent implements OnChanges {
 
   @Input() title: string;
   @Input() patients: any[];
+  @Input() view: string;
   @Input() filter: string;
 
 
   initialPush: boolean = true;
+  viewPatients: any[];
   myInterval;
   currentTime: Date;
   deltaTimeString: string;
@@ -138,10 +141,10 @@ export class TableComponent implements OnChanges {
     if (changes.hasOwnProperty('patients')) {
       if (changes.patients.currentValue !== undefined && !changes.patients.firstChange) {
         this.initialPush = false;
-        this.dataSource.data = [...changes.patients.currentValue]
+        this.dataSource.data = [...this.dataSource.data];
         this.changeDetector.detectChanges()
       }
-      for (let i = 1; i < this.patients.length; ++i) {
+      for (let i = 0; i < this.patients.length; i++) {
         this.exceedsRisk(this.patients[i]);
       }
     }
@@ -151,7 +154,6 @@ export class TableComponent implements OnChanges {
         this.dataSource._updateChangeSubscription();
       }
     }
-
   }
 
   overrideRisk(patient: any) {
