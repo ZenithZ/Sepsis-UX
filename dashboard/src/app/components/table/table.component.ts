@@ -124,10 +124,17 @@ export class TableComponent implements OnChanges {
     return -1
   }
 
+  turnOffHighlight(patient) {
+    let MRN: string = patient['MRN'];
+    var elmnt = document.getElementById(MRN);
+    elmnt.classList.remove('glow');
+  }
+
   toasterClickedHandler(patient) {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
-    patient['Highlight'] = true;
+    elmnt.classList.add('glow');
+    
     elmnt.scrollIntoView(
       {
         behavior: 'smooth',
