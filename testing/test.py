@@ -308,20 +308,24 @@ def get_testcases():
 
     # -----_------@ZenithZ------_-------
     #Item 5
-    tests.append(Test('Test Critically Out of Range Display Red', test_critically_outofrange_red)) #Test 13
-    tests.append(Test('Test Normal Out of Range Display Yellow', test_normal_outofrange_yellow)) #Test 14
+    print('Item 5')
+    tests.append(Test('Test 13: Critically Out of Range Display Red', test_critically_outofrange_red)) #Test 13
+    tests.append(Test('Test 14: Normal Out of Range Display Yellow', test_normal_outofrange_yellow)) #Test 14
     #Item 10
-    tests.append(Test('Test Removing seen paitents from view', test_reveal_all)) #Test 27
-    tests.append(Test('Test Unremoving unseen paitents to view', test_seentounseen)) #Test 28
-    tests.append(Test('Test perserving seen/unseen status toggling between views', test_critically_outofrange_red)) #Test 29
+    print('Item 10')
+    tests.append(Test('Test 27: Removing seen paitents from view', test_reveal_all)) #Test 27
+    tests.append(Test('Test 28: Unremoving unseen paitents to view', test_seentounseen)) #Test 28
+    tests.append(Test('Test 29: perserving seen/unseen status toggling between views', test_critically_outofrange_red)) #Test 29
     #Item 14
-    tests.append(Test('Test Sort by Age, Assending 1/3 click', test_age_sort)) #Test 43
-    tests.append(Test('Test Sort by Age, Desending 2/4 click', test_age_reverse_sort)) #Test 44
-    tests.append(Test('Test Sort of Age preserved toggling between views', test_age_preserved_order)) #Test 45
+    print('Item 14')
+    tests.append(Test('Test 43: Sort by Age, Assending 1/3 click', test_age_sort)) #Test 43
+    tests.append(Test('Test 44: Sort by Age, Desending 2/4 click', test_age_reverse_sort)) #Test 44
+    tests.append(Test('Test 45: Sort of Age preserved toggling between views', test_age_preserved_order)) #Test 45
     #Item 17
-    tests.append(Test('Test Sort by LOC, Assending 1/3 click', test_LOC_sort)) #Test 52
-    tests.append(Test('Test Sort by LOC, Desending 2/4 click', test_LOC_reverse_sort)) #Test 53
-    tests.append(Test('Test Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
+    print('Item 17')
+    tests.append(Test('Test 52: Sort by LOC, Assending 1/3 click', test_LOC_sort)) #Test 52
+    tests.append(Test('Test 53: Sort by LOC, Desending 2/4 click', test_LOC_reverse_sort)) #Test 53
+    tests.append(Test('Test 54: Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
     # -----_------@ZenithZ------_-------
 
     return tests
