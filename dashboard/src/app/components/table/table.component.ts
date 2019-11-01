@@ -3,6 +3,7 @@ import { animate, state, style, transition, trigger, sequence } from '@angular/a
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
+import {FilterService} from '../../filter.service';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
 
@@ -32,7 +33,7 @@ import { take } from 'rxjs/operators';
 export class TableComponent implements OnChanges {
 
   constructor(private snackBar: MatSnackBar,
-    private changeDetector: ChangeDetectorRef, private toastr: ToastrService) { }
+    private changeDetector: ChangeDetectorRef, private toastr: ToastrService, private filterService: FilterService) { }
 
   showExceeded(message, patient) {
     this.toastr.warning(message, patient['Name'], {
@@ -44,8 +45,6 @@ export class TableComponent implements OnChanges {
   @Input() title: string;
   @Input() patients: any[];
   @Input() view: string;
-  @Input() filter: string;
-
 
   initialPush: boolean = true;
   viewPatients: any[];
@@ -54,6 +53,7 @@ export class TableComponent implements OnChanges {
   deltaTimeString: string;
   selectedRowIndex: number = -1;
   initialised = false;
+  filter: string = '';
 
   TREATMENT_ACUITY = {
     1: 0,
@@ -96,9 +96,10 @@ export class TableComponent implements OnChanges {
         default: return item[property];
       }
     }
-
+    this.filterService.filter.subscribe(value => {
+      this.applyFilter(value);
+    });
     this.dataSource.sort = this.sort;
-    this.filter = "";
     this.currentTime = new Date();
     this.myInterval = setInterval(() => {
       this.setCurrentTime();
@@ -150,12 +151,12 @@ export class TableComponent implements OnChanges {
           }
         }
       }
-      if (changes.hasOwnProperty('filter')) {
-        if (changes.filter.currentValue !== undefined) {
-          this.applyFilter(changes.filter.currentValue);
-          this.dataSource._updateChangeSubscription();
-        }
-      }
+      // if (changes.hasOwnProperty('filter')) {
+      //   if (changes.filter.currentValue !== undefined) {
+      //     this.applyFilter(changes.filter.currentValue);
+      //     this.dataSource._updateChangeSubscription();
+      //   }
+      // }
     }
   }
 
