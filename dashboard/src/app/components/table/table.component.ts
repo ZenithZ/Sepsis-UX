@@ -126,6 +126,7 @@ export class TableComponent implements OnChanges {
 
   turnOffHighlight(patient) {
     let MRN: string = patient['MRN'];
+    patient['Highlight'] = false;
     var elmnt = document.getElementById(MRN);
     elmnt.classList.remove('glow');
   }
@@ -134,7 +135,7 @@ export class TableComponent implements OnChanges {
     let MRN: string = patient['MRN'];
     var elmnt = document.getElementById(MRN);
     elmnt.classList.add('glow');
-    
+    patient['Highlight'] = true;
     elmnt.scrollIntoView(
       {
         behavior: 'smooth',

@@ -199,9 +199,9 @@
     }
   }
 
-  .highlight-row{
-    background: rgb(253, 255, 146); /* light yellow */
-  }
+  /* .highlight-row{
+    background: rgb(253, 255, 146); 
+  } */
   ::ng-deep .patient-waiting-snack-bar {
     color: black !important;
     background-color: rgb(255, 255, 255);    
