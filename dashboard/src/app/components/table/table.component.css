@@ -181,6 +181,24 @@
     border-left-color: #43a047;
   } 
 
+  .glow {
+    background: white;
+	  background-size: 500% 500%;
+	  animation: gradientBG 2s infinite;
+  }
+  
+  @keyframes gradientBG {
+    0% {
+      background: white;
+    }
+    50% {
+      background: #fcff32;
+    }
+    100% {
+      background: white;
+    }
+  }
+
   .highlight-row{
     background: rgb(253, 255, 146); /* light yellow */
   }
