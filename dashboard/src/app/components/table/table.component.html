@@ -23,7 +23,7 @@
         </ng-container> -->
         <ng-container matColumnDef="ATS">
             <th mat-header-cell *matHeaderCellDef mat-sort-header="ATS"> ATS </th>
-            <td mat-cell *matCellDef="let patient" [style.borderLeftColor]="getStatus(patient)" class="atsBorder">
+            <td mat-cell *matCellDef="let patient" [style.borderLeftColor]="patient['Overridden'] ? '#e53935' : getStatus(patient)" class="atsBorder">
                 {{ patient['ATS'] }} 
             </td>
             <!-- [ngClass]="{'criticalBorder': getStatus(patient, 'crit'), 'criticalBorder': }" -->
@@ -133,7 +133,7 @@
                     <!-- YELLOW -->
                     <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == '#fed44c'" (click)="$event.stopPropagation();" (click)="overrideRisk(patient)" class="caution-icon mat-icon">error</mat-icon>
                     <!-- NOTHING -->
-                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" class="clickable" (click)="$event.stopPropagation()" (click)="overrideRisk(patient)"> radio_button_unchecked</mat-icon>
+                    <mat-icon matTooltip="{{patient['ML']}}" *ngIf="getStatus(patient) == 'whitesmoke'" color="" class="clickable" (click)="$event.stopPropagation()" (click)="overrideRisk(patient)"> radio_button_unchecked</mat-icon>
                 </ng-template>
             </td>
         </ng-container>
