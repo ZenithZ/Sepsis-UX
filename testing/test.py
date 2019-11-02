@@ -656,13 +656,54 @@ def test_sort_waiting_time():
         mins = int(waiting[1].split(':')[1])
         wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
 
+    for i in range(len(wait_time) - 1):
+        if wait_time[i] < wait_time[i + 1]:
+            return FAIL, 'Sorting by wait time not performed correctly'
+
     return PASS, None
 
 
 def test_sort_waiting_time_reverse():
     global DRIVER
 
-    return UNIMP, 'Test not yet implemented'
+    for i in range(2):
+        if not sort('waiting time'):
+            return FAIL, 'Could not click waiting time header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    wait_time = []
+    for p in patients:
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
+        days = int(waiting[0].replace('d', ''))
+        hours = int(waiting[1].split(':')[0])
+        mins = int(waiting[1].split(':')[1])
+        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+
+    for i in range(len(wait_time) - 1):
+        if wait_time[i] > wait_time[i + 1]:
+            return FAIL, 'Sorting by wait time not performed correctly'
+
+    # Cycling through until back to descending order
+    for i in range(3):
+        if not sort('waiting time'):
+            return FAIL, 'Could not click waiting time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    wait_time = []
+    for p in patients:
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
+        days = int(waiting[0].replace('d', ''))
+        hours = int(waiting[1].split(':')[0])
+        mins = int(waiting[1].split(':')[1])
+        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+
+    for i in range(len(wait_time) - 1):
+        if wait_time[i] > wait_time[i + 1]:
+            return FAIL, 'Sorting by wait time not performed correctly'
+
+    return PASS, None
 
 
 def test_sort_waiting_time_view_toggle():
@@ -727,6 +768,16 @@ def after_test():
     search.clear()
     search.send_keys(Keys.BACKSPACE)
     toggle('combined')
+
+    ascending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "ascending")]')
+    if len(ascending) != 0:
+        sort('suspect')
+
+    descending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "descending")]')
+    if len(descending) != 0:
+        col = descending[0].get_attribute('class').split()
+        if not 'cdk-column-Sepsis' in col:
+            sort('suspect')
 
 def get_testcases():
     tests = []
