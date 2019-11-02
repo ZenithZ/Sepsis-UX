@@ -33,8 +33,7 @@ def get_driver():
     
     if HEADLESS:
         options.add_argument("headless")
-    options.add_argument("window-size=1200x600")
-    
+    options.add_argument("--start-maximized")
     try:
         return webdriver.Chrome(executable_path="./chromedriver", desired_capabilities=capabilities, options=options)
     except:
@@ -707,7 +706,6 @@ def test_sort_waiting_time_view_toggle():
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
-        print(i)
         if not sort('waiting time', 'ats', i):
             return FAIL, 'Could not sort table'
 
