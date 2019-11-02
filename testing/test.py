@@ -450,6 +450,95 @@ def test_sort_BL():
 
     return True, None
 
+def test_sort_Vitals():
+    global DRIVER
+    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[5]/div/button")
+    button.click()
+    
+    # Test in ascending order
+    tables = DRIVER.find_elements_by_tag_name("app-table")
+    tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
+
+    patients = []
+
+    for t in tables:
+        patients += t.find_elements_by_class_name("example-element-row")
+    
+    # Store value of bloodgas out of range, numBLs[0] for warning, 1 for caution and 2 for normal
+    numVitals = [[], [], []]
+
+    # Used to test if it is ranged in the order of warning, caution and normal, store 2 for warning, 1 for caution and 0 for normal 
+    orderTest = []
+
+    for p in patients:
+        # Enter the num of outofRange value (Please help fix it if it is not collect properly)
+        maxVital = p.find_element_by_class_name("cdk-column-maxVitals")
+        valueVital =  p.find_element_by_class_name("cdk-column-numVitals")
+
+        if maxVital == 'warning':
+            orderTest.append(2)
+            numVitals[0].append(valueVital)
+        elif maxVital == 'caution':
+            orderTest.append(1)
+            numVitals[1].append(valueVital)
+        else:
+            orderTest.append(0)
+            numVitals[2].append(valueVital)
+
+    for i in range(len(orderTest)-1):
+        if orderTest[i] < orderTest[i+1]:
+            return False, 'Vitals not get correctly sorted (descending order)'
+    
+    for i in range(numVitals):
+        try:
+            for j in range(len(numVitals[i])-1):
+                if numVitals[i][j] < numVitals[i][j+1]:
+                    return False, 'Vitals not get correctly sorted (descending order)'
+        except:
+            continue
+    # Test in ascending order
+    button.click()
+    
+    tables_r = DRIVER.find_elements_by_tag_name("app-table")
+    tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
+
+    patients.clear()
+    for x in numVitals:
+        x.clear()
+
+    orderTest.clear()
+
+    for t in tables_r:
+        patients += t.find_elements_by_class_name("example-element-row")
+
+    for p in patients:
+        # Enter the num of outofRange value (Please help fix it if it is not collect properly)
+        maxVital = p.find_element_by_class_name("cdk-column-maxVitals")
+        valueVital =  p.find_element_by_class_name("cdk-column-numVitals")
+
+        if maxVital == 'warning':
+            orderTest.append(2)
+            numVitals[0].append(valueVital)
+        elif maxVital == 'caution':
+            orderTest.append(1)
+            numVitals[1].append(valueVital)
+        else:
+            orderTest.append(0)
+            numVitals[2].append(valueVital)
+
+    for i in range(len(orderTest)-1):
+        if orderTest[i] > orderTest[i+1]:
+            return False, 'Vitals not get correctly sorted (ascending order)'
+    
+    for i in range(len(numVitals)):
+        try:
+            for j in range(len(numVitals[i])-1):
+                if numVitals[i][j] > numVitals[i][j+1]:
+                    return False, 'Vitals not get correctly sorted (descending order)'
+        except:
+            continue
+    return True, None
+
 
 
 def before():
