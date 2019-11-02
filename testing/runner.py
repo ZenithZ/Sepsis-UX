@@ -42,6 +42,7 @@ def main():
     for testcase in tests:
         try:
             run_test(testcase.name, testcase.test)
+            test.after_test()
         except Exception as e:
             print(f'{BOLD}{RED}Error running test {testcase.name}: {e}{DEFAULT}')
             fails += 1

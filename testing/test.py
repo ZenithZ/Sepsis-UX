@@ -209,8 +209,6 @@ def test_name_search():
     if len(names) > 0:
         return FAIL, 'Search did not produce correct results'
 
-    search.clear()
-    search.send_keys(Keys.BACKSPACE)
     return PASS, None
 
 
@@ -236,9 +234,6 @@ def test_MRN_search():
     mrns = DRIVER.find_elements_by_xpath("//td[contains(@class, 'MRN')]")
     if len(mrns) > 0:
         return FAIL, 'Search did not produce correct results'
-
-    search.clear()
-    search.send_keys(Keys.BACKSPACE)
 
     return PASS, None
 
@@ -708,7 +703,36 @@ def test_sort_waiting_time():
     if not sort('waiting time'):
         return FAIL, 'Could not click waiting time header'
 
-    return UNIMP, 'Test not fully implemented'
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    wait_time = []
+    for p in patients:
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
+        days = int(waiting[0].replace('d', ''))
+        hours = int(waiting[1].split(':')[0])
+        mins = int(waiting[1].split(':')[1])
+        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+
+    for i in range(len(wait_time) - 1):
+        if wait_time[i] < wait_time[i + 1]:
+            return FAIL, 'Sorting by wait time not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('waiting time'):
+            return FAIL, 'Could not click waiting time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    wait_time = []
+    for p in patients:
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
+        days = int(waiting[0].replace('d', ''))
+        hours = int(waiting[1].split(':')[0])
+        mins = int(waiting[1].split(':')[1])
+        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+
+    return PASS, None
 
 
 def test_sort_waiting_time_reverse():
@@ -747,7 +771,7 @@ def before(skip=False, maintain=False, headless=True):
             if pid == 0:
                 os.execl(loc, 'bash', 'serve.sh')
         except:
-            return False, 'Failed to run ng serve'
+            raise Exception('Failed to run ng serve')
     
     MAINTAIN = maintain
     HEADLESS = headless
@@ -755,11 +779,9 @@ def before(skip=False, maintain=False, headless=True):
     try:
         DRIVER = get_driver()
     except:
-        return False, 'Could not instantiate ChromeDriver'
+        raise Exception('Could not instantiate ChromeDriver')
     
     DRIVER.get(URL)
-
-    return True, None
 
 
 def after():
@@ -774,6 +796,13 @@ def after():
     if DRIVER:
         DRIVER.quit()
 
+def after_test():
+    global DRIVER
+
+    search = DRIVER.find_element_by_id("mat-input-0") 
+    search.clear()
+    search.send_keys(Keys.BACKSPACE)
+    toggle('combined')
 
 def get_testcases():
     tests = []
