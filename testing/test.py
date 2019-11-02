@@ -7,6 +7,10 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from selenium.webdriver.common.by import By
+# from selenium.webdriver.support.ui import WebDriverWait
+# from selenium.webdriver.support import expected_conditions as EC
+
 
 import sys
 import psutil
@@ -54,25 +58,22 @@ def toggle(view):
     view_toggle = DRIVER.find_element_by_class_name('mat-form-field-suffix')
     view_toggle.click()
 
-    menu = DRIVER.find_elements_by_class_name('mat-menu-item')
+    views = ['combined', 'ats', 'team']
+    index = { views[i] : i for i in range(len(views)) }[view.lower()]
 
-    if len(menu) != 3:
+    time.sleep(0.1)
+    
+    views = DRIVER.find_elements_by_class_name('mat-menu-item')
+    
+    if len(views) != 3:
         return False
-
-    element = menu[0]
-
-    if view.lower() == 'combined':
-        element = menu[0]
-    elif view.lower() == 'ats':
-        element = menu[1]
-    elif view.lower() == 'team':
-        element = menu[2]
-
+    
     try:
-        ActionChains(DRIVER).click(element).perform()
+        ActionChains(DRIVER).click(views[index]).perform()
     except:
         return False
 
+    time.sleep(0.1)
     return True
 
 
@@ -662,10 +663,10 @@ def test_sort_waiting_time():
             return FAIL, 'Could not click waiting time header'
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
-    
+
     if not comp_waiting_time(patients, comp):
         return FAIL, 'Sorting by wait time not performed correctly'
-    
+
     return PASS, None
 
 
@@ -750,7 +751,7 @@ def before(skip=False, maintain=False, headless=True):
         DRIVER = get_driver()
     except:
         raise Exception('Could not instantiate ChromeDriver')
-    
+
     DRIVER.get(URL)
 
 
@@ -762,9 +763,10 @@ def after():
         for proc in psutil.process_iter():
             if PROCNAME in proc.name():
                 proc.kill()
-    
+
     if DRIVER:
         DRIVER.quit()
+
 
 def after_test():
     global DRIVER
@@ -783,6 +785,9 @@ def after_test():
         col = descending[0].get_attribute('class').split()
         if not 'cdk-column-Sepsis' in col:
             sort('suspect')
+    
+    time.sleep(0.2)
+
 
 def get_testcases():
     tests = []
