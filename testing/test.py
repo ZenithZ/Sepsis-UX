@@ -4,12 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-
-from selenium.webdriver.common.by import By
-# from selenium.webdriver.support.ui import WebDriverWait
-# from selenium.webdriver.support import expected_conditions as EC
 
 
 import sys
@@ -95,6 +89,7 @@ def sort(colname, view='combined', table=''):
     except:
         return False
 
+    time.sleep(0.1)
     return True
 
 
@@ -614,9 +609,19 @@ def test_search_toggle_ats():
 
 def test_ats_table_correct():
     global DRIVER
-    
 
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        for p in patients:
+            if not int(p.find_element_by_class_name('cdk-column-ATS').text) == i + 1:
+                return FAIL, 'Patient not in the correct ATS table'
+
+    return PASS, None
 
 
 def test_ats_suspect_cat():

@@ -59,13 +59,13 @@ def run_test(name, testcase):
     res, message = testcase()
 
     if res is PASS:
-        print(f'{BOLD}{BLUE}TEST: {GREEN}PASS{DEFAULT}\n')
+        print(f'{BOLD}{BLUE}TEST RESULT: {GREEN}PASS{DEFAULT}\n')
         passes += 1
     elif res is FAIL:
-        print(f'{BOLD}{BLUE}TEST: {RED}FAIL\n{message}{DEFAULT}\n')
+        print(f'{BOLD}{BLUE}TEST RESULT: {RED}FAIL\n{message}{DEFAULT}\n')
         fails += 1
     elif res == UNIMP:
-        print(f'{BOLD}{BLUE}TEST: {YELLOW}NOT IMPLEMENTED\n{message}{DEFAULT}\n')
+        print(f'{BOLD}{BLUE}TEST RESULT: {YELLOW}NOT IMPLEMENTED\n{message}{DEFAULT}\n')
         unimps += 1
 
     return res
