@@ -10,6 +10,8 @@ import string
 URL = 'http://localhost:4200'
 PROCNAME = "ng serve"
 DRIVER = None
+SKIP = False
+MAINTAIN = False
 
 def get_driver():
     capabilities = DesiredCapabilities.CHROME
@@ -541,18 +543,32 @@ def test_sort_Vitals():
 
 
 
-def before():
+def before(skip=False, maintain=False):
     global DRIVER
     global URL
+    global SKIP
+    global MAINTAIN
 
-    loc = '/bin/bash'
+    if skip:
+        running = False
+        for proc in psutil.process_iter():
+            if PROCNAME in proc.name():
+                running = True
+                break
+        if not running:
+            raise Exception("Cannot run buildless without ng serve already running")
+        SKIP = True
+    else:
+        loc = '/bin/bash'
+        
+        try:
+            pid = os.fork()
+            if pid == 0:
+                os.execl(loc, 'bash', 'serve.sh')
+        except:
+            return False, 'Failed to run ng serve'
     
-    try:
-        pid = os.fork()
-        if pid == 0:
-            os.execl(loc, 'bash', 'serve.sh')
-    except:
-        return False, 'Failed to run ng serve'
+    MAINTAIN = maintain
 
     try:
         DRIVER = get_driver()
@@ -567,16 +583,19 @@ def after():
     global DRIVER
     global PROCNAME
 
-    for proc in psutil.process_iter():
-        if PROCNAME in proc.name():
-            proc.kill()
+    if not MAINTAIN:
+        for proc in psutil.process_iter():
+            if PROCNAME in proc.name():
+                proc.kill()
     
-    DRIVER.quit()
+    if DRIVER:
+        DRIVER.quit()
 
 
 def get_testcases():
     tests = []
-    tests.append(Test('Build', test_build))
+    if not SKIP:
+        tests.append(Test('Build', test_build))
     tests.append(Test('Test Page Load', test_page_load))
     # tests.append(Test('Test Tables Toggle', test_view_toggle)
     tests.append(Test('Test Name Search', test_name_search))

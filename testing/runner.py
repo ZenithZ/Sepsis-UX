@@ -1,3 +1,4 @@
+import sys
 import test
 
 green = '\x1B[92m'
@@ -19,9 +20,17 @@ def run_test(name, testcase):
     return res
 
 if __name__ == '__main__':
+    skip = False
+    maintain = False
+    if '--skip-build' in sys.argv:
+        skip = True
+    if '--no-quit' in sys.argv:
+        maintain = True
+
     try:
-        test.before()
-    except:
+        test.before(skip=skip, maintain=maintain)
+    except Exception as e:
+        print(f'{bold}{red}ERROR IN SETUP: {e}{default}')
         test.after()
         exit()
 
@@ -30,7 +39,7 @@ if __name__ == '__main__':
         try:
             run_test(testcase.name, testcase.test)
         except Exception as e:
-            print(f'{bold}{red}Error running test {testcase.name}: {e}')
+            print(f'{bold}{red}Error running test {testcase.name}: {e}{default}')
             test.after()
             exit()
     
