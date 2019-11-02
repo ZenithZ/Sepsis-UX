@@ -75,6 +75,26 @@ def toggle(view):
 
     return True
 
+def sort(colname, view='combined', table=''):
+    global DRIVER
+
+    cols = ['ats', 'seen', 'mrn', 'name', 'age', 'vitals', 'bloodgas', 'loc', 'team', 'waiting time', 'suspect']
+    th = { cols[i] : i + 1 for i in range(len(cols))}[colname.lower()]
+
+    tab = ''
+    if not view.lower() == 'combined':
+        tab = f'[{table}]'
+    
+    xpath = f'/html/body/app-root/div/div/app-table{tab}/div/table/thead/tr/th[{th}]/div/button'
+
+    try:
+        sort_button = DRIVER.find_element_by_xpath(xpath)
+        sort_button.click()
+    except:
+        return False
+
+    return True
+
 def test_build():
     stdout = os.dup(sys.stdout.fileno())
     stderr = os.dup(sys.stderr.fileno())
@@ -661,16 +681,17 @@ def test_search_toggle_ats():
     if not toggle('ats'):
         return FAIL, 'Could not toggle to ATS tables'
     
-    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+    names = [n.text for n in DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]") if len(n.text) > 0]
 
     if not len(names) == 1:
         return FAIL, f'After toggling, expected 1 patient but got {len(names)}'
 
     return PASS, None
-
+    
 
 def test_ats_table_correct():
     global DRIVER
+    
 
     return UNIMP, 'Test not yet implemented'
 
@@ -684,7 +705,10 @@ def test_ats_suspect_cat():
 def test_sort_waiting_time():
     global DRIVER
 
-    return UNIMP, 'Test not yet implemented'
+    if not sort('waiting time'):
+        return FAIL, 'Could not click waiting time header'
+
+    return UNIMP, 'Test not fully implemented'
 
 
 def test_sort_waiting_time_reverse():
