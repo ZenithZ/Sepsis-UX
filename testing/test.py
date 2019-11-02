@@ -620,6 +620,20 @@ def test_ats_suspect_cat():
 
     return UNIMP, 'Patient moving ATS cat is currently an untestable feature'
 
+def comp_waiting_time(patients, comp):
+    wait_time = []
+    for p in patients:
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
+        days = int(waiting[0].replace('d', ''))
+        hours = int(waiting[1].split(':')[0])
+        mins = int(waiting[1].split(':')[1])
+        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+
+    for i in range(len(wait_time) - 1):
+        if not comp(wait_time[i], wait_time[i + 1]):
+            return False
+
+    return True
 
 def test_sort_waiting_time():
     global DRIVER
@@ -629,17 +643,10 @@ def test_sort_waiting_time():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    wait_time = []
-    for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+    comp = lambda x, y: x > y
 
-    for i in range(len(wait_time) - 1):
-        if wait_time[i] < wait_time[i + 1]:
-            return FAIL, 'Sorting by wait time not performed correctly'
+    if not comp_waiting_time(patients, comp):
+        return FAIL, 'Sorting by wait time not performed correctly'
 
     # Cycling through until back to ascending order
     for i in range(3):
@@ -648,18 +655,9 @@ def test_sort_waiting_time():
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    wait_time = []
-    for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
-
-    for i in range(len(wait_time) - 1):
-        if wait_time[i] < wait_time[i + 1]:
-            return FAIL, 'Sorting by wait time not performed correctly'
-
+    if not comp_waiting_time(patients, comp):
+        return FAIL, 'Sorting by wait time not performed correctly'
+    
     return PASS, None
 
 
@@ -672,36 +670,20 @@ def test_sort_waiting_time_reverse():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    wait_time = []
-    for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+    comp = lambda x, y: x < y
 
-    for i in range(len(wait_time) - 1):
-        if wait_time[i] > wait_time[i + 1]:
-            return FAIL, 'Sorting by wait time not performed correctly'
+    if not comp_waiting_time(patients, comp):
+        return FAIL, 'Sorting by wait time not performed correctly'
 
-    # Cycling through until back to descending order
+    # Cycling through until back to ascending order
     for i in range(3):
         if not sort('waiting time'):
             return FAIL, 'Could not click waiting time header'
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    wait_time = []
-    for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
-
-    for i in range(len(wait_time) - 1):
-        if wait_time[i] > wait_time[i + 1]:
-            return FAIL, 'Sorting by wait time not performed correctly'
+    if not comp_waiting_time(patients, comp):
+        return FAIL, 'Sorting by wait time not performed correctly'
 
     return PASS, None
 
