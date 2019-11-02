@@ -631,7 +631,7 @@ def test_ats_toggle():
     tables = DRIVER.find_elements_by_css_selector('app-table')
 
     if not len(tables) == 4:
-        return FAIL, f'Expected 4 tables but got {len(tables)}'
+        return FAIL, f'Expected 4 tables, but got {len(tables)}'
 
     if not toggle('combined'):
         return FAIL, 'Could not toggle back to Combined table'
@@ -639,15 +639,34 @@ def test_ats_toggle():
     tables = DRIVER.find_elements_by_css_selector('app-table')
 
     if not len(tables) == 1:
-        return FAIL, f'Expected 1 table but got {len(tables)}'
+        return FAIL, f'Expected 1 table, but got {len(tables)}'
 
     return PASS, None
 
 
-def test_search_toggle():
+def test_search_toggle_ats():
     global DRIVER
 
-    return UNIMP, 'Test not yet implemented'
+    search = DRIVER.find_element_by_id("mat-input-0")
+    search.clear()
+
+    search_name = "Allen Guo"
+    search.send_keys(search_name)
+    
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+
+    if not len(names) == 1:
+        return FAIL, f'Expected 1 patient, but got {len(names)}'
+
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle to ATS tables'
+    
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+
+    if not len(names) == 1:
+        return FAIL, f'After toggling, expected 1 patient but got {len(names)}'
+
+    return PASS, None
 
 
 def test_ats_table_correct():
@@ -728,8 +747,8 @@ def after():
             if PROCNAME in proc.name():
                 proc.kill()
     
-    # if DRIVER:
-    #     DRIVER.quit()
+    if DRIVER:
+        DRIVER.quit()
 
 
 def get_testcases():
@@ -746,7 +765,7 @@ def get_testcases():
     tests.append(Test('Item 3 - Test 7: Repeated Bloodgas in order', test_repeated_bloodgas))
 
     tests.append(Test('Item 12 - Test 36: Tables can be toggle to ATS and back', test_ats_toggle))
-    tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle))
+    tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
     tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
 
