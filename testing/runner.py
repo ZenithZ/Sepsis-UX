@@ -1,25 +1,24 @@
 import sys
 import test
 
-green = '\x1B[92m'
-red = '\x1B[91m'
-blue = '\x1B[94m'
-cyan = '\x1B[36m'
-bold = '\x1B[1m'
-default = '\x1B[0m'
+GREEN = '\x1B[92m'
+RED = '\x1B[91m'
+YELLOW = '\x1B[93m'
+BLUE = '\x1B[94m'
+CYAN = '\x1B[36m'
+WHITE = '\x1B[97m'
+BOLD = '\x1B[1m'
+DEFAULT = '\x1B[0m'
 
-def run_test(name, testcase):
-    print(f'{blue}Running test: {bold}{cyan}{name}{default}')
-    res, message = testcase()
+PASS = True
+FAIL = False
+UNIMP = 'UNIMPLEMENTED'
 
-    if res:
-        print(f'{bold}{blue}TEST: {green}PASS{default}')
-    else:
-        print(f'{bold}{blue}TEST: {red}FAIL\n{message}{default}')
+passes = 0
+fails = 0
+unimps = 0
 
-    return res
-
-if __name__ == '__main__':
+def main():
     skip = False
     maintain = False
     headless = True
@@ -33,7 +32,7 @@ if __name__ == '__main__':
     try:
         test.before(skip=skip, maintain=maintain, headless=headless)
     except Exception as e:
-        print(f'{bold}{red}ERROR IN SETUP: {e}{default}')
+        print(f'{BOLD}{RED}ERROR IN SETUP: {e}{DEFAULT}')
         test.after()
         exit()
 
@@ -42,10 +41,33 @@ if __name__ == '__main__':
         try:
             run_test(testcase.name, testcase.test)
         except Exception as e:
-            print(f'{bold}{red}Error running test {testcase.name}: {e}{default}')
-            test.after()
-            exit()
+            print(f'{BOLD}{RED}Error running test {testcase.name}: {e}{DEFAULT}')
+            break
     
     test.after()
     
-    print(f"{bold}{blue}TESTS COMPLETED{default}")
+    print(f"\n{BOLD}{CYAN}TESTS COMPLETED:\n\t{GREEN}{passes} PASSED\n\t{RED}{fails} FAILED\n\t{YELLOW}{unimps} UNIMPLEMENTED\n{WHITE}{passes+fails+unimps} TESTS IN TOTAL\n{DEFAULT}")
+
+
+def run_test(name, testcase):
+    global passes
+    global fails
+    global unimps
+
+    print(f'{BLUE}Running test: {BOLD}{CYAN}{name}{DEFAULT}')
+    res, message = testcase()
+
+    if res is PASS:
+        print(f'{BOLD}{BLUE}TEST: {GREEN}PASS{DEFAULT}')
+        passes += 1
+    elif res is FAIL:
+        print(f'{BOLD}{BLUE}TEST: {RED}FAIL\n{message}{DEFAULT}')
+        fails += 1
+    elif res == UNIMP:
+        print(f'{BOLD}{BLUE}TEST: {YELLOW}NOT IMPLEMENTED\n{message}{DEFAULT}')
+        unimps += 1
+
+    return res
+
+if __name__ == '__main__':
+    main()

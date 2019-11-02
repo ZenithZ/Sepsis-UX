@@ -14,6 +14,9 @@ DRIVER = None
 SKIP = False
 MAINTAIN = False
 HEADLESS = True
+PASS = True
+FAIL = False
+UNIMP = 'UNIMPLEMENTED'
 
 def get_driver():
     global HEADLESS
@@ -85,13 +88,13 @@ def test_view_toggle():
     orig_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     orig_unseen_tables = DRIVER.find_elements_by_xpath("/html/body/div[2]/div[2]/div/div")
     if not button or not orig_all_tables or not orig_unseen_tables:
-        return False, 'Button, or table not present'
+        return FAIL, 'Button, or table not present'
     
     n_tables = len(orig_all_tables)
     orig_diff = n_tables - len(orig_unseen_tables)
     new_diff = len(orig_all_tables) - orig_diff
     if orig_diff != 1 and orig_diff != 4:
-        return False, 'Incorrect number of tables'
+        return FAIL, 'Incorrect number of tables'
 
     button.click()
     
@@ -99,10 +102,10 @@ def test_view_toggle():
     new_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     new_unseen_tables = DRIVER.find_elements_by_xpath("//app-table[contains(@class, 'unseen')]")
     if not new_all_tables or not new_unseen_tables or not len(new_all_tables) == n_tables:
-        return False, 'At least one table that should be present is not present'
+        return FAIL, 'At least one table that should be present is not present'
     change = len(new_all_tables) - len(new_unseen_tables)
     if not change == new_diff:
-        return False, 'Incorrect number of tables'
+        return FAIL, 'Incorrect number of tables'
 
     button.click()
 
@@ -110,19 +113,19 @@ def test_view_toggle():
     final_all_tables = DRIVER.find_elements_by_css_selector("app-table")
     final_unseen_tables = DRIVER.find_elements_by_xpath("//app-table[contains(@class, 'unseen')]")
     if not final_all_tables or not new_unseen_tables or not len(final_all_tables) == n_tables:
-        return False, 'At least one table that should be present is not present'
+        return FAIL, 'At least one table that should be present is not present'
     change = len(final_all_tables) - len(final_unseen_tables)
     if not change == orig_diff:
-        return False, 'Incorrect number of tables'
+        return FAIL, 'Incorrect number of tables'
     
-    return True, None
+    return PASS, None
 
 def test_name_search():
     global DRIVER
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
-        return False, 'Search did not produce correct results'
+        return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search_name = "john"
@@ -131,7 +134,7 @@ def test_name_search():
     if len(names) > 0:
         for name in names:
             if len(name.text) > 1 and not search_name in name.text.lower():
-                return False, 'Search did not produce correct results'
+                return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search_name = "ee"
@@ -140,25 +143,25 @@ def test_name_search():
     if len(names) > 0:
         for name in names:
             if not search_name in name.text.lower():
-                return False, 'Search did not produce correct results'
+                return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search_name = "asjdfioasjfioejaiofjsiofjoi"
     search.send_keys(search_name)
     names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
     if len(names) > 0:
-        return False, 'Search did not produce correct results'
+        return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search.send_keys(Keys.BACKSPACE)
-    return True, None
+    return PASS, None
 
 def test_MRN_search():
     global DRIVER
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
-        return False, 'Search did not produce correct results'
+        return FAIL, 'Search did not produce correct results'
     
     search.clear()
     search_MRN = "1091439687"
@@ -167,19 +170,19 @@ def test_MRN_search():
     if len(mrns) > 0:
         for mrn in mrns:
             if len(mrn.text) > 1 and not search_MRN in mrn.text.lower():
-                return False, 'Search did not produce correct results'
+                return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search_MRN = "99999999999999999999999999"
     search.send_keys(search_MRN)
     mrns = DRIVER.find_elements_by_xpath("//td[contains(@class, 'MRN')]")
     if len(mrns) > 0:
-        return False, 'Search did not produce correct results'
+        return FAIL, 'Search did not produce correct results'
 
     search.clear()
     search.send_keys(Keys.BACKSPACE)
 
-    return True, None
+    return PASS, None
 
 def test_sort_waittime():
     global DRIVER
@@ -207,11 +210,11 @@ def test_sort_waittime():
         current_wait = days + hours + minutes
         if current_wait > wait:
             print(prev, time, current_wait, wait)
-            return False, 'Waiting time does not get correctly sorted'
+            return FAIL, 'Waiting time does not get correctly sorted'
         wait = current_wait
         prev = time
 
-    return True, None
+    return PASS, None
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
@@ -219,57 +222,57 @@ def test_sort_waittime():
 # Test 12: Red if any test results are critically out of range.
 def test_critically_outofrange_red():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 13: Yellow if any test results are out of range and no results are critically out of range.
 def test_normal_outofrange_yellow():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 
 # Item 10: A nurse can toggle whether a patient has been seen
 # Test 26: Search ' ' will reveal all patients, both seen and unseen.
 def test_reveal_all():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients).
 def test_unseentoseen():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients).
 def test_seentounseen():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 29: Patients will remain seen if views are switched back and forth.
 def seen_switching_views():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 
 # Item 14: Patients can be sorted by their age
 # Test 43: Clicking on the age column will sort patients by their age. (then every third click).
 def test_age_sort():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 44: Clicking on the age column twice will sort patients in reverse order by their age. (then every third click).
 def test_age_reverse_sort():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 45: Order is preserved when switching views.
 def test_age_preserved_order():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 
 # Item 17: Patients can be sorted by their LOC
 # Test 52: Clicking on the LOC column will sort patients by their LOC. (then every third click).
 def test_LOC_sort():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 53: Clicking on the LOC column twice will sort patients in reverse order by their LOC. (then every third click).
 def test_LOC_reverse_sort():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 # Test 54: Order is preserved when switching views.
 def test_LOC_preserved_order():
     global DRIVER
-    return True, None
+    return UNIMP, 'Test not yet implemented'
 
 #------_---_---_---@ZenithZ---_---_---_------
 
@@ -294,11 +297,11 @@ def test_sort_name():
         first_letter_lastname = ''.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
 
         if first_letter_lastname not in alphabet:
-            return False, "Name does not get correctly sorted (A-Z Order Test)"
+            return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
         
         while first_letter_lastname != alphabet[0]:
             if len(alphabet) == 0:
-                return False, "Name does not get correctly sorted (A-Z Order Test)"
+                return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
             alphabet.pop(0)
 
     # ## Test descending order
@@ -315,14 +318,14 @@ def test_sort_name():
     for p in patients:
         first_letter_lastname = ' '.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
         if first_letter_lastname not in alphabet_r:
-            return False, "Name does not get correctly sorted (Z-A Order Test)"
+            return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
         
         while first_letter_lastname != alphabet[0]:
             if len(alphabet) == 0:
-                return False, "Name does not get correctly sorted (Z-A Order Test)"
+                return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
             alphabet.pop(0)
 
-    return True, None
+    return PASS, None
 
 def test_sort_sepsis():
     global DRIVER
@@ -344,7 +347,7 @@ def test_sort_sepsis():
 
     for i in range(len(ml)-1):
         if ml[i] < ml[i+1]:
-            return False, 'Sepsis not get correctly sorted (descending order)'
+            return FAIL, 'Sepsis not get correctly sorted (descending order)'
 
     # Test in ascending order
     button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[-1]/div/button")
@@ -365,9 +368,9 @@ def test_sort_sepsis():
 
     for i in range(len(ml)-1):
         if ml[i] > ml[i+1]:
-            return False, 'Sepsis not get correctly sorted (ascending order)'
+            return FAIL, 'Sepsis not get correctly sorted (ascending order)'
 
-    return True, None
+    return PASS, None
 
 def test_sort_BL():
     global DRIVER
@@ -411,7 +414,7 @@ def test_sort_BL():
         try:
             for j in range(len(numBLs[i]) -1 ):
                 if numBLs[i][j] < numBLs[i][j+1]:
-                    return False, 'Bloodgas not get correctly sorted (descending order)'
+                    return FAIL, 'Bloodgas not get correctly sorted (descending order)'
         except:
             continue
     # Test in ascending order
@@ -445,18 +448,18 @@ def test_sort_BL():
 
     for i in range(len(orderTest)-1):
         if orderTest[i] > orderTest[i+1]:
-            return False, 'Bloodgas not get correctly sorted (ascending order)'
+            return FAIL, 'Bloodgas not get correctly sorted (ascending order)'
     
     for i in range(len(numBLs)):
         # Use Try in case it is the length is 0
         try:
             for j in range(len(numBLs[i])-1):
                 if numBLs[i][j] > numBLs[i][j+1]:
-                    return False, 'Bloodgas not get correctly sorted (ascending order)'
+                    return FAIL, 'Bloodgas not get correctly sorted (ascending order)'
         except:
             continue
 
-    return True, None
+    return PASS, None
 
 def test_sort_Vitals():
     global DRIVER
@@ -495,13 +498,13 @@ def test_sort_Vitals():
 
     for i in range(len(orderTest)-1):
         if orderTest[i] < orderTest[i+1]:
-            return False, 'Vitals not get correctly sorted (descending order)'
+            return FAIL, 'Vitals not get correctly sorted (descending order)'
     
     for i in range(numVitals):
         try:
             for j in range(len(numVitals[i])-1):
                 if numVitals[i][j] < numVitals[i][j+1]:
-                    return False, 'Vitals not get correctly sorted (descending order)'
+                    return FAIL, 'Vitals not get correctly sorted (descending order)'
         except:
             continue
     # Test in ascending order
@@ -536,23 +539,24 @@ def test_sort_Vitals():
 
     for i in range(len(orderTest)-1):
         if orderTest[i] > orderTest[i+1]:
-            return False, 'Vitals not get correctly sorted (ascending order)'
+            return FAIL, 'Vitals not get correctly sorted (ascending order)'
     
     for i in range(len(numVitals)):
         try:
             for j in range(len(numVitals[i])-1):
                 if numVitals[i][j] > numVitals[i][j+1]:
-                    return False, 'Vitals not get correctly sorted (descending order)'
+                    return FAIL, 'Vitals not get correctly sorted (descending order)'
         except:
             continue
-    return True, None
+    return PASS, None
 
 def test_repeated_vitals():
     global DRIVER
     
+    # Test known patient with 2 vitals tests performed
     patient = DRIVER.find_element_by_id("1091439687")
     if patient is None:
-        return False, 'Could not locate patient'
+        return FAIL, 'Could not locate patient'
 
     patient.click()
 
@@ -560,13 +564,18 @@ def test_repeated_vitals():
     date_times = [datetime.datetime.strptime(date_time.text, '%Y-%m-%d %H:%M:%S') for date_time in detail.find_elements_by_css_selector('mat-panel-title')]
 
     if len(date_times) != 2:
-        return False, f'Expected 2 tests, but got {len(date_times)}'
+        return FAIL, f'Expected 2 tests, but got {len(date_times)}'
 
     for i in range(len(date_times) - 1):
         if (date_times[i] < date_times[i+1]):
-            return False, 'Tests are not in the correct order'
+            return FAIL, 'Vitals tests are not in the correct order'
 
-    return True, None
+    return PASS, None
+
+def test_repeated_bloodgas():
+    global DRIVER
+
+    return UNIMP, 'Multiple bloodgas tests is currently an untestable feature'
 
 def before(skip=False, maintain=False, headless=True):
     global DRIVER
@@ -629,7 +638,8 @@ def get_testcases():
     tests.append(Test('Test MRN Search', test_MRN_search))
     # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
 
-    tests.append(Test('Test Repeated Vitals', test_repeated_vitals))
+    tests.append(Test('Item 3 - Test 6: Test Repeated Vitals', test_repeated_vitals))
+    tests.append(Test('Item 3 - Test 7: Test Repeated Bloodgas', test_repeated_bloodgas))
 
     # tests.append(Test('Test Name Sort', test_sort_name))
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
