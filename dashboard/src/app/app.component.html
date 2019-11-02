@@ -2,7 +2,7 @@
 <router-outlet></router-outlet>
 <div class="container">
   <mat-form-field>
-    <input placeholder="Search" matInput (keyup)="sendFilter($event.target.value)">
+    <input placeholder="Search" matInput (keyup)="updateFilter($event.target.value)">
     <!-- <button class="style-button" matSuffix (click)="combined = !combined;$event.stopPropagation()">Combined/Seperate View</button> -->
     <mat-icon class="clickable no-select" (click)="$event.stopPropagation();" matSuffix [matMenuTriggerFor]="menu">view_day</mat-icon>
     <mat-menu #menu="matMenu">
@@ -13,18 +13,18 @@
 
   </mat-form-field>
   <div *ngIf="view == 'Team'">
-    <app-table [title]="'A'" [view]="view" [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'B'" [view]="view" [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'FOH'" [view]="view"  [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'UCC'" [view]="view"[patients]="combinedats" [filter]="filter"></app-table>
+    <app-table [title]="'A'" [view]="view" [patients]="combinedats"></app-table>
+    <app-table [title]="'B'" [view]="view" [patients]="combinedats"></app-table>
+    <app-table [title]="'FOH'" [view]="view"  [patients]="combinedats"></app-table>
+    <app-table [title]="'UCC'" [view]="view"[patients]="combinedats"></app-table>
   </div>
   <div *ngIf="view == 'ATS'">
-    <app-table [title]="'2'" [view]="view" [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'3'" [view]="view"  [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'4'" [view]="view"  [patients]="combinedats" [filter]="filter"></app-table>
-    <app-table [title]="'5'" [view]="view" [patients]="combinedats" [filter]="filter"></app-table>
+    <app-table [title]="'2'" [view]="view" [patients]="combinedats"></app-table>
+    <app-table [title]="'3'" [view]="view"  [patients]="combinedats"></app-table>
+    <app-table [title]="'4'" [view]="view"  [patients]="combinedats"></app-table>
+    <app-table [title]="'5'" [view]="view" [patients]="combinedats"></app-table>
   </div>
   <div *ngIf="view == 'Combined'">
-    <app-table [title]="'Combined'" [view]="view" [patients]="combinedats" [filter]="filter"></app-table>
+    <app-table [title]="'Combined'" [view]="view" [patients]="combinedats"></app-table>
   </div>
 </div>

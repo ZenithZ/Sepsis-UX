@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {FilterService} from './filter.service';
 import sampleData from '../../REST-data.json';
 
 @Component({
@@ -8,6 +9,8 @@ import sampleData from '../../REST-data.json';
 })
 export class AppComponent implements OnInit {
   combinedats = []
+
+  constructor (private filterService: FilterService) {};
 
   view: string = 'Combined';
   data = sampleData.slice(0, 7);
@@ -47,8 +50,9 @@ export class AppComponent implements OnInit {
     this.combinedats = [...this.combinedats];
   }
 
-  sendFilter(filterValue: string) {
-    return this.filter = filterValue;
+  updateFilter(val: string) {
+    this.filterService.setFilter(val);
+    return this.filter = val;
   }
 
 
