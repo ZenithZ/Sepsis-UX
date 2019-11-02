@@ -55,7 +55,7 @@ def toggle(view):
     views = ['combined', 'ats', 'team']
     index = { views[i] : i for i in range(len(views)) }[view.lower()]
 
-    time.sleep(0.1)
+    time.sleep(0.2)
     
     views = DRIVER.find_elements_by_class_name('mat-menu-item')
     
@@ -67,7 +67,7 @@ def toggle(view):
     except:
         return False
 
-    time.sleep(0.1)
+    time.sleep(0.2)
     return True
 
 
@@ -627,7 +627,39 @@ def test_ats_table_correct():
 def test_ats_suspect_cat():
     global DRIVER
 
-    return UNIMP, 'Patient moving ATS cat is currently an untestable feature'
+    # Testing with a patient in ATS cat 5
+    patient = DRIVER.find_element_by_id('1423017529')
+    if patient is None:
+        return FAIL, 'Could not locate patient'
+
+    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
+    override.click()
+
+    patient = DRIVER.find_element_by_id('1423017529')
+    if patient is None:
+        return FAIL, 'Could not locate patient after overriding sepsis'
+    
+    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
+    if not new_ats == 3:
+        return FAIL, 'Patient did not change ATS cat to 3'
+    
+    # Testing with a patient in ATS cat 4
+    patient = DRIVER.find_element_by_id('1091439687')
+    if patient is None:
+        return FAIL, 'Could not locate patient'
+
+    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
+    override.click()
+
+    patient = DRIVER.find_element_by_id('1091439687')
+    if patient is None:
+        return FAIL, 'Could not locate patient after overriding sepsis'
+    
+    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
+    if not new_ats == 3:
+        return FAIL, 'Patient did not change ATS cat to 3'
+
+    return PASS, None
 
 
 def comp_waiting_time(patients, comp):
@@ -790,9 +822,22 @@ def after_test():
         col = descending[0].get_attribute('class').split()
         if not 'cdk-column-Sepsis' in col:
             sort('suspect')
-    
+
     time.sleep(0.2)
 
+    try:
+        toast = DRIVER.find_element_by_class_name('toast-message')
+        toast.click()
+    except:
+        pass
+
+    time.sleep(0.1)
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    for p in patients:
+        icons = p.find_element_by_class_name('cdk-column-Sepsis').find_elements_by_css_selector('mat-icon')
+        if len(icons) > 1:
+            icons[1].click()
 
 def get_testcases():
     tests = []
