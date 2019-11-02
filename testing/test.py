@@ -55,7 +55,7 @@ def toggle(view):
     views = ['combined', 'ats', 'team']
     index = { views[i] : i for i in range(len(views)) }[view.lower()]
 
-    time.sleep(0.2)
+    time.sleep(0.25)
     
     views = DRIVER.find_elements_by_class_name('mat-menu-item')
     
@@ -67,7 +67,7 @@ def toggle(view):
     except:
         return False
 
-    time.sleep(0.2)
+    time.sleep(0.25)
     return True
 
 
@@ -554,12 +554,6 @@ def test_repeated_vitals():
     return PASS, None
 
 
-def test_repeated_bloodgas():
-    global DRIVER
-
-    return UNIMP, 'Multiple bloodgas tests is currently an untestable feature'
-
-
 def test_ats_toggle():
     global DRIVER
 
@@ -823,7 +817,7 @@ def after_test():
         if not 'cdk-column-Sepsis' in col:
             sort('suspect')
 
-    time.sleep(0.2)
+    time.sleep(0.25)
 
     try:
         toast = DRIVER.find_element_by_class_name('toast-message')
@@ -831,7 +825,7 @@ def after_test():
     except:
         pass
 
-    time.sleep(0.1)
+    time.sleep(0.25)
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     for p in patients:
@@ -848,7 +842,6 @@ def get_testcases():
     tests.append(Test('Test MRN Search', test_MRN_search))
 
     tests.append(Test('Item 3 - Test 6: Repeated Vitals in order', test_repeated_vitals))
-    tests.append(Test('Item 3 - Test 7: Repeated Bloodgas in order', test_repeated_bloodgas))
 
     tests.append(Test('Item 12 - Test 36: Tables can be toggle to ATS and back', test_ats_toggle))
     tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
