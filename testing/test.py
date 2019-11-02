@@ -316,6 +316,53 @@ def test_sort_name():
 
     return True, None
 
+def test_sort_sepsis():
+    global DRIVER
+    
+    # Test in descending order
+    tables = DRIVER.find_elements_by_tag_name("app-table")
+    tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
+
+    patients = []
+
+    for t in tables:
+        patients += t.find_elements_by_class_name("example-element-row")
+
+    ml = []
+
+    for p in patients:
+        # Enter the value of machine learning (Please help fix it if it is not collect properly)
+        ml.append( p.find_element_by_class_name("cdk-column-ML") )
+
+    for i in range(len(ml)-1):
+        if ml[i] < ml[i+1]:
+            return False, 'Sepsis not get correctly sorted (descending order)'
+
+    # Test in ascending order
+    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[-1]/div/button")
+    button.click()
+
+    tables_r = DRIVER.find_elements_by_tag_name("app-table")
+    tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
+
+    patients.clear()
+    ml.clear()
+
+    for t in tables_r:
+        patients += t.find_elements_by_class_name("example-element-row")
+    
+    for p in patients:
+        # Enter the value of machine learning (Please help fix it if it is not collect properly)
+        ml.append( p.find_element_by_class_name("cdk-column-ML") )
+
+    for i in range(len(ml)-1):
+        if ml[i] > ml[i+1]:
+            return False, 'Sepsis not get correctly sorted (ascending order)'
+
+    return True, None
+
+
+
 def before():
     global DRIVER
     global URL
