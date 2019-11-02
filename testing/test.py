@@ -584,10 +584,10 @@ def get_testcases():
     # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
 
 
-    tests.append(Test('Test Name Sort', test_sort_name))
-    tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
-    tests.append(Test('Test Vitals Sort', test_sort_Vitals))
-    tests.append(Test('Test Bloodgas Sort', test_sort_BL))
+    # tests.append(Test('Test Name Sort', test_sort_name))
+    # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
+    # tests.append(Test('Test Vitals Sort', test_sort_Vitals))
+    # tests.append(Test('Test Bloodgas Sort', test_sort_BL))
 
     # -----_------@ZenithZ------_-------
     #sudo kill `sudo lsof -t -i:4200`
