@@ -48,6 +48,7 @@ class Test:
         self.name = name
         self.test = test
 
+
 def toggle(view):
     global DRIVER
 
@@ -75,6 +76,7 @@ def toggle(view):
 
     return True
 
+
 def sort(colname, view='combined', table=''):
     global DRIVER
 
@@ -94,6 +96,7 @@ def sort(colname, view='combined', table=''):
         return False
 
     return True
+
 
 def test_build():
     stdout = os.dup(sys.stdout.fileno())
@@ -133,6 +136,7 @@ def test_page_load():
     errors = DRIVER.get_log('browser')
     res = len(errors) == 0
     return res, 'Console errors present' if not res else None
+
 
 def test_name_search():
     global DRIVER
@@ -620,6 +624,7 @@ def test_ats_suspect_cat():
 
     return UNIMP, 'Patient moving ATS cat is currently an untestable feature'
 
+
 def comp_waiting_time(patients, comp):
     wait_time = []
     for p in patients:
@@ -629,11 +634,15 @@ def comp_waiting_time(patients, comp):
         mins = int(waiting[1].split(':')[1])
         wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
 
+    if len(wait_time) == 1:
+        return True
+
     for i in range(len(wait_time) - 1):
         if not comp(wait_time[i], wait_time[i + 1]):
             return False
 
     return True
+
 
 def test_sort_waiting_time():
     global DRIVER
@@ -691,7 +700,23 @@ def test_sort_waiting_time_reverse():
 def test_sort_waiting_time_view_toggle():
     global DRIVER
 
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x > y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        print(i)
+        if not sort('waiting time', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_waiting_time(patients, comp):
+            return FAIL, 'Sorting by wait time in ATS tables not performed correctly'
+
+    return PASS, None
 
 
 def before(skip=False, maintain=False, headless=True):
