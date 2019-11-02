@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-# from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
@@ -627,9 +626,22 @@ def test_ats_toggle():
     global DRIVER
 
     if not toggle('ats'):
-        return FAIL, 'Could not toggle ATS category'
-    
-    return UNIMP, 'Test not fully implemented'
+        return FAIL, 'Could not toggle to ATS tables'
+
+    tables = DRIVER.find_elements_by_css_selector('app-table')
+
+    if not len(tables) == 4:
+        return FAIL, f'Expected 4 tables but got {len(tables)}'
+
+    if not toggle('combined'):
+        return FAIL, 'Could not toggle back to Combined table'
+
+    tables = DRIVER.find_elements_by_css_selector('app-table')
+
+    if not len(tables) == 1:
+        return FAIL, f'Expected 1 table but got {len(tables)}'
+
+    return PASS, None
 
 
 def test_search_toggle():

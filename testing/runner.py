@@ -19,6 +19,8 @@ fails = 0
 unimps = 0
 
 def main():
+    global fails
+
     skip = False
     maintain = False
     headless = True
@@ -42,6 +44,7 @@ def main():
             run_test(testcase.name, testcase.test)
         except Exception as e:
             print(f'{BOLD}{RED}Error running test {testcase.name}: {e}{DEFAULT}')
+            fails += 1
             break
     
     test.after()
