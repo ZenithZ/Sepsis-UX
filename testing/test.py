@@ -1,3 +1,4 @@
+import datetime
 import os
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -12,12 +13,17 @@ PROCNAME = "ng serve"
 DRIVER = None
 SKIP = False
 MAINTAIN = False
+HEADLESS = True
 
 def get_driver():
+    global HEADLESS
+    
     capabilities = DesiredCapabilities.CHROME
     capabilities['loggingPrefs'] = {'browser': 'ALL'}
     options = webdriver.ChromeOptions()
-    # options.add_argument("headless")
+    
+    if HEADLESS:
+        options.add_argument("headless")
     options.add_argument("window-size=1200x600")
     
     try:
@@ -541,13 +547,33 @@ def test_sort_Vitals():
             continue
     return True, None
 
+def test_repeated_vitals():
+    global DRIVER
+    
+    patient = DRIVER.find_element_by_id("1091439687")
+    if patient is None:
+        return False, 'Could not locate patient'
 
+    patient.click()
 
-def before(skip=False, maintain=False):
+    detail = [d for d in DRIVER.find_elements_by_xpath('//div[contains(@class, "ng-trigger-detailExpand")]') if len(d.text) > 0][0]
+    date_times = [datetime.datetime.strptime(date_time.text, '%Y-%m-%d %H:%M:%S') for date_time in detail.find_elements_by_css_selector('mat-panel-title')]
+
+    if len(date_times) != 2:
+        return False, f'Expected 2 tests, but got {len(date_times)}'
+
+    for i in range(len(date_times) - 1):
+        if (date_times[i] < date_times[i+1]):
+            return False, 'Tests are not in the correct order'
+
+    return True, None
+
+def before(skip=False, maintain=False, headless=True):
     global DRIVER
     global URL
     global SKIP
     global MAINTAIN
+    global HEADLESS
 
     if skip:
         running = False
@@ -569,6 +595,7 @@ def before(skip=False, maintain=False):
             return False, 'Failed to run ng serve'
     
     MAINTAIN = maintain
+    HEADLESS = headless
 
     try:
         DRIVER = get_driver()
@@ -602,6 +629,7 @@ def get_testcases():
     tests.append(Test('Test MRN Search', test_MRN_search))
     # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
 
+    tests.append(Test('Test Repeated Vitals', test_repeated_vitals))
 
     # tests.append(Test('Test Name Sort', test_sort_name))
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))

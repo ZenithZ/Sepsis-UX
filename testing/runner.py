@@ -22,13 +22,16 @@ def run_test(name, testcase):
 if __name__ == '__main__':
     skip = False
     maintain = False
+    headless = True
     if '--skip-build' in sys.argv:
         skip = True
     if '--no-quit' in sys.argv:
         maintain = True
+    if '--visible' in sys.argv:
+        headless = False
 
     try:
-        test.before(skip=skip, maintain=maintain)
+        test.before(skip=skip, maintain=maintain, headless=headless)
     except Exception as e:
         print(f'{bold}{red}ERROR IN SETUP: {e}{default}')
         test.after()
