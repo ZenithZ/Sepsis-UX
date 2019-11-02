@@ -18,6 +18,7 @@ PASS = True
 FAIL = False
 UNIMP = 'UNIMPLEMENTED'
 
+
 def get_driver():
     global HEADLESS
     
@@ -36,10 +37,12 @@ def get_driver():
     
     raise Exception("Failed to instantiate driver")
 
+
 class Test:
     def __init__(self, name, test):
         self.name = name
         self.test = test
+
 
 def test_build():
     stdout = os.dup(sys.stdout.fileno())
@@ -70,6 +73,7 @@ def test_build():
     res = ' successful' in log_file.readlines()[-1].lower()
     return res, 'Build unsuccessful' if not res else None
 
+
 def test_page_load():
     global DRIVER
     global URL
@@ -78,6 +82,7 @@ def test_page_load():
     errors = DRIVER.get_log('browser')
     res = len(errors) == 0
     return res, 'Console errors present' if not res else None
+
 
 def test_view_toggle():
     global DRIVER
@@ -120,6 +125,7 @@ def test_view_toggle():
     
     return PASS, None
 
+
 def test_name_search():
     global DRIVER
 
@@ -156,6 +162,7 @@ def test_name_search():
     search.send_keys(Keys.BACKSPACE)
     return PASS, None
 
+
 def test_MRN_search():
     global DRIVER
 
@@ -183,6 +190,7 @@ def test_MRN_search():
     search.send_keys(Keys.BACKSPACE)
 
     return PASS, None
+
 
 def test_sort_waittime():
     global DRIVER
@@ -327,6 +335,7 @@ def test_sort_name():
 
     return PASS, None
 
+
 def test_sort_sepsis():
     global DRIVER
     
@@ -371,6 +380,7 @@ def test_sort_sepsis():
             return FAIL, 'Sepsis not get correctly sorted (ascending order)'
 
     return PASS, None
+
 
 def test_sort_BL():
     global DRIVER
@@ -461,6 +471,7 @@ def test_sort_BL():
 
     return PASS, None
 
+
 def test_sort_Vitals():
     global DRIVER
     button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[5]/div/button")
@@ -550,6 +561,7 @@ def test_sort_Vitals():
             continue
     return PASS, None
 
+
 def test_repeated_vitals():
     global DRIVER
     
@@ -572,10 +584,54 @@ def test_repeated_vitals():
 
     return PASS, None
 
+
 def test_repeated_bloodgas():
     global DRIVER
 
     return UNIMP, 'Multiple bloodgas tests is currently an untestable feature'
+
+
+def test_ats_toggle():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
+
+def test_search_toggle():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
+
+def test_ats_table_correct():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
+
+def test_ats_suspect_cat():
+    global DRIVER
+
+    return UNIMP, 'Patient moving ATS cat is currently an untestable feature'
+
+
+def test_sort_waiting_time():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
+
+def test_sort_waiting_time_reverse():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
+
+def test_sort_waiting_time_view_toggle():
+    global DRIVER
+
+    return UNIMP, 'Test not yet implemented'
+
 
 def before(skip=False, maintain=False, headless=True):
     global DRIVER
@@ -615,6 +671,7 @@ def before(skip=False, maintain=False, headless=True):
 
     return True, None
 
+
 def after():
     global DRIVER
     global PROCNAME
@@ -638,8 +695,17 @@ def get_testcases():
     tests.append(Test('Test MRN Search', test_MRN_search))
     # tests.append(Test('Test Waiting Time Sorting', test_sort_waittime))
 
-    tests.append(Test('Item 3 - Test 6: Test Repeated Vitals', test_repeated_vitals))
-    tests.append(Test('Item 3 - Test 7: Test Repeated Bloodgas', test_repeated_bloodgas))
+    tests.append(Test('Item 3 - Test 6: Repeated Vitals in order', test_repeated_vitals))
+    tests.append(Test('Item 3 - Test 7: Repeated Bloodgas in order', test_repeated_bloodgas))
+
+    tests.append(Test('Item 12 - Test 36: Tables can be toggle to ATS and back', test_ats_toggle))
+    tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle))
+    tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
+    tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
+
+    tests.append(Test('Item 18 - Test 55: Sort by Waiting Time, Ascending' , test_sort_waiting_time))
+    tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
+    tests.append(Test('Item 18 - Test 57: Sort by Waiting Time Toggle' , test_sort_waiting_time_view_toggle))
 
     # tests.append(Test('Test Name Sort', test_sort_name))
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
