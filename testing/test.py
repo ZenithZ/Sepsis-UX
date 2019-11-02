@@ -3,6 +3,12 @@ import os
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
 import sys
 import psutil
 import time
@@ -43,6 +49,32 @@ class Test:
         self.name = name
         self.test = test
 
+def toggle(view):
+    global DRIVER
+
+    view_toggle = DRIVER.find_element_by_class_name('mat-form-field-suffix')
+    view_toggle.click()
+
+    menu = DRIVER.find_elements_by_class_name('mat-menu-item')
+
+    if len(menu) != 3:
+        return False
+
+    element = menu[0]
+
+    if view.lower() == 'combined':
+        element = menu[0]
+    elif view.lower() == 'ats':
+        element = menu[1]
+    elif view.lower() == 'team':
+        element = menu[2]
+
+    try:
+        ActionChains(DRIVER).click(element).perform()
+    except:
+        return False
+
+    return True
 
 def test_build():
     stdout = os.dup(sys.stdout.fileno())
@@ -594,7 +626,10 @@ def test_repeated_bloodgas():
 def test_ats_toggle():
     global DRIVER
 
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle ATS category'
+    
+    return UNIMP, 'Test not fully implemented'
 
 
 def test_search_toggle():
@@ -681,8 +716,8 @@ def after():
             if PROCNAME in proc.name():
                 proc.kill()
     
-    if DRIVER:
-        DRIVER.quit()
+    # if DRIVER:
+    #     DRIVER.quit()
 
 
 def get_testcases():
