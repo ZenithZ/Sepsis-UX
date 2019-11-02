@@ -2,7 +2,7 @@
 num=$(ps -x | grep 'ng serve' -c)
 if [ $num == 2 ]
 then
-	pid=$(ps -x | grep 'ng serve' | head -1 | cut -d' ' -f1)
+	pid=$(ps -x | grep 'ng serve$' | head -1 | cut -d' ' -f1)
 	if [ ! -z "$pid" ]
 	then
 		kill $pid
