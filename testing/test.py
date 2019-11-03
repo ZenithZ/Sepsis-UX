@@ -193,6 +193,64 @@ def test_MRN_search():
 
     return PASS, None
 
+# ---------------------------------------------------------------------------- #
+#                                  John Spicer                                 #
+# ---------------------------------------------------------------------------- #
+# ----------------------------- Item 2, 7, 8, 11 ----------------------------- #
+# ---------------------------------- Test 3 ---------------------------------- #
+def test_vitals_shown():
+    global DRIVER
+
+    vital_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    vital_positive.click()
+
+    time.sleep(0.25)
+
+    vital_table = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[1]/mat-expansion-panel')
+    vital_table.click()
+
+    vitals_shown = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/div[1]')
+    if vitals_shown.text != 'Vitals':
+        vital_positive.click()
+        return FAIL, 'Vital table not shown'
+
+    num_vitals_text = DRIVER.find_element_by_xpath('//*[@id="mat-expansion-panel-header-0"]/span[1]/mat-panel-description')
+    number_in_text = num_vitals_text.text.split(' ')[2]
+    num_vitals_icon = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[6]/div/sub')
+    if number_in_text != num_vitals_icon.text:
+        vital_positive.click()
+        return FAIL, 'Vital icon and text number not consistent'
+
+    vital_positive.click()
+    return PASS, 'Vital table correctly shown, and correct icon and text number'
+
+# ---------------------------------- Test 3 ---------------------------------- #
+def test_bloodgas_shown():
+    global DRIVER
+
+    bG_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    bG_positive.click()
+
+    time.sleep(0.25)
+
+    bG_table = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]/mat-expansion-panel')
+    bG_table.click()
+
+    bG_shown = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/div[2]')
+    if bG_shown.text != 'Bloodgas':
+        bG_positive.click()
+        return FAIL, 'Bloodgas table not shown'
+
+    num_BG_text = DRIVER.find_element_by_xpath('//*[@id="mat-expansion-panel-header-11"]/span[1]/mat-panel-description')
+    number_in_text = num_BG_text.text.split(' ')[2]
+    num_BG_icon = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[7]/div/sub')
+    if number_in_text != num_BG_icon.text:
+        bG_positive.click()
+        return FAIL, 'Bloodgas icon and text number not consistent'
+
+    bG_positive.click()
+    return PASS, 'Bloodgas table correctly shown, and correct icon and text number'
+
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
 # Item 5: Test results of a patient are indicated (by colour) on the left of the patient summary.
@@ -252,7 +310,6 @@ def test_LOC_preserved_order():
     return UNIMP, 'Test not yet implemented'
 
 #------_---_---_---@ZenithZ---_---_---_------
-
 
 def test_sort_name():
     global DRIVER
@@ -878,5 +935,18 @@ def get_testcases():
     tests.append(Test('Item 17 - Test 53: Sort by LOC, Desending 2/4 click', test_LOC_reverse_sort)) #Test 53
     tests.append(Test('Item 17 - Test 54: Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
     # -----_------@ZenithZ------_-------
+
+# ----------------------------------- @John ---------------------------------- #
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_vitals_shown))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_bloodgas_shown))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_LOC_15))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_default_team_A_B))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_team_change))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_last_name))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_first_name))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_full_name))
+    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_true_false))
+
+# ----------------------------------------------------------------------------- #
 
     return tests
