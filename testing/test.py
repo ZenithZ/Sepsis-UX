@@ -224,7 +224,7 @@ def test_vitals_shown():
     vital_positive.click()
     return PASS, 'Vital table correctly shown, and correct icon and text number'
 
-# ---------------------------------- Test 4 ---------------------------------- #
+# ---------------------------------- Test 5 ---------------------------------- #
 def test_bloodgas_shown():
     global DRIVER
 
@@ -251,7 +251,7 @@ def test_bloodgas_shown():
     bG_positive.click()
     return PASS, 'Bloodgas table correctly shown, and correct icon and text number'
 
-# ---------------------------------- Test 5 ---------------------------------- #
+# ---------------------------------- Test 4 ---------------------------------- #
 def test_no_bloodgas_shown():
     global DRIVER
 
