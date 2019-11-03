@@ -271,11 +271,6 @@ def test_no_bloodgas_shown():
     bG_positive.click()
     return PASS, 'Bloodgas not shown, as no results'
 
-# ---------------------------------- Test 4 ---------------------------------- #
-def test_bloodgas_shown():
-    global DRIVER
-    return UNIMP, 'test not yet imple'
-
 # ---------------------------------- Test 5 ---------------------------------- #
 def test_LOC_15():
     global DRIVER
