@@ -799,7 +799,10 @@ def after():
         DRIVER.quit()
 
 
-def after_test():
+def after_test(skip=False):
+    if skip:
+        return
+
     global DRIVER
 
     search = DRIVER.find_element_by_id("mat-input-0") 
