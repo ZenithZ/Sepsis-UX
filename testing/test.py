@@ -224,7 +224,7 @@ def test_vitals_shown():
     vital_positive.click()
     return PASS, 'Vital table correctly shown, and correct icon and text number'
 
-# ---------------------------------- Test 3 ---------------------------------- #
+# ---------------------------------- Test 4 ---------------------------------- #
 def test_bloodgas_shown():
     global DRIVER
 
@@ -250,6 +250,66 @@ def test_bloodgas_shown():
 
     bG_positive.click()
     return PASS, 'Bloodgas table correctly shown, and correct icon and text number'
+
+# ---------------------------------- Test 5 ---------------------------------- #
+def test_no_bloodgas_shown():
+    global DRIVER
+
+    bG_positive = DRIVER.find_element_by_xpath('//*[@id="6781046174"]')
+    bG_positive.click()
+
+    time.sleep(0.25)
+
+    bG_table = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]/mat-expansion-panel')
+    bG_table.click()
+
+    tables_shown = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[8]/td/div')
+    if 'Bloodgas' in tables_shown.text:
+        bG_table.click()
+        return FAIL, 'Bloodgas table shown'
+
+    bG_positive.click()
+    return PASS, 'Bloodgas not shown, as no results'
+
+# ---------------------------------- Test 4 ---------------------------------- #
+def test_bloodgas_shown():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 5 ---------------------------------- #
+def test_LOC_15():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 20 ---------------------------------- #
+def test_default_team_A_B():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 21 ---------------------------------- #
+def test_team_change():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 32 ---------------------------------- #
+def test_last_name():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 33 ---------------------------------- #
+def test_first_name():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 34 ---------------------------------- #
+def test_full_name():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
+
+# ---------------------------------- Test 35 ---------------------------------- #
+def test_true_false():
+    global DRIVER
+    return UNIMP, 'test not yet imple'
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
