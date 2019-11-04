@@ -821,43 +821,51 @@ def test_ats_table_correct():
 
     return PASS, None
 
+def suspect_septic(mrn, new_cat=3):
+    global DRIVER
+
+    patient = DRIVER.find_element_by_id(mrn)
+    if patient is None:
+        return FALSE, 'Could not locate patient'
+    
+    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
+    override.click()
+    
+    patient = DRIVER.find_element_by_id(mrn)
+    if patient is None:
+        return FAIL, 'Could not locate patient'
+    
+    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
+    if new_ats == new_cat:
+        return PASS, None
+
+    return FAIL, f'Incorrect ATS cat. Expected {new_cat} but was {new_ats}'
+
 
 def test_ats_suspect_cat():
     global DRIVER
 
     # Testing with a patient in ATS cat 5
-    patient = DRIVER.find_element_by_id('1423017529')
-    if patient is None:
-        return FAIL, 'Could not locate patient'
-
-    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
-    override.click()
-
-    patient = DRIVER.find_element_by_id('1423017529')
-    if patient is None:
-        return FAIL, 'Could not locate patient after overriding sepsis'
-    
-    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
-    if not new_ats == 3:
-        return FAIL, 'Patient did not change ATS cat to 3'
+    res, msg = suspect_septic('1423017529')
+    if not res:
+        return res, msg 
     
     # Testing with a patient in ATS cat 4
-    patient = DRIVER.find_element_by_id('1091439687')
-    if patient is None:
-        return FAIL, 'Could not locate patient'
+    res, msg = suspect_septic('1091439687')
+    if not res:
+        return res, msg
 
-    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
-    override.click()
+    # Testing with a patient in ATS cat 3 (Boundary)
+    res, msg = suspect_septic('3245321980')
+    if not res:
+        return res, msg
 
-    patient = DRIVER.find_element_by_id('1091439687')
-    if patient is None:
-        return FAIL, 'Could not locate patient after overriding sepsis'
-    
-    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
-    if not new_ats == 3:
-        return FAIL, 'Patient did not change ATS cat to 3'
+    # Testing with a patient in ATS cat 2 (Abnormal)
+    res, msg = suspect_septic('7917279390', new_cat=2)
+    if not res:
+        return res, msg
 
-    return PASS, None
+    return PASS, 'Patients are in correct ATS cat'
 
 
 def comp_waiting_time(patients, comp):
