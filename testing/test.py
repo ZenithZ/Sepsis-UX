@@ -54,6 +54,8 @@ def clear_notifications():
     for n in notifications:
         n.click()
 
+    time.sleep(0.25)
+
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     glowing = [i if 'glow' in i.get_attribute('class') else None for i in patients]
 
@@ -339,17 +341,65 @@ def test_team_change():
 # ---------------------------------- Test 32 ---------------------------------- #
 def test_last_name():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+
+    search = DRIVER.find_element_by_id("mat-input-0")
+    if not search:
+        return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+    search_name = "spicer"
+    search.send_keys(search_name)
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+    if len(names) > 0:
+        for name in names:
+            if len(name.text) > 1 and not search_name in name.text.lower():
+                return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+
+    return PASS, 'last name search correctly identifies patient'
 
 # ---------------------------------- Test 33 ---------------------------------- #
 def test_first_name():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+
+    search = DRIVER.find_element_by_id("mat-input-0")
+    if not search:
+        return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+    search_name = "john"
+    search.send_keys(search_name)
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+    if len(names) > 0:
+        for name in names:
+            if len(name.text) > 1 and not search_name in name.text.lower() and 'display' not in name.get_attribute('class'):
+                return FAIL, 'Search did not produce correct results'
+    
+    search.clear()
+
+    return PASS, 'last name search correctly identifies patient'
 
 # ---------------------------------- Test 35 ---------------------------------- #
 def test_no_patient_name():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+
+    search = DRIVER.find_element_by_id("mat-input-0")
+    if not search:
+        return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+    search_name = "bennyboi"
+    search.send_keys(search_name)
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+    if len(names) > 0:
+        for name in names:
+            if len(name.text) > 1:
+                return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+
+    return PASS, 'last name search correctly doesnt find patient'
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
