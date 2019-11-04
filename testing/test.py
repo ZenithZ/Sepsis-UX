@@ -31,7 +31,7 @@ def get_driver():
     
     if HEADLESS:
         options.add_argument("headless")
-    options.add_argument("--start-maximized")
+    options.add_argument("--window-size=900, 600")
     try:
         return webdriver.Chrome(executable_path="./chromedriver", desired_capabilities=capabilities, options=options)
     except:
@@ -66,6 +66,7 @@ def clear_notifications():
             g.click()
 
     return True
+
 
 def toggle(view):
     global DRIVER
@@ -394,8 +395,6 @@ def test_no_patient_name():
         for name in names:
             if len(name.text) > 1:
                 return FAIL, 'Search did not produce correct results'
-
-    DRIVER.refresh()
 
     return PASS, 'last name search correctly doesnt find patient'
 
@@ -1005,41 +1004,13 @@ def after():
 
 
 def after_test(skip=False):
+    global DRIVER
+
     if skip:
         return
 
-    global DRIVER
+    DRIVER.refresh()
 
-    search = DRIVER.find_element_by_id("mat-input-0") 
-    search.clear()
-    search.send_keys(Keys.BACKSPACE)
-    toggle('combined')
-
-    ascending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "ascending")]')
-    if len(ascending) != 0:
-        sort('suspect')
-
-    descending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "descending")]')
-    if len(descending) != 0:
-        col = descending[0].get_attribute('class').split()
-        if not 'cdk-column-Sepsis' in col:
-            sort('suspect')
-
-    time.sleep(0.25)
-
-    try:
-        toast = DRIVER.find_element_by_class_name('toast-message')
-        toast.click()
-    except:
-        pass
-
-    time.sleep(0.25)
-    
-    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
-    for p in patients:
-        icons = p.find_element_by_class_name('cdk-column-Sepsis').find_elements_by_css_selector('mat-icon')
-        if len(icons) > 1:
-            icons[1].click()
 
 def get_testcases():
     tests = []
