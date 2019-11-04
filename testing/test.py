@@ -395,7 +395,7 @@ def test_no_patient_name():
             if len(name.text) > 1:
                 return FAIL, 'Search did not produce correct results'
 
-    search.clear()
+    DRIVER.refresh()
 
     return PASS, 'last name search correctly doesnt find patient'
 
