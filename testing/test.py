@@ -322,7 +322,9 @@ def test_team_change():
 
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[9]/mat-form-field/div/div[1]/div')
     allen.click()
-    time.sleep('0.125')
+
+    time.sleep(0.125)
+
     B = DRIVER.find_element_by_xpath('//*[@id="mat-option-53"]/span')
     B.click()
 
