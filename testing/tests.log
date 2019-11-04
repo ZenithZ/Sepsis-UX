@@ -1,14 +1,18 @@
-[93mMoving to [1m[36mdashboard[0m
-[93mRunning [1m[91mbuild[39m[0m
+\e[93mMoving to \e[1m\e[36mdashboard\e[0m
+\e[93mRunning \e[1m\e[91mbuild\e[39m\e[0m
 
 chunk {0} runtime-es2015.d61f42a1e4be5689ac82.js (runtime) 1.41 kB [entry] [rendered]
 chunk {1} main-es2015.99ac5881a52f9cdf8673.js (main) 729 kB [initial] [rendered]
 chunk {2} polyfills-es2015.a8cf2d3dc3edef6712e4.js (polyfills) 36.4 kB [initial] [rendered]
 chunk {3} styles.4ca6b388eaabeb66cde5.css (styles) 65.1 kB [initial] [rendered]
-Date: 2019-11-03T11:31:24.764Z - Hash: 19f767fea46630e1ca94 - Time: 33732ms
-
-chunk {0} runtime-es5.0c5226cce70e491b47d0.js (runtime) 1.41 kB [entry] [rendered]
-chunk {1} main-es5.e524264c383d47ebec8b.js (main) 832 kB [initial] [rendered]
-chunk {2} polyfills-es5.a110209613c679b5e7b9.js (polyfills) 119 kB [initial] [rendered]
-Date: 2019-11-03T11:31:56.309Z - Hash: ddb33bd22996cc103eed - Time: 31457ms
-[1m[92mBuild successful[0m
+Date: 2019-11-04T12:50:10.300Z - Hash: 19f767fea46630e1ca94 - Time: 74971ms
+Traceback (most recent call last):
+  File "runner.py", line 74, in <module>
+    main()
+  File "runner.py", line 42, in main
+    run_test(testcase.name, testcase.test)
+  File "runner.py", line 59, in run_test
+    res, message = testcase()
+  File "/Users/zenithz/2019_Sem2/COMP3888/working_repo/comp3888-t09a-group-2/testing/test.py", line 135, in test_build
+    os.waitpid(pid, status)
+KeyboardInterrupt
