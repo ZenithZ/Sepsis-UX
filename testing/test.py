@@ -46,6 +46,25 @@ class Test:
         self.test = test
 
 
+def clear_notifications():
+    global DRIVER
+
+    notifications = DRIVER.find_elements_by_xpath('//*[@id="toast-container"]/div')
+
+    for n in notifications:
+        n.click()
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    glowing = [i if 'glow' in i.get_attribute('class') else None for i in patients]
+
+    for g in glowing:
+        if g != None:
+            g.click()
+            time.sleep(0.25)
+            g.click()
+
+    return True
+
 def toggle(view):
     global DRIVER
 
@@ -274,17 +293,48 @@ def test_no_bloodgas_shown():
 # ---------------------------------- Test 5 ---------------------------------- #
 def test_LOC_15():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    locs = [p.find_element_by_class_name('cdk-column-LOC').text for p in patients]
+    
+    for l in locs:
+        if l != '15':
+            return FAIL, 'LOC not default 15'
+
+    return PASS, 'All expandable patients default LOC of 15'
 
 # ---------------------------------- Test 20 ---------------------------------- #
 def test_default_team_A_B():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    teams = [p.find_element_by_class_name('cdk-column-Team').text for p in patients]
+    
+    for t in teams:
+        if t != 'A' or t != 'B':
+            return FAIL, 'Patient is not default to team A or B'
+
+    return PASS, 'All expandable patients default team A or B'
 
 # ---------------------------------- Test 21 ---------------------------------- #
 def test_team_change():
     global DRIVER
-    return UNIMP, 'test not yet imple'
+    clear_notifications()
+    toggle('team')
+
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[9]/mat-form-field/div/div[1]/div')
+    allen.click()
+    time.sleep('0.125')
+    B = DRIVER.find_element_by_xpath('//*[@id="mat-option-53"]/span')
+    B.click()
+
+    time.sleep(0.125)
+
+    new_allen = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table[2]/div/table/tbody/tr[1]')
+    if 'display' not in new_allen.get_attribute('class'):
+        return FAIL, 'patient is not displayed in new team table'
+
+    return PASS, 'patient team has been changed, and table updated appropriately'
 
 # ---------------------------------- Test 32 ---------------------------------- #
 def test_last_name():
@@ -296,13 +346,8 @@ def test_first_name():
     global DRIVER
     return UNIMP, 'test not yet imple'
 
-# ---------------------------------- Test 34 ---------------------------------- #
-def test_full_name():
-    global DRIVER
-    return UNIMP, 'test not yet imple'
-
 # ---------------------------------- Test 35 ---------------------------------- #
-def test_true_false():
+def test_no_patient_name():
     global DRIVER
     return UNIMP, 'test not yet imple'
 
@@ -953,8 +998,8 @@ def get_testcases():
     if not SKIP:
         tests.append(Test('Build', test_build))
     tests.append(Test('Test Page Load', test_page_load))
-    tests.append(Test('Test Name Search', test_name_search))
-    tests.append(Test('Test MRN Search', test_MRN_search))
+    tests.append(Test('Item 11 - Test 34: Searching by a patients full name will reveal all patients with that full name.', test_name_search))
+    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_MRN_search))
 
     tests.append(Test('Item 3 - Test 6: Repeated Vitals in order', test_repeated_vitals))
 
@@ -992,15 +1037,16 @@ def get_testcases():
     # -----_------@ZenithZ------_-------
 
 # ----------------------------------- @John ---------------------------------- #
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_vitals_shown))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_bloodgas_shown))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_LOC_15))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_default_team_A_B))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_team_change))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_last_name))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_first_name))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_full_name))
-    tests.append(Test('Item 2 - Test 3: Vitals shows expand', test_true_false))
+#kill -9 `lsof -t -i:4200`
+    tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
+    tests.append(Test('Item 2 - Test 3: Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
+    tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
+    tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
+    tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
+    tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
+    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_last_name))
+    tests.append(Test('Item 11 - Test 32: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
+    tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
 
 # ----------------------------------------------------------------------------- #
 
