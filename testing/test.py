@@ -309,7 +309,7 @@ def test_default_team_A_B():
     teams = [p.find_element_by_class_name('cdk-column-Team').text for p in patients]
     
     for t in teams:
-        if t != 'A' or t != 'B':
+        if t != 'A' and t != 'B':
             return FAIL, 'Patient is not default to team A or B'
 
     return PASS, 'All expandable patients default team A or B'
