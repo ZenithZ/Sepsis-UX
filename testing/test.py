@@ -281,12 +281,8 @@ def test_no_bloodgas_shown():
 
     time.sleep(0.25)
 
-    bG_table = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]/mat-expansion-panel')
-    bG_table.click()
-
     tables_shown = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[8]/td/div')
     if 'Bloodgas' in tables_shown.text:
-        bG_table.click()
         return FAIL, 'Bloodgas table shown'
 
     bG_positive.click()
