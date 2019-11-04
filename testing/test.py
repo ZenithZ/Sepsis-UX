@@ -426,35 +426,183 @@ def test_seentounseen():
 # Test 29: Patients will remain seen if views are switched back and forth.
 def seen_switching_views():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+    
+    # TODO
+
+    return PASS, None
 
 # Item 14: Patients can be sorted by their age
+def comp_age(patients, comp):
+    age = []
+    for p in patients:
+        temp = p.find_element_by_class_name('cdk-column-Delta')
+        tens = str(temp[0])
+        if (temp[1]!=''):
+            ones = str(temp[1])
+        age.append(int(temp[0] + temp[1]))
+
+    if len(age) == 1:
+        return True
+
+    for i in range(len(age) - 1):
+        if not comp(age[i], age[i + 1]):
+            return False
+
+    return True
 # Test 43: Clicking on the age column will sort patients by their age. (then every third click).
 def test_age_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+
+    if not sort('age'):
+        return FAIL, 'Could not click age header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x > y
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    return PASS, None
 # Test 44: Clicking on the age column twice will sort patients in reverse order by their age. (then every third click).
 def test_age_reverse_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    for i in range(2):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    return PASS, None
 # Test 45: Order is preserved when switching views.
 def test_age_preserved_order():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x > y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('age', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_waiting_time(patients, comp):
+            return FAIL, 'Sorting by age in ATS tables not performed correctly'
+
+    return PASS, None
 
 # Item 17: Patients can be sorted by their LOC
+def comp_LOC(patients, comp):
+    loc = []
+    for p in patients:
+        loc.append(p.find_element_by_class_name('cdk-column-Delta'))
+
+    if len(loc) == 1:
+        return True
+
+    for i in range(len(loc) - 1):
+        if not comp(loc[i], loc[i + 1]):
+            return False
+
+    return True
 # Test 52: Clicking on the LOC column will sort patients by their LOC. (then every third click).
 def test_LOC_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not sort('loc'):
+        return FAIL, 'Could not click loc header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x > y
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    return PASS, None
 # Test 53: Clicking on the LOC column twice will sort patients in reverse order by their LOC. (then every third click).
 def test_LOC_reverse_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    for i in range(2):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    return PASS, None
 # Test 54: Order is preserved when switching views.
 def test_LOC_preserved_order():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x > y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('loc', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_waiting_time(patients, comp):
+            return FAIL, 'Sorting by loc in ATS tables not performed correctly'
+
+    return PASS, None
 
 #------_---_---_---@ZenithZ---_---_---_------
 
