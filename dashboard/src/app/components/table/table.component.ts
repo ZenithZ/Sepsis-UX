@@ -78,9 +78,9 @@ export class TableComponent implements OnChanges {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   applyFilter(filterValue: string) {
+    this.filter = filterValue;
     filterValue = filterValue.trim().toLowerCase();
     this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.filter = this.dataSource.filter;
   }
 
   ngOnInit() {
