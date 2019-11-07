@@ -471,6 +471,61 @@ def test_columns_present():
     
     return PASS, 'all columns detected across all patients'
 
+# ---------------------------------------------------------------------------- #
+#                                    Item 4                                    #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- Test 8 ---------------------------------- #
+
+def test_caution_icon():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen.click()
+
+    vitals = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[1]/mat-expansion-panel')
+    vitals.click()
+
+    table = DRIVER.find_element_by_xpath('//*[@id="cdk-accordion-child-0"]/div')
+    values = table.find_elements_by_tag_name('tr')
+
+    icons = values[1].find_elements_by_tag_name('mat-icon')
+    if len(icons) > 0 or 'caution-icon' not in icons[0].get_attribute('class'):
+        return FAIL, 'Body Temperature for Allen is not out of range'
+
+    icons = values[2].find_elements_by_tag_name('mat-icon')
+    if len(icons) < 1 or 'caution-icon' not in icons[0].get_attribute('class'):
+        return FAIL, 'Pulse rate for Allen is out of range'
+
+    return PASS, 'caution icons displayed correctly'
+
+# ---------------------------------- Test 9 ---------------------------------- #
+
+def test_caution_icon():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen.click()
+
+    BG = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]/mat-expansion-panel')
+    BG.click()
+
+    table = DRIVER.find_element_by_xpath('//*[@id="cdk-accordion-child-11"]/div')
+    values = table.find_elements_by_tag_name('tr')
+
+    icons = values[1].find_elements_by_tag_name('mat-icon')
+    if len(icons) < 1 or 'warning-icon' not in icons[0].get_attribute('class'):
+        return FAIL, 'BE for Allen is not out of range'
+
+    icons = values[2].find_elements_by_tag_name('mat-icon')
+    if len(icons) < 1 or 'caution-icon' not in icons[0].get_attribute('class'):
+        return FAIL, 'Lactate for Allen is out of range'
+
+    return PASS, 'Warning icons displayed correctly'
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
