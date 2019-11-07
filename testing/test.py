@@ -607,8 +607,27 @@ def test_waiting_caution():
 
     DRIVER.refresh()
 
-    allen_exceeds = DRIVER.find_element_by
+    allen_exceeds = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    time = int(allen_exceeds.text.split(' ').split(':')[0])
+    if time > 1:
+        if 'error' not in allen_exceeds.text:
+            return FAIL, 'caution icon not present'
 
+    return PASS, 'caution icon present'
+
+# ---------------------------------- Test 15 --------------------------------- #
+def test_waiting_caution():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    allen_exceeds = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    time = int(allen_exceeds.text.split(' ').split(':')[0])
+    if time < 1:
+        if 'error' in allen_exceeds.text:
+            return FAIL, 'caution icon present'
+
+    return PASS, 'caution icon not present'
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
     age = []
