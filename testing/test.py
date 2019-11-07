@@ -872,6 +872,89 @@ def test_pause_icon():
 # ---------------------------------- Test 22 --------------------------------- #
 
 
+#------_---_---_---@ZenithZ---_---_---_------
+#Item 19: Patients can be sorted by their level of suspicion of sepsis
+def comp_sepsis(patients, comp):
+    risks = [float(p.find_element_by_class_name('cdk-column-Sepsis').text) for p in patients]
+    
+    if len(risks) == 1:
+        return True
+
+    for i in range(len(risks) - 1):
+        if not comp(risks[i], risks[i + 1]):
+            return False
+
+    return True
+
+#Test 58: Clicking on the suspect column will sort patients first by those not suspected of sepsis, then by those with a caution icon, then by those with a warning icon. (then every third click).
+def test_sepsisRisk_sort():
+    global DRIVER
+
+    if not sort('suspect'):
+        return FAIL, 'Could not click sepsis risk header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    if not comp_sepsis(patients, comp):
+        return FAIL, 'Sorting by sepsis risk not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('suspect'):
+            return FAIL, 'Could not click sepsis risk header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    if not comp_sepsis(patients, comp):
+        return FAIL, 'Sorting by sepsis risk not performed correctly'
+
+    return PASS, None
+
+def test_sepsisRisk_reverse_sort():
+    global DRIVER
+    for i in range(2):
+        if not sort('suspect'):
+            return FAIL, 'Could not click sepsis risk header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x > y
+
+    if not comp_sepsis(patients, comp):
+        return FAIL, 'Sorting by sepsis risk not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('suspect'):
+            return FAIL, 'Could not click header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    if not comp_sepsis(patients, comp):
+        return FAIL, 'Sorting by sepsis risk not performed correctly'
+
+    return PASS, None
+
+def test_sepsisRisk_preserved_order():
+    global DRIVER
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x < y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('suspect', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_sepsis(patients, comp):
+            return FAIL, 'Sorting by sepsis risk in ATS tables not performed correctly'
+
+    return PASS, None
 
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
@@ -1179,7 +1262,7 @@ def test_sort_sepsis():
 
     for p in patients:
         # Enter the value of machine learning (Please help fix it if it is not collect properly)
-        ml.append( p.find_element_by_class_name("cdk-column-ML") )
+        ml.append( p.find_element_by_class_name("cdk-column-Sepsis") )
 
     for i in range(len(ml)-1):
         if ml[i] < ml[i+1]:
@@ -1200,7 +1283,7 @@ def test_sort_sepsis():
     
     for p in patients:
         # Enter the value of machine learning (Please help fix it if it is not collect properly)
-        ml.append( p.find_element_by_class_name("cdk-column-ML") )
+        ml.append( p.find_element_by_class_name("cdk-column-Sepsis") )
 
     for i in range(len(ml)-1):
         if ml[i] > ml[i+1]:
@@ -1745,9 +1828,19 @@ def get_testcases():
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
     tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
-    tests.append(Test('Item 18 - Test 55: Sort by Waiting Time, Ascending' , test_sort_waiting_time))
-    tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
-    tests.append(Test('Item 18 - Test 57: Sort by Waiting Time Toggle' , test_sort_waiting_time_view_toggle))
+# ----------------------------------- @ZenithZ ---------------------------------- #
+    tests.append(Test('Item 14 - Test 43: Sort by Age, Ascending', test_age_sort))
+    tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
+    tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
+
+    tests.append(Test('Item 17 - Test 52: Sort by LOC, Ascending' , test_LOC_sort))
+    tests.append(Test('Item 17 - Test 53: Sort by LOC, Descending', test_LOC_reverse_sort))
+    tests.append(Test('Item 17 - Test 54: Sort by LOC Toggle', test_LOC_preserved_order))
+    tests.append(Test('Item 17 - Test 54a: Test if LOC is default 15', test_LOC_15))
+
+    tests.append(Test('Item 19 - Test 58: Sort by Sepsis Risk, Ascending' , test_sepsisRisk_sort))
+    tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
+    tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
 
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
