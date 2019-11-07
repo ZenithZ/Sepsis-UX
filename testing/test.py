@@ -1019,11 +1019,12 @@ def test_ats_suspect_cat():
 def comp_waiting_time(patients, comp):
     wait_time = []
     for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[0]
+        if 'd' in waiting:
+            return False
+        hours = int(waiting.split(':')[0])
+        mins = int(waiting.split(':')[1])
+        wait_time.append(datetime.timedelta(hours=hours, minutes=mins))
 
     if len(wait_time) == 1:
         return True
