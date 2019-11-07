@@ -170,9 +170,11 @@ export class TableComponent implements OnChanges {
 
   overrideRisk(patient: any) {
     if (!patient.hasOwnProperty('Overridden')) {
-      patient['Overridden'] = true;
+      patient['Overridden'] = patient['ATS'];
+      patient['ATS'] = Number(patient['ATS']) > 3 ? 3 : patient['ATS'];
     } else {
-      patient['Overridden'] = !patient['Overridden'];
+      patient['ATS'] = patient['Overridden']
+      delete patient['Overridden'];
     }
     this.dataSource._updateChangeSubscription();
   }

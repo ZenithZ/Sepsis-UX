@@ -31,7 +31,7 @@ def get_driver():
     
     if HEADLESS:
         options.add_argument("headless")
-    options.add_argument("--start-maximized")
+    options.add_argument("--window-size=900, 600")
     try:
         return webdriver.Chrome(executable_path="./chromedriver", desired_capabilities=capabilities, options=options)
     except:
@@ -66,6 +66,7 @@ def clear_notifications():
             g.click()
 
     return True
+
 
 def toggle(view):
     global DRIVER
@@ -395,8 +396,6 @@ def test_no_patient_name():
             if len(name.text) > 1:
                 return FAIL, 'Search did not produce correct results'
 
-    DRIVER.refresh()
-
     return PASS, 'last name search correctly doesnt find patient'
 
 #------_---_---_---@ZenithZ---_---_---_----- -
@@ -427,35 +426,183 @@ def test_seentounseen():
 # Test 29: Patients will remain seen if views are switched back and forth.
 def seen_switching_views():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+    
+    # TODO
+
+    return PASS, None
 
 # Item 14: Patients can be sorted by their age
+def comp_age(patients, comp):
+    age = []
+    for p in patients:
+        temp = p.find_element_by_class_name('cdk-column-Delta')
+        tens = str(temp[0])
+        if (temp[1]!=''):
+            ones = str(temp[1])
+        age.append(int(temp[0] + temp[1]))
+
+    if len(age) == 1:
+        return True
+
+    for i in range(len(age) - 1):
+        if not comp(age[i], age[i + 1]):
+            return False
+
+    return True
 # Test 43: Clicking on the age column will sort patients by their age. (then every third click).
 def test_age_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+
+    if not sort('age'):
+        return FAIL, 'Could not click age header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x > y
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    return PASS, None
 # Test 44: Clicking on the age column twice will sort patients in reverse order by their age. (then every third click).
 def test_age_reverse_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    for i in range(2):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('age'):
+            return FAIL, 'Could not click age header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    if not comp_age(patients, comp):
+        return FAIL, 'Sorting by age not performed correctly'
+
+    return PASS, None
 # Test 45: Order is preserved when switching views.
 def test_age_preserved_order():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x > y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('age', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_waiting_time(patients, comp):
+            return FAIL, 'Sorting by age in ATS tables not performed correctly'
+
+    return PASS, None
 
 # Item 17: Patients can be sorted by their LOC
+def comp_LOC(patients, comp):
+    loc = []
+    for p in patients:
+        loc.append(p.find_element_by_class_name('cdk-column-Delta'))
+
+    if len(loc) == 1:
+        return True
+
+    for i in range(len(loc) - 1):
+        if not comp(loc[i], loc[i + 1]):
+            return False
+
+    return True
 # Test 52: Clicking on the LOC column will sort patients by their LOC. (then every third click).
 def test_LOC_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not sort('loc'):
+        return FAIL, 'Could not click loc header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x > y
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    return PASS, None
 # Test 53: Clicking on the LOC column twice will sort patients in reverse order by their LOC. (then every third click).
 def test_LOC_reverse_sort():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    for i in range(2):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('loc'):
+            return FAIL, 'Could not click loc header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    if not comp_LOC(patients, comp):
+        return FAIL, 'Sorting by loc not performed correctly'
+
+    return PASS, None
 # Test 54: Order is preserved when switching views.
 def test_LOC_preserved_order():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x > y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('loc', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_waiting_time(patients, comp):
+            return FAIL, 'Sorting by loc in ATS tables not performed correctly'
+
+    return PASS, None
 
 #------_---_---_---@ZenithZ---_---_---_------
 
@@ -822,62 +969,112 @@ def test_ats_table_correct():
 
     return PASS, None
 
+def suspect_septic(mrn, new_cat=3, unsuspect=False):
+    global DRIVER
+
+    patient = DRIVER.find_element_by_id(mrn)
+    if patient is None:
+        return FAIL, 'Could not locate patient'
+    
+    if unsuspect:
+        override = patient.find_element_by_class_name('cdk-column-Sepsis').find_elements_by_css_selector('mat-icon')[1]
+    else:
+        override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
+    override.click()
+    
+    patient = DRIVER.find_element_by_id(mrn)
+    if patient is None:
+        return FAIL, 'Could not locate patient'
+    
+    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
+    if new_ats == new_cat:
+        return PASS, None
+
+    return FAIL, f'Incorrect ATS cat. Expected {new_cat} but was {new_ats}'
+
 
 def test_ats_suspect_cat():
     global DRIVER
 
     # Testing with a patient in ATS cat 5
-    patient = DRIVER.find_element_by_id('1423017529')
-    if patient is None:
-        return FAIL, 'Could not locate patient'
-
-    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
-    override.click()
-
-    patient = DRIVER.find_element_by_id('1423017529')
-    if patient is None:
-        return FAIL, 'Could not locate patient after overriding sepsis'
-    
-    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
-    if not new_ats == 3:
-        return FAIL, 'Patient did not change ATS cat to 3'
+    res, msg = suspect_septic('1423017529')
+    if not res:
+        return res, msg 
     
     # Testing with a patient in ATS cat 4
-    patient = DRIVER.find_element_by_id('1091439687')
-    if patient is None:
-        return FAIL, 'Could not locate patient'
+    res, msg = suspect_septic('1091439687')
+    if not res:
+        return res, msg
 
-    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
-    override.click()
+    # Testing with a patient in ATS cat 3 (Boundary)
+    res, msg = suspect_septic('3245321980')
+    if not res:
+        return res, msg
 
-    patient = DRIVER.find_element_by_id('1091439687')
-    if patient is None:
-        return FAIL, 'Could not locate patient after overriding sepsis'
-    
-    new_ats = int(patient.find_element_by_class_name('cdk-column-ATS').text)
-    if not new_ats == 3:
-        return FAIL, 'Patient did not change ATS cat to 3'
+    # Testing with a patient in ATS cat 2 (Abnormal)
+    res, msg = suspect_septic('7917279390', new_cat=2)
+    if not res:
+        return res, msg
 
-    return PASS, None
+    return PASS, 'Patients are in correct ATS cat'
+
+
+def suspect_toggle(mrn, num, orig_cat, new_cat):
+    for i in range(num):
+        res, msg = suspect_septic(mrn, new_cat=new_cat)
+        if not res:
+            return res, msg
+
+        res, msg = suspect_septic(mrn, unsuspect=True, new_cat=orig_cat)
+        if not res:
+            return res, msg
+
+    return True, 'Patient cat behaves correctly'
+
+
+def test_ats_suspect_toggle_cat():
+    global DRIVER
+
+    # Testing with a patient in ATS cat 5
+    res, msg = suspect_toggle('1423017529', 2, 5, 3)
+
+    # Testing with a patient in ATS cat 3 (Boundary)
+    res, msg = suspect_toggle('3245321980', 2, 3, 3)
+    if not res:
+        return res, msg
+
+    # Testing with a patient in ATS cat 2 (Abnormal)
+    res, msg = suspect_toggle('7917279390', 2, 2, 2)
+    if not res:
+        return res, msg
+
+    # Simulate indecisive user
+    res, msg = suspect_toggle('1423017529', 50, 5, 3)
+    if not res:
+        return res, msg
+
+
+    return PASS, 'Patients are in correct ATS cat'
 
 
 def comp_waiting_time(patients, comp):
     wait_time = []
     for p in patients:
-        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[:2]
-        days = int(waiting[0].replace('d', ''))
-        hours = int(waiting[1].split(':')[0])
-        mins = int(waiting[1].split(':')[1])
-        wait_time.append(datetime.timedelta(days=days, hours=hours, minutes=mins))
+        waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[0]
+        if 'd' in waiting:
+            return False, 'Max possible waiting time was not upheld'
+        hours = int(waiting.split(':')[0])
+        mins = int(waiting.split(':')[1])
+        wait_time.append(datetime.timedelta(hours=hours, minutes=mins))
 
     if len(wait_time) == 1:
-        return True
+        return True, 'One patient is correctly sorted by default'
 
     for i in range(len(wait_time) - 1):
         if not comp(wait_time[i], wait_time[i + 1]):
-            return False
+            return False, f'Expected {wait_time[i]} to be before {wait_time[i + 1]}'
 
-    return True
+    return True, 'All patients correctly sorted by time'
 
 
 def test_sort_waiting_time():
@@ -890,8 +1087,9 @@ def test_sort_waiting_time():
     
     comp = lambda x, y: x > y
 
-    if not comp_waiting_time(patients, comp):
-        return FAIL, 'Sorting by wait time not performed correctly'
+    res, msg = comp_waiting_time(patients, comp)
+    if not res:
+        return FAIL, msg
 
     # Cycling through until back to ascending order
     for i in range(3):
@@ -900,8 +1098,9 @@ def test_sort_waiting_time():
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
 
-    if not comp_waiting_time(patients, comp):
-        return FAIL, 'Sorting by wait time not performed correctly'
+    res, msg = comp_waiting_time(patients, comp)
+    if not res:
+        return FAIL, msg
 
     return PASS, None
 
@@ -1005,41 +1204,13 @@ def after():
 
 
 def after_test(skip=False):
+    global DRIVER
+
     if skip:
         return
 
-    global DRIVER
+    DRIVER.refresh()
 
-    search = DRIVER.find_element_by_id("mat-input-0") 
-    search.clear()
-    search.send_keys(Keys.BACKSPACE)
-    toggle('combined')
-
-    ascending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "ascending")]')
-    if len(ascending) != 0:
-        sort('suspect')
-
-    descending = DRIVER.find_elements_by_xpath('//th[contains(@aria-sort, "descending")]')
-    if len(descending) != 0:
-        col = descending[0].get_attribute('class').split()
-        if not 'cdk-column-Sepsis' in col:
-            sort('suspect')
-
-    time.sleep(0.25)
-
-    try:
-        toast = DRIVER.find_element_by_class_name('toast-message')
-        toast.click()
-    except:
-        pass
-
-    time.sleep(0.25)
-    
-    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
-    for p in patients:
-        icons = p.find_element_by_class_name('cdk-column-Sepsis').find_elements_by_css_selector('mat-icon')
-        if len(icons) > 1:
-            icons[1].click()
 
 def get_testcases():
     tests = []
@@ -1055,6 +1226,7 @@ def get_testcases():
     tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
     tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
+    tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
     tests.append(Test('Item 18 - Test 55: Sort by Waiting Time, Ascending' , test_sort_waiting_time))
     tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
