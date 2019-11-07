@@ -699,6 +699,33 @@ def test_sort_full_name():
 
     return PASS, None
 
+def test_sort_last_name_reverse():
+    global DRIVER
+
+    for i in range(2):
+        if not sort('name'):
+            return FAIL, 'Could not click name header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x >= y
+
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
+
+    return PASS, None
 
 def test_sort_sepsis():
     global DRIVER
@@ -1275,8 +1302,10 @@ def get_testcases():
     tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
     tests.append(Test('Item 18 - Test 57: Sort by Waiting Time Toggle' , test_sort_waiting_time_view_toggle))
 
-    tests.append(Test('Item 13 - Test 40: Test Last Name Sort', test_sort_last_name))
-    tests.append(Test('Item 13 - Test 40a: Test Last Name Sort', test_sort_full_name))
+    tests.append(Test('Item 13 - Test 40: Sort by Surname, Ascending', test_sort_last_name))
+    tests.append(Test('Item 13 - Test 40a: Sort by Fullname, Ascending', test_sort_full_name))
+    tests.append(Test('Item 13 - Test 41: Sort by Surname, Descending', test_sort_last_name_reverse))
+    # tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
 
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
     # tests.append(Test('Test Vitals Sort', test_sort_Vitals))
