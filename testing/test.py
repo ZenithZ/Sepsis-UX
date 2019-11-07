@@ -527,6 +527,20 @@ def test_caution_icon():
 
     return PASS, 'Warning icons displayed correctly'
 
+# ---------------------------------- Test 10 --------------------------------- #
+
+def test_short_yellow():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    caution = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[6]/div')
+    if 'caution-icon' not in caution.get_attribute('class'):
+        return FAIL, 'icon not yellow'
+
+    return PASS, 'shorthand caution is displayed correctly'
+
+
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
 # Item 5: Test results of a patient are indicated (by colour) on the left of the patient summary.
