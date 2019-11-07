@@ -606,53 +606,77 @@ def test_LOC_preserved_order():
 
 #------_---_---_---@ZenithZ---_---_---_------
 
-def test_sort_name():
+def comp_name(patients, comp, part):
+    names = []
+    for p in patients:
+        full_name = p.find_element_by_class_name('cdk-column-Name').text.split()
+        if part == 'last':
+            names.append(full_name[1])
+        if part == 'full':
+            names.append(' '.join([full_name[1], full_name[0]]))
+
+    if len(names) == 1:
+        return True, 'One patient is correctly sorted by default'
+
+    for i in range(len(names) - 1):
+        if not comp(names[i], names[i + 1]):
+            return False, f'Expected {names[i]} to be before {names[i + 1]}'
+
+    return True, f'All patients correctly sorted by {part} name'
+
+
+def test_sort_last_name():
     global DRIVER
 
-    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[3]/div/button")
-    button.click()
+    if not sort('name'):
+        return FAIL, 'Could not click name header'
 
-    tables = DRIVER.find_elements_by_tag_name("app-table")
-    tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    patients = []
+    comp = lambda x, y: x <= y
 
-    for t in tables:
-        patients += t.find_elements_by_class_name("example-element-row")
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
 
-    alphabet = list(string.ascii_uppercase)
-
-    for p in patients:
-        first_letter_lastname = ''.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
-
-        if first_letter_lastname not in alphabet:
-            return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
-        
-        while first_letter_lastname != alphabet[0]:
-            if len(alphabet) == 0:
-                return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
-            alphabet.pop(0)
-
-    # ## Test descending order
-    button.click()
-    tables_r = DRIVER.find_elements_by_tag_name("app-table")
-    tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
     
-    patients_r = []
-    for t in tables:
-        patients_r += t.find_elements_by_class_name("example-element-row")
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
 
-    alphabet_r = list(string.ascii_uppercase)[::-1]
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
 
-    for p in patients:
-        first_letter_lastname = ' '.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
-        if first_letter_lastname not in alphabet_r:
-            return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
-        
-        while first_letter_lastname != alphabet[0]:
-            if len(alphabet) == 0:
-                return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
-            alphabet.pop(0)
+    return PASS, None
+
+
+def test_sort_full_name():
+    global DRIVER
+
+    if not sort('name'):
+        return FAIL, 'Could not click name header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    res, msg = comp_name(patients, comp, 'full')
+    if not res:
+        return FAIL, msg
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    res, msg = comp_name(patients, comp, 'full')
+    if not res:
+        return FAIL, msg
 
     return PASS, None
 
@@ -1232,7 +1256,9 @@ def get_testcases():
     tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
     tests.append(Test('Item 18 - Test 57: Sort by Waiting Time Toggle' , test_sort_waiting_time_view_toggle))
 
-    # tests.append(Test('Test Name Sort', test_sort_name))
+    tests.append(Test('Item 13 - Test 40: Test Last Name Sort', test_sort_last_name))
+    tests.append(Test('Item 13 - Test 40a: Test Last Name Sort', test_sort_full_name))
+
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
     # tests.append(Test('Test Vitals Sort', test_sort_Vitals))
     # tests.append(Test('Test Bloodgas Sort', test_sort_BL))
