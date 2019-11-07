@@ -969,14 +969,17 @@ def test_ats_table_correct():
 
     return PASS, None
 
-def suspect_septic(mrn, new_cat=3):
+def suspect_septic(mrn, new_cat=3, unsuspect=False):
     global DRIVER
 
     patient = DRIVER.find_element_by_id(mrn)
     if patient is None:
         return FAIL, 'Could not locate patient'
     
-    override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
+    if unsuspect:
+        override = patient.find_element_by_class_name('cdk-column-Sepsis').find_elements_by_css_selector('mat-icon')[1]
+    else:
+        override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
     override.click()
     
     patient = DRIVER.find_element_by_id(mrn)
@@ -1012,6 +1015,44 @@ def test_ats_suspect_cat():
     res, msg = suspect_septic('7917279390', new_cat=2)
     if not res:
         return res, msg
+
+    return PASS, 'Patients are in correct ATS cat'
+
+
+def suspect_toggle(mrn, num, orig_cat, new_cat):
+    for i in range(num):
+        res, msg = suspect_septic(mrn, new_cat=new_cat)
+        if not res:
+            return res, msg
+
+        res, msg = suspect_septic(mrn, unsuspect=True, new_cat=orig_cat)
+        if not res:
+            return res, msg
+
+    return True, 'Patient cat behaves correctly'
+
+
+def test_ats_suspect_toggle_cat():
+    global DRIVER
+
+    # Testing with a patient in ATS cat 5
+    res, msg = suspect_toggle('1423017529', 2, 5, 3)
+
+    # Testing with a patient in ATS cat 3 (Boundary)
+    res, msg = suspect_toggle('3245321980', 2, 3, 3)
+    if not res:
+        return res, msg
+
+    # Testing with a patient in ATS cat 2 (Abnormal)
+    res, msg = suspect_toggle('7917279390', 2, 2, 2)
+    if not res:
+        return res, msg
+
+    # Simulate indecisive user
+    res, msg = suspect_toggle('1423017529', 50, 5, 3)
+    if not res:
+        return res, msg
+
 
     return PASS, 'Patients are in correct ATS cat'
 
@@ -1185,6 +1226,7 @@ def get_testcases():
     tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
     tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
+    tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
     tests.append(Test('Item 18 - Test 55: Sort by Waiting Time, Ascending' , test_sort_waiting_time))
     tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
