@@ -650,7 +650,30 @@ def test_pause():
     if allen_time_before.text != allen_time_after.text:
         return FAIL, 'time not the same, didnt pause'
 
-    return PASS, 'caution icon not present'
+    return PASS, 'time is the same after 1 minute, paused'
+
+# ---------------------------------- Test 18 --------------------------------- #
+def test_pause_icon():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    search = DRIVER.find_element_by_id("mat-input-0")
+    search.clear()
+
+    search_name = " "
+    search.send_keys(search_name)
+
+    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    if 'pause_circle_outline' in allen_waittime:
+        return FAIL, 'waittime should not be paused'
+    allen_seen = DRIVER.find_element_by_xpath('//*[@id="mat-checkbox-1"]/label/div')
+    allen_seen.click()
+    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    if 'pause_circle_outline' in allen_waittime:
+        return FAIL, 'waittime should be paused'
+
+    return PASS, 'waitime icon correctly shows after seen'
 
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
