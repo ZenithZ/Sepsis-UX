@@ -223,6 +223,8 @@ def test_MRN_search():
 def test_vitals_shown():
     global DRIVER
 
+    DRIVER.refresh()
+
     vital_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
     vital_positive.click()
 
@@ -249,6 +251,8 @@ def test_vitals_shown():
 # ---------------------------------- Test 5 ---------------------------------- #
 def test_bloodgas_shown():
     global DRIVER
+
+    DRIVER.refresh()
 
     bG_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
     bG_positive.click()
@@ -277,6 +281,8 @@ def test_bloodgas_shown():
 def test_no_bloodgas_shown():
     global DRIVER
 
+    DRIVER.refresh()
+
     bG_positive = DRIVER.find_element_by_xpath('//*[@id="6781046174"]')
     bG_positive.click()
 
@@ -293,6 +299,8 @@ def test_no_bloodgas_shown():
 def test_LOC_15():
     global DRIVER
 
+    DRIVER.refresh()
+
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     locs = [p.find_element_by_class_name('cdk-column-LOC').text for p in patients]
     
@@ -306,6 +314,8 @@ def test_LOC_15():
 def test_default_team_A_B():
     global DRIVER
 
+    DRIVER.refresh()
+
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     teams = [p.find_element_by_class_name('cdk-column-Team').text for p in patients]
     
@@ -318,6 +328,9 @@ def test_default_team_A_B():
 # ---------------------------------- Test 21 ---------------------------------- #
 def test_team_change():
     global DRIVER
+
+    DRIVER.refresh()
+
     clear_notifications()
     toggle('team')
 
@@ -341,6 +354,8 @@ def test_team_change():
 def test_last_name():
     global DRIVER
 
+    DRIVER.refresh()
+
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
         return FAIL, 'Search did not produce correct results'
@@ -362,6 +377,8 @@ def test_last_name():
 def test_first_name():
     global DRIVER
 
+    DRIVER.refresh()
+
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
         return FAIL, 'Search did not produce correct results'
@@ -382,6 +399,8 @@ def test_first_name():
 # ---------------------------------- Test 35 ---------------------------------- #
 def test_no_patient_name():
     global DRIVER
+
+    DRIVER.refresh()
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
