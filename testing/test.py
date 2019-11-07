@@ -223,6 +223,8 @@ def test_MRN_search():
 def test_vitals_shown():
     global DRIVER
 
+    DRIVER.refresh()
+
     vital_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
     vital_positive.click()
 
@@ -249,6 +251,8 @@ def test_vitals_shown():
 # ---------------------------------- Test 5 ---------------------------------- #
 def test_bloodgas_shown():
     global DRIVER
+
+    DRIVER.refresh()
 
     bG_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
     bG_positive.click()
@@ -277,6 +281,8 @@ def test_bloodgas_shown():
 def test_no_bloodgas_shown():
     global DRIVER
 
+    DRIVER.refresh()
+
     bG_positive = DRIVER.find_element_by_xpath('//*[@id="6781046174"]')
     bG_positive.click()
 
@@ -293,6 +299,8 @@ def test_no_bloodgas_shown():
 def test_LOC_15():
     global DRIVER
 
+    DRIVER.refresh()
+
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     locs = [p.find_element_by_class_name('cdk-column-LOC').text for p in patients]
     
@@ -306,6 +314,8 @@ def test_LOC_15():
 def test_default_team_A_B():
     global DRIVER
 
+    DRIVER.refresh()
+
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     teams = [p.find_element_by_class_name('cdk-column-Team').text for p in patients]
     
@@ -318,6 +328,9 @@ def test_default_team_A_B():
 # ---------------------------------- Test 21 ---------------------------------- #
 def test_team_change():
     global DRIVER
+
+    DRIVER.refresh()
+
     clear_notifications()
     toggle('team')
 
@@ -326,7 +339,7 @@ def test_team_change():
 
     time.sleep(0.125)
 
-    B = DRIVER.find_element_by_xpath('//*[@id="mat-option-53"]/span')
+    B = DRIVER.find_element_by_xpath('//*[@id="mat-option-29"]/span')
     B.click()
 
     time.sleep(0.125)
@@ -340,6 +353,8 @@ def test_team_change():
 # ---------------------------------- Test 32 ---------------------------------- #
 def test_last_name():
     global DRIVER
+
+    DRIVER.refresh()
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
@@ -362,6 +377,8 @@ def test_last_name():
 def test_first_name():
     global DRIVER
 
+    DRIVER.refresh()
+
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
         return FAIL, 'Search did not produce correct results'
@@ -382,6 +399,8 @@ def test_first_name():
 # ---------------------------------- Test 35 ---------------------------------- #
 def test_no_patient_name():
     global DRIVER
+
+    DRIVER.refresh()
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
@@ -1285,13 +1304,13 @@ def get_testcases():
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
     tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
-    tests.append(Test('Item 2 - Test 3: Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
+    tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
     tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
     tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
     tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
     tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
     tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_last_name))
-    tests.append(Test('Item 11 - Test 32: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
+    tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
     tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
 
 # ----------------------------------------------------------------------------- #
