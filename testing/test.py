@@ -540,6 +540,19 @@ def test_short_yellow():
 
     return PASS, 'shorthand caution is displayed correctly'
 
+# ---------------------------------- Test 11 --------------------------------- #
+
+def test_short_yellow():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    caution = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[7]/div')
+    if 'warning-icon' not in caution.get_attribute('class'):
+        return FAIL, 'icon not red'
+
+    return PASS, 'shorthand warning is displayed correctly'
+
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
