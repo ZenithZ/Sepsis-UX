@@ -417,6 +417,61 @@ def test_no_patient_name():
 
     return PASS, 'last name search correctly doesnt find patient'
 
+# ---------------------------------------------------------------------------- #
+#                                    Item 1                                    #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- Test 1 ---------------------------------- #
+
+def test_columns_present():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    for p in patients:
+        cols = p.find_elements_by_tag_name('td')
+        classes = [c.get_attribute('class') for c in cols]
+
+        if len(classes) != 11:
+            return FAIL, 'number of columns doesnt equal 11'
+
+        if 'cdk-column-ATS' not in classes[0]:
+            return FAIL, 'ATS column not detected'
+
+        if 'cdk-column-Seen' not in classes[1]:
+            return FAIL, 'Seen column not detected'
+
+        if 'cdk-column-MRN' not in classes[2]:
+            return FAIL, 'MRN column not detected'
+
+        if 'cdk-column-Name' not in classes[3]:
+            return FAIL, 'Name column not detected'
+
+        if 'cdk-column-DOB' not in classes[4]:
+            return FAIL, 'DOB column not detected'
+
+        if 'cdk-column-Vitals' not in classes[5]:
+            return FAIL, 'Vitals column not detected'
+
+        if 'cdk-column-BG' not in classes[6]:
+            return FAIL, 'BG column not detected'
+
+        if 'cdk-column-LOC' not in classes[7]:
+            return FAIL, 'LOC column not detected'
+
+        if 'cdk-column-Team' not in classes[8]:
+            return FAIL, 'Team column not detected'
+
+        if 'cdk-column-Delta' not in classes[9]:
+            return FAIL, 'Delta column not detected'
+
+        if 'cdk-column-Sepsis' not in classes[10]:
+            return FAIL, 'Sepsis column not detected'
+    
+    return PASS, 'all columns detected across all patients'
+
+
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
 # Item 5: Test results of a patient are indicated (by colour) on the left of the patient summary.
@@ -1251,10 +1306,21 @@ def get_testcases():
     tests.append(Test('Item 18 - Test 56: Sort by Waiting Time, Descending' , test_sort_waiting_time_reverse))
     tests.append(Test('Item 18 - Test 57: Sort by Waiting Time Toggle' , test_sort_waiting_time_view_toggle))
 
-    # tests.append(Test('Test Name Sort', test_sort_name))
-    # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
-    # tests.append(Test('Test Vitals Sort', test_sort_Vitals))
-    # tests.append(Test('Test Bloodgas Sort', test_sort_BL))
+# ----------------------------------- @John ---------------------------------- #
+#kill -9 `lsof -t -i:4200`
+    tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
+    tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
+    tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
+    tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
+    tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
+    tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
+    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_last_name))
+    tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
+    tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
+
+    test.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
+
+# ----------------------------------------------------------------------------- #
 
     # -----_------@ZenithZ------_-------
     #sudo kill `sudo lsof -t -i:4200`
@@ -1275,18 +1341,5 @@ def get_testcases():
     tests.append(Test('Item 17 - Test 54: Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
     # -----_------@ZenithZ------_-------
 
-# ----------------------------------- @John ---------------------------------- #
-#kill -9 `lsof -t -i:4200`
-    tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
-    tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
-    tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
-    tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
-    tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
-    tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
-    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_last_name))
-    tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
-    tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
-
-# ----------------------------------------------------------------------------- #
 
     return tests
