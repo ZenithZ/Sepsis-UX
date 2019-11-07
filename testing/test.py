@@ -216,6 +216,195 @@ def test_MRN_search():
     return PASS, None
 
 # ---------------------------------------------------------------------------- #
+#                                 Mark Dagher                                  #
+# ---------------------------------------------------------------------------- #
+# ----------------------------- Item 9, 10 ----- ----------------------------- #
+# ---------------------------------- Test 22 --------------------------------- #
+def test_patient_has_warning_or_cation_icon():
+    global DRIVER
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    flynn = DRIVER.find_element_by_xpath('//*[@id="7917279390"]')
+    
+    sepsis1 = allen.find_element_by_class_name('cdk-column-Sepsis')
+    sepsis2 = flynn.find_element_by_class_name('cdk-column-Sepsis')
+    ret = True
+    if (sepsis1.find_element_by_class_name('warning-icon') is None):
+        ret = False
+    if (sepsis2.find_element_by_class_name('caution-icon') is None):
+        ret = False
+    if (ret):
+        return PASS, None
+    else:
+        return FAIL, "Patient doesn't have appropriate icon"
+
+
+# --------------------------------- Test 23 ---------------------------------- #
+
+def test_override_changes_ats_to_3():
+    global DRIVER
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('mat-icon')
+    sepsis.click() # Click force sepsis
+    ats = john.find_element_by_class_name('cdk-column-ATS')
+    if (ats.text in "3"):
+        return PASS, None
+    return FAIL, "ATS wasn't changed to 3"
+
+# --------------------------------- Test 24 ---------------------------------- #
+
+def test_override_changes_icon_and_left_border():
+    global DRIVER
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('mat-icon')
+    sepsis.click() # Click force sepsis
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('warning-icon')
+    ret = True
+    if (sepsis.text not in "warning"):
+        ret = False
+    ats = john.find_element_by_class_name('cdk-column-ATS')
+    
+    if (ats.get_attribute('style') not in "border-left-color: rgb(229, 57, 53);"):
+        ret = False
+    if (ret):
+        return PASS, None
+    
+    return FAIL, "Didn't change icon/left border."
+    
+# --------------------------------- Test 24 ---------------------------------- #
+
+def test_override_changes_icon_and_remains_after_view_change():
+    global DRIVER
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('mat-icon')
+    sepsis.click() # Click force sepsis
+    
+    toggle('ats')
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('warning-icon')
+    if (sepsis.text not in "warning"):
+        return FAIL, "Icon no longer warning after switched to ATS"
+    
+    toggle('combined')
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('warning-icon')
+    if (sepsis.text not in "warning"):
+        return FAIL, "Icon no longer warning after switched from ATS to Combined"
+
+    toggle('team')
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('warning-icon')
+    if (sepsis.text not in "warning"):
+        return FAIL, "Icon no longer warning after switched from Combined to Teams"
+
+    toggle('combined')
+    john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
+    sepsis = john.find_element_by_class_name('cdk-column-Sepsis').find_element_by_class_name('warning-icon')
+    if (sepsis.text not in "warning"):
+        return FAIL, "Icon no longer warning after switched from Teams to Combined"
+    
+    return PASS, None
+    
+# ---------------------------------- Test 26 --------------------------------- #
+def test_search_shows_seen_unseen():
+    global DRIVER
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    
+    cols = allen.find_elements_by_tag_name('td')
+    cols[1].click() # Click seen
+    
+    search = DRIVER.find_element_by_id("mat-input-0")
+    if not search:
+        return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+    search_name = " "
+    search.send_keys(search_name)
+    names = DRIVER.find_elements_by_xpath("//td[contains(@class, 'Name')]")
+    if len(names) > 0:
+        for name in names:
+            if len(name.text) > 1 and "allen guo" in name.text.lower():
+                return PASS, None
+
+    return FAIL, None
+
+# ---------------------------------- Test 27 --------------------------------- #
+def test_click_seen_removes_from_view():
+    global DRIVER
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    
+    cols = allen.find_elements_by_tag_name('td')
+    cols[1].click() # Click seen
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' in res.get_attribute('class')):
+        return PASS, None
+    
+    return FAIL, "Didn't remove from view"
+
+# ---------------------------------- Test 28 --------------------------------- #
+def test_search_and_untick_seen_makes_them_reappear():
+    global DRIVER
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    
+    cols = allen.find_elements_by_tag_name('td')
+    cols[1].click() # Click seen
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+    
+    search = DRIVER.find_element_by_id("mat-input-0")
+    if not search:
+        return FAIL, 'Search did not produce correct results'
+
+    search.clear()
+    search_name = "allen"
+    search.send_keys(search_name)
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    cols = allen.find_elements_by_tag_name('td')
+    cols[1].click() # Click seen
+    search.clear()
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return PASS, None
+
+    return FAIL, "Patient didn't show again"
+
+
+# ---------------------------------- Test 29 --------------------------------- #
+def test_patients_remain_seen_when_switching_view():
+    global DRIVER
+    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    
+    cols = allen.find_elements_by_tag_name('td')
+    cols[1].click() # Click seen
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+    toggle('ats')
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+    
+    toggle('combined')
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+
+    toggle('team')
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+
+    toggle('combined')
+    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    if ('seen' not in res.get_attribute('class')):
+        return FAIL, "Patient was still in view after clicking seen"
+
+    return PASS, None
+
+
+# ---------------------------------------------------------------------------- #
 #                                  John Spicer                                 #
 # ---------------------------------------------------------------------------- #
 # ----------------------------- Item 2, 7, 8, 11 ----------------------------- #
@@ -1534,6 +1723,17 @@ def get_testcases():
     if not SKIP:
         tests.append(Test('Build', test_build))
     tests.append(Test('Test Page Load', test_page_load))
+
+# ------------------------------@Mark------------------------------ #
+    tests.append(Test("Item 9 - Test 22: A patient who is suspected of sepsis has a warning or caution icon in the appropriate column", test_patient_has_warning_or_cation_icon))
+    tests.append(Test("Item 9 - Test 23: Upon clicking override, the ATS Category increases to 3", test_override_changes_ats_to_3))
+    tests.append(Test("Item 9 - Test 24: Upon clicking override, the patient has a warning or caution icon in the appropriate column and the bar on the left is similarly coloured", test_override_changes_icon_and_left_border))
+    tests.append(Test("Item 9 - Test 25: The icon will remain present if views are switched back and forth (from combined to separate and back to combined)", test_override_changes_icon_and_remains_after_view_change))
+    tests.append(Test("Item 10 - Test 26: Search ' ' will reveal all patients, both seen and unseen", test_search_shows_seen_unseen))
+    tests.append(Test("Item 10 - Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients)", test_click_seen_removes_from_view))
+    tests.append(Test("Item 10 - Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients)", test_search_and_untick_seen_makes_them_reappear))
+    tests.append(Test("Item 10 - Test 29: Patients will remain seen if views are switched back and forth", test_patients_remain_seen_when_switching_view))
+# -------------------------------Unknown -------------------------- #
     tests.append(Test('Item 11 - Test 34: Searching by a patients full name will reveal all patients with that full name.', test_name_search))
     tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_MRN_search))
 
