@@ -675,6 +675,15 @@ def test_pause_icon():
 
     return PASS, 'waitime icon correctly shows after seen'
 
+
+# ---------------------------------------------------------------------------- #
+#                                    Item 9                                    #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- Test 22 --------------------------------- #
+
+
+
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
     age = []
