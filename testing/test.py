@@ -974,7 +974,7 @@ def suspect_septic(mrn, new_cat=3):
 
     patient = DRIVER.find_element_by_id(mrn)
     if patient is None:
-        return FALSE, 'Could not locate patient'
+        return FAIL, 'Could not locate patient'
     
     override = patient.find_element_by_class_name('cdk-column-Sepsis').find_element_by_css_selector('mat-icon')
     override.click()
@@ -1021,19 +1021,19 @@ def comp_waiting_time(patients, comp):
     for p in patients:
         waiting = p.find_element_by_class_name('cdk-column-Delta').text.split()[0]
         if 'd' in waiting:
-            return False
+            return False, 'Max possible waiting time was not upheld'
         hours = int(waiting.split(':')[0])
         mins = int(waiting.split(':')[1])
         wait_time.append(datetime.timedelta(hours=hours, minutes=mins))
 
     if len(wait_time) == 1:
-        return True
+        return True, 'One patient is correctly sorted by default'
 
     for i in range(len(wait_time) - 1):
         if not comp(wait_time[i], wait_time[i + 1]):
-            return False
+            return False, f'Expected {wait_time[i]} to be before {wait_time[i + 1]}'
 
-    return True
+    return True, 'All patients correctly sorted by time'
 
 
 def test_sort_waiting_time():
@@ -1046,8 +1046,9 @@ def test_sort_waiting_time():
     
     comp = lambda x, y: x > y
 
-    if not comp_waiting_time(patients, comp):
-        return FAIL, 'Sorting by wait time not performed correctly'
+    res, msg = comp_waiting_time(patients, comp)
+    if not res:
+        return FAIL, msg
 
     # Cycling through until back to ascending order
     for i in range(3):
@@ -1056,8 +1057,9 @@ def test_sort_waiting_time():
     
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
 
-    if not comp_waiting_time(patients, comp):
-        return FAIL, 'Sorting by wait time not performed correctly'
+    res, msg = comp_waiting_time(patients, comp)
+    if not res:
+        return FAIL, msg
 
     return PASS, None
 
