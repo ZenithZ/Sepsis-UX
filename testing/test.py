@@ -536,9 +536,7 @@ def test_age_preserved_order():
 
 # Item 17: Patients can be sorted by their LOC
 def comp_LOC(patients, comp):
-    loc = []
-    for p in patients:
-        loc.append(p.find_element_by_class_name('cdk-column-Delta'))
+    loc = [int(p.find_element_by_class_name('cdk-column-LOC').text) for p in patients]
 
     if len(loc) == 1:
         return True
@@ -556,7 +554,7 @@ def test_LOC_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x == y
 
     if not comp_LOC(patients, comp):
         return FAIL, 'Sorting by loc not performed correctly'
@@ -581,7 +579,7 @@ def test_LOC_reverse_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x < y
+    comp = lambda x, y: x == y
 
     if not comp_LOC(patients, comp):
         return FAIL, 'Sorting by loc not performed correctly'
@@ -603,7 +601,7 @@ def test_LOC_preserved_order():
     if not toggle('ats'):
         return FAIL, 'Could not toggle views'
 
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x == y
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
