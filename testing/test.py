@@ -553,6 +553,31 @@ def test_short_yellow():
 
     return PASS, 'shorthand warning is displayed correctly'
 
+# ---------------------------------------------------------------------------- #
+#                                    Item 5                                    #
+# ---------------------------------------------------------------------------- #
+
+# ---------------------------------- Test 12 --------------------------------- #
+
+def test_left_border():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    for p in patients:
+        risk = p.text.split()[-1]
+
+        if risk == 'warning':
+            if 'rgb(229, 57, 53)' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
+                return FAIL, 'red not in left border'
+        elif risk == 'error':
+            if 'rgb(254, 212, 76)' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
+                return FAIL, 'yello not in left border'
+        else:
+            if 'whitesmoke' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
+                return FAIL, 'yello not in left border'
+
 
 #------_---_---_---@ZenithZ---_---_---_----- -
 # Item 5, 10, 14, 17
