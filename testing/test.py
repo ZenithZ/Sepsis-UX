@@ -597,40 +597,17 @@ def test_left_border():
 
     return PASS, 'warning left border correct'
 
-#------_---_---_---@ZenithZ---_---_---_----- -
-# Item 5, 10, 14, 17
-# Item 5: Test results of a patient are indicated (by colour) on the left of the patient summary.
-# Test 12: Red if any test results are critically out of range.
-def test_critically_outofrange_red():
-    global DRIVER
-    return UNIMP, 'Test not yet implemented'
-# Test 13: Yellow if any test results are out of range and no results are critically out of range.
-def test_normal_outofrange_yellow():
-    global DRIVER
-    return UNIMP, 'Test not yet implemented'
+# ---------------------------------------------------------------------------- #
+#                                    Item 6                                    #
+# ---------------------------------------------------------------------------- #
 
-# Item 10: A nurse can toggle whether a patient has been seen
-# Test 26: Search ' ' will reveal all patients, both seen and unseen.
-def test_reveal_all():
+# ---------------------------------- Test 14 --------------------------------- #
+def test_waiting_caution():
     global DRIVER
-    return UNIMP, 'Test not yet implemented'
-# Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients).
-def test_unseentoseen():
-    global DRIVER
-    return UNIMP, 'Test not yet implemented'
-# Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients).
-def test_seentounseen():
-    global DRIVER
-    return UNIMP, 'Test not yet implemented'
-# Test 29: Patients will remain seen if views are switched back and forth.
-def seen_switching_views():
-    global DRIVER
-    if not toggle('ats'):
-        return FAIL, 'Could not toggle views'
-    
-    # TODO
 
-    return PASS, None
+    DRIVER.refresh()
+
+    allen_exceeds = DRIVER.find_element_by
 
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
