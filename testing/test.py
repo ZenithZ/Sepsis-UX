@@ -727,6 +727,26 @@ def test_sort_last_name_reverse():
 
     return PASS, None
 
+def test_sort_last_name_toggle():
+    global DRIVER
+
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x <= y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('name', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_name(patients, comp, 'last'):
+            return FAIL, 'Sorting by name in ATS tables not performed correctly'
+
+    return PASS, None
+
 def test_sort_sepsis():
     global DRIVER
     
@@ -1305,7 +1325,7 @@ def get_testcases():
     tests.append(Test('Item 13 - Test 40: Sort by Surname, Ascending', test_sort_last_name))
     tests.append(Test('Item 13 - Test 40a: Sort by Fullname, Ascending', test_sort_full_name))
     tests.append(Test('Item 13 - Test 41: Sort by Surname, Descending', test_sort_last_name_reverse))
-    # tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
+    tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
 
     # tests.append(Test('Test Suspection of Sepsis Sort', test_sort_sepsis))
     # tests.append(Test('Test Vitals Sort', test_sort_Vitals))
