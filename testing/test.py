@@ -454,19 +454,13 @@ def seen_switching_views():
 
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
-    age = []
-    for p in patients:
-        temp = p.find_element_by_class_name('cdk-column-Delta')
-        tens = str(temp[0])
-        if (temp[1]!=''):
-            ones = str(temp[1])
-        age.append(int(temp[0] + temp[1]))
-
-    if len(age) == 1:
+    ages = [int(p.find_element_by_class_name('cdk-column-DOB').text) for p in patients]
+    
+    if len(ages) == 1:
         return True
 
-    for i in range(len(age) - 1):
-        if not comp(age[i], age[i + 1]):
+    for i in range(len(ages) - 1):
+        if not comp(ages[i], ages[i + 1]):
             return False
 
     return True
@@ -479,7 +473,7 @@ def test_age_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x < y
 
     if not comp_age(patients, comp):
         return FAIL, 'Sorting by age not performed correctly'
@@ -504,7 +498,7 @@ def test_age_reverse_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x < y
+    comp = lambda x, y: x > y
 
     if not comp_age(patients, comp):
         return FAIL, 'Sorting by age not performed correctly'
@@ -526,7 +520,7 @@ def test_age_preserved_order():
     if not toggle('ats'):
         return FAIL, 'Could not toggle views'
 
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x < y
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
@@ -535,7 +529,7 @@ def test_age_preserved_order():
 
         patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
 
-        if not comp_waiting_time(patients, comp):
+        if not comp_age(patients, comp):
             return FAIL, 'Sorting by age in ATS tables not performed correctly'
 
     return PASS, None
@@ -699,6 +693,7 @@ def test_sort_full_name():
 
     return PASS, None
 
+
 def test_sort_last_name_reverse():
     global DRIVER
 
@@ -727,6 +722,7 @@ def test_sort_last_name_reverse():
 
     return PASS, None
 
+
 def test_sort_last_name_toggle():
     global DRIVER
 
@@ -746,6 +742,7 @@ def test_sort_last_name_toggle():
             return FAIL, 'Sorting by name in ATS tables not performed correctly'
 
     return PASS, None
+
 
 def test_sort_sepsis():
     global DRIVER
