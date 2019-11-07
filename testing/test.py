@@ -503,7 +503,7 @@ def test_caution_icon():
 
 # ---------------------------------- Test 9 ---------------------------------- #
 
-def test_caution_icon():
+def test_warning_icon():
     global DRIVER
 
     DRIVER.refresh()
@@ -542,7 +542,7 @@ def test_short_yellow():
 
 # ---------------------------------- Test 11 --------------------------------- #
 
-def test_short_yellow():
+def test_short_red():
     global DRIVER
 
     DRIVER.refresh()
@@ -559,7 +559,7 @@ def test_short_yellow():
 
 # ---------------------------------- Test 12 --------------------------------- #
 
-def test_left_border():
+def test_left_border_warning():
     global DRIVER
 
     DRIVER.refresh()
@@ -577,9 +577,9 @@ def test_left_border():
 
     return PASS, 'caution left border correct'
 
-# ---------------------------------- Test 12 --------------------------------- #
+# ---------------------------------- Test 13 --------------------------------- #
 
-def test_left_border():
+def test_left_border_caution():
     global DRIVER
 
     DRIVER.refresh()
@@ -686,19 +686,13 @@ def test_pause_icon():
 
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
-    age = []
-    for p in patients:
-        temp = p.find_element_by_class_name('cdk-column-Delta')
-        tens = str(temp[0])
-        if (temp[1]!=''):
-            ones = str(temp[1])
-        age.append(int(temp[0] + temp[1]))
-
-    if len(age) == 1:
+    ages = [int(p.find_element_by_class_name('cdk-column-DOB').text) for p in patients]
+    
+    if len(ages) == 1:
         return True
 
-    for i in range(len(age) - 1):
-        if not comp(age[i], age[i + 1]):
+    for i in range(len(ages) - 1):
+        if not comp(ages[i], ages[i + 1]):
             return False
 
     return True
@@ -711,7 +705,7 @@ def test_age_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x < y
 
     if not comp_age(patients, comp):
         return FAIL, 'Sorting by age not performed correctly'
@@ -736,7 +730,7 @@ def test_age_reverse_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x < y
+    comp = lambda x, y: x > y
 
     if not comp_age(patients, comp):
         return FAIL, 'Sorting by age not performed correctly'
@@ -758,7 +752,7 @@ def test_age_preserved_order():
     if not toggle('ats'):
         return FAIL, 'Could not toggle views'
 
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x < y
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
@@ -767,16 +761,14 @@ def test_age_preserved_order():
 
         patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
 
-        if not comp_waiting_time(patients, comp):
+        if not comp_age(patients, comp):
             return FAIL, 'Sorting by age in ATS tables not performed correctly'
 
     return PASS, None
 
 # Item 17: Patients can be sorted by their LOC
 def comp_LOC(patients, comp):
-    loc = []
-    for p in patients:
-        loc.append(p.find_element_by_class_name('cdk-column-Delta'))
+    loc = [int(p.find_element_by_class_name('cdk-column-LOC').text) for p in patients]
 
     if len(loc) == 1:
         return True
@@ -794,7 +786,7 @@ def test_LOC_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x == y
 
     if not comp_LOC(patients, comp):
         return FAIL, 'Sorting by loc not performed correctly'
@@ -819,7 +811,7 @@ def test_LOC_reverse_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x < y
+    comp = lambda x, y: x == y
 
     if not comp_LOC(patients, comp):
         return FAIL, 'Sorting by loc not performed correctly'
@@ -841,7 +833,7 @@ def test_LOC_preserved_order():
     if not toggle('ats'):
         return FAIL, 'Could not toggle views'
 
-    comp = lambda x, y: x > y
+    comp = lambda x, y: x == y
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
@@ -857,53 +849,127 @@ def test_LOC_preserved_order():
 
 #------_---_---_---@ZenithZ---_---_---_------
 
-def test_sort_name():
+def comp_name(patients, comp, part):
+    names = []
+    for p in patients:
+        full_name = p.find_element_by_class_name('cdk-column-Name').text.split()
+        if part == 'last':
+            names.append(full_name[1])
+        if part == 'full':
+            names.append(' '.join([full_name[1], full_name[0]]))
+
+    if len(names) == 1:
+        return True, 'One patient is correctly sorted by default'
+
+    for i in range(len(names) - 1):
+        if not comp(names[i], names[i + 1]):
+            return False, f'Expected {names[i]} to be before {names[i + 1]}'
+
+    return True, f'All patients correctly sorted by {part} name'
+
+
+def test_sort_last_name():
     global DRIVER
 
-    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[3]/div/button")
-    button.click()
+    if not sort('name'):
+        return FAIL, 'Could not click name header'
 
-    tables = DRIVER.find_elements_by_tag_name("app-table")
-    tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    patients = []
+    comp = lambda x, y: x <= y
 
-    for t in tables:
-        patients += t.find_elements_by_class_name("example-element-row")
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
 
-    alphabet = list(string.ascii_uppercase)
-
-    for p in patients:
-        first_letter_lastname = ''.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
-
-        if first_letter_lastname not in alphabet:
-            return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
-        
-        while first_letter_lastname != alphabet[0]:
-            if len(alphabet) == 0:
-                return FAIL, "Name does not get correctly sorted (A-Z Order Test)"
-            alphabet.pop(0)
-
-    # ## Test descending order
-    button.click()
-    tables_r = DRIVER.find_elements_by_tag_name("app-table")
-    tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
     
-    patients_r = []
-    for t in tables:
-        patients_r += t.find_elements_by_class_name("example-element-row")
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
 
-    alphabet_r = list(string.ascii_uppercase)[::-1]
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
 
-    for p in patients:
-        first_letter_lastname = ' '.join(p.find_element_by_class_name("cdk-column-Name").split(' ')[0][0])
-        if first_letter_lastname not in alphabet_r:
-            return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
-        
-        while first_letter_lastname != alphabet[0]:
-            if len(alphabet) == 0:
-                return FAIL, "Name does not get correctly sorted (Z-A Order Test)"
-            alphabet.pop(0)
+    return PASS, None
+
+
+def test_sort_full_name():
+    global DRIVER
+
+    if not sort('name'):
+        return FAIL, 'Could not click name header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x < y
+
+    res, msg = comp_name(patients, comp, 'full')
+    if not res:
+        return FAIL, msg
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    res, msg = comp_name(patients, comp, 'full')
+    if not res:
+        return FAIL, msg
+
+    return PASS, None
+
+
+def test_sort_last_name_reverse():
+    global DRIVER
+
+    for i in range(2):
+        if not sort('name'):
+            return FAIL, 'Could not click name header'
+
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    
+    comp = lambda x, y: x >= y
+
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
+
+    # Cycling through until back to ascending order
+    for i in range(3):
+        if not sort('name'):
+            return FAIL, 'Could not click name time header'
+    
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+
+    res, msg = comp_name(patients, comp, 'last')
+    if not res:
+        return FAIL, msg
+
+    return PASS, None
+
+
+def test_sort_last_name_toggle():
+    global DRIVER
+
+    if not toggle('ats'):
+        return FAIL, 'Could not toggle views'
+
+    comp = lambda x, y: x <= y
+
+    num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
+    for i in range(1, num_tables):
+        if not sort('name', 'ats', i):
+            return FAIL, 'Could not sort table'
+
+        patients = [p for p in DRIVER.find_elements_by_xpath(f'//app-table[{i}]//tr[contains(@class, "expandable")]') if len(p.text) > 0]
+
+        if not comp_name(patients, comp, 'last'):
+            return FAIL, 'Sorting by name in ATS tables not performed correctly'
 
     return PASS, None
 
@@ -1491,11 +1557,21 @@ def get_testcases():
     tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
     tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
     tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
-    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_last_name))
+    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal /a single patient matching that MRN.', test_last_name))
     tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
     tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
 
     tests.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
+    tests.append(Test('Item 4 - Test 8: caution lab icons present', test_caution_icon))
+    tests.append(Test('Item 4 - Test 9: warning lab icons present', test_warning_icon))
+    tests.append(Test('Item 4 - Test 10: shorthand yellow icon row', test_short_yellow))
+    tests.append(Test('Item 4 - Test 11: shorthand red icon row', test_short_red))
+    tests.append(Test('Item 5 - Test 12: left border warning present', test_left_border_warning))
+    tests.append(Test('Item 5 - Test 13: left border caution present', test_left_border_caution))
+    tests.append(Test('Item 6 - Test 14/16: waittime caution present', test_waiting_caution))
+    tests.append(Test('Item 6 - Test 15: waittime no caution present', test_no_waiting_caution))
+    tests.append(Test('Item 6 - Test 17: pauses correctly', test_pause))
+    tests.append(Test('Item 6 - Test 18: pause icon appears correctly', test_pause_icon))
 
 # ----------------------------------------------------------------------------- #
 
