@@ -628,6 +628,30 @@ def test_no_waiting_caution():
             return FAIL, 'caution icon present'
 
     return PASS, 'caution icon not present'
+
+# ---------------------------------- Test 17 --------------------------------- #
+def test_pause():
+    global DRIVER
+
+    DRIVER.refresh()
+
+    search = DRIVER.find_element_by_id("mat-input-0")
+    search.clear()
+
+    search_name = " "
+    search.send_keys(search_name)
+
+    allen_time_before = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    allen_seen = DRIVER.find_element_by_xpath('//*[@id="mat-checkbox-1"]/label/div')
+    allen_seen.click()
+    time.sleep(61)
+    allen_time_after = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+
+    if allen_time_before.text != allen_time_after.text:
+        return FAIL, 'time not the same, didnt pause'
+
+    return PASS, 'caution icon not present'
+
 # Item 14: Patients can be sorted by their age
 def comp_age(patients, comp):
     age = []
@@ -1439,28 +1463,8 @@ def get_testcases():
     tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
     tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
 
-    test.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
+    tests.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
 
 # ----------------------------------------------------------------------------- #
-
-    # -----_------@ZenithZ------_-------
-    #sudo kill `sudo lsof -t -i:4200`
-    #Item 5
-    tests.append(Test('Item 5 - Test 13: Critically Out of Range Display Red', test_critically_outofrange_red)) #Test 13
-    tests.append(Test('Item 5 - Test 14: Normal Out of Range Display Yellow', test_normal_outofrange_yellow)) #Test 14
-    #Item 10
-    tests.append(Test('Item 10 - Test 27: Removing seen paitents from view', test_reveal_all)) #Test 27
-    tests.append(Test('Item 10 - Test 28: Unremoving unseen paitents to view', test_seentounseen)) #Test 28
-    tests.append(Test('Item 10 - Test 29: perserving seen/unseen status toggling between views', test_critically_outofrange_red)) #Test 29
-    #Item 14
-    tests.append(Test('Item 14 - Test 43: Sort by Age, Assending 1/3 click', test_age_sort)) #Test 43
-    tests.append(Test('Item 14 - Test 44: Sort by Age, Desending 2/4 click', test_age_reverse_sort)) #Test 44
-    tests.append(Test('Item 14 - Test 45: Sort of Age preserved toggling between views', test_age_preserved_order)) #Test 45
-    #Item 17
-    tests.append(Test('Item 17 - Test 52: Sort by LOC, Assending 1/3 click', test_LOC_sort)) #Test 52
-    tests.append(Test('Item 17 - Test 53: Sort by LOC, Desending 2/4 click', test_LOC_reverse_sort)) #Test 53
-    tests.append(Test('Item 17 - Test 54: Sort of LOC preserved toggling between views', test_LOC_preserved_order)) #Test 54
-    # -----_------@ZenithZ------_-------
-
 
     return tests
