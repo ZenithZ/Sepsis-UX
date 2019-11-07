@@ -616,7 +616,7 @@ def test_waiting_caution():
     return PASS, 'caution icon present'
 
 # ---------------------------------- Test 15 --------------------------------- #
-def test_waiting_caution():
+def test_no_waiting_caution():
     global DRIVER
 
     DRIVER.refresh()
