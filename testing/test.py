@@ -875,15 +875,23 @@ def test_pause_icon():
 #------_---_---_---@ZenithZ---_---_---_------
 #Item 19: Patients can be sorted by their level of suspicion of sepsis
 def comp_sepsis(patients, comp):
-    risks = [float(p.find_element_by_class_name('cdk-column-Sepsis').text) for p in patients]
-    
+    risks = [(p.find_element_by_class_name('cdk-column-Sepsis').text) for p in patients]
+
+    for i, elements in enumerate(risks):
+        if elements == 'radio_button_unchecked':
+            risks[i] = 0.39
+        if elements == 'warning':
+            risks[i] = 0.79
+        if elements == 'error':
+            risks[i] = 0.99
+
     if len(risks) == 1:
         return True
 
     for i in range(len(risks) - 1):
         if not comp(risks[i], risks[i + 1]):
             return False
-
+ 
     return True
 
 #Test 58: Clicking on the suspect column will sort patients first by those not suspected of sepsis, then by those with a caution icon, then by those with a warning icon. (then every third click).
