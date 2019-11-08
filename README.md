@@ -1,5 +1,12 @@
 # COMP3888 T09A GROUP 2 - Project 22 - SepsisUx
 
+# Requirements
+The project requires Node Package Manager (npm) and Angular be installed:
+
+`apt-get npm && npm install -g @angular/cli@latest`
+
+
+
 # Running
 To simply run the SepsisUx dashboard locally, run the `ng serve` command within the dashboard directory.
 
