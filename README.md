@@ -1,12 +1,18 @@
 # COMP3888 T09A GROUP 2 - Project 22 - SepsisUx
 
 # Running
+To simply run the SepsisUx dashboard locally, run the `ng serve` command within the dashboard directory.
+
 Project can be built and served from the main directory with ```./build -o```
+
 Use ```chmod +x build``` or ```bash build``` to ensure that the file has the correct permissions to run.
 
+From the browser, `localhost:4200` will navigate to the SepsisUx dashbaord. 
+
+Running `ng serve --open` from the dashboard directory will both run and navigate to the dashboard from the browser.
+
 # Data
-The JSON data, while there is no backend can be automatically updated with ```./getdata```
-Use ```chmod +x getdata``` or ```bash getdata``` to ensure that the file has the correct permissions to run.
+The data is simply a JSON being mocked as a database. This file is `REST-data.json` within the dashboard directory.
 
 # Setup of Testing
 These instructions are for Ubuntu.
@@ -46,7 +52,14 @@ Tests can be run by executing ```python runner.py``` from within the testing dir
 
 # Heroku Deployment
 For automatic deployment, the deploy script (which will run tests locally first) can be run with the appropriate permissions provided that heroku has been added as a remote repository.
+
+In order to allow for this, Heroku runs the project as a `node.js` project.
+
+All dependencies and versions used are specified in `dashboard/package.json`.
+
 To push to Heroku, login (```heroku login```) and add the remote with ```heroku git:remote -a sepsis-ux```.
+
+Note that the deployed version is built twice using the `--aot` (for optimisation) and `--prod` (for production-ready deployment) flags to ensure that the project has no errors and runs smoothly.
 
 ## Team Members
 - Mark Dagher - mdag4370@uni.sydney.edu.au
