@@ -1256,7 +1256,7 @@ def test_sort_last_name_toggle():
 
 def test_sort_sepsis():
     global DRIVER
-    
+    DRIVER.refresh()
     # Test in descending order
     tables = DRIVER.find_elements_by_tag_name("app-table")
     tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
@@ -1270,15 +1270,14 @@ def test_sort_sepsis():
 
     for p in patients:
         # Enter the value of machine learning (Please help fix it if it is not collect properly)
-        ml.append( p.find_element_by_class_name("cdk-column-Sepsis") )
+        ml.append( p.find_elements_by_tag_name('mat-icon')[-1].get_attribute('ng-reflect-message'))
 
     for i in range(len(ml)-1):
         if ml[i] < ml[i+1]:
             return FAIL, 'Sepsis not get correctly sorted (descending order)'
 
     # Test in ascending order
-    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[-1]/div/button")
-    button.click()
+    sort('suspect')
 
     tables_r = DRIVER.find_elements_by_tag_name("app-table")
     tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
@@ -1291,7 +1290,7 @@ def test_sort_sepsis():
     
     for p in patients:
         # Enter the value of machine learning (Please help fix it if it is not collect properly)
-        ml.append( p.find_element_by_class_name("cdk-column-Sepsis") )
+        ml.append( p.find_elements_by_tag_name('mat-icon')[-1].get_attribute('ng-reflect-message'))
 
     for i in range(len(ml)-1):
         if ml[i] > ml[i+1]:
@@ -1846,9 +1845,12 @@ def get_testcases():
     tests.append(Test('Item 17 - Test 54: Sort by LOC Toggle', test_LOC_preserved_order))
     tests.append(Test('Item 17 - Test 54a: Test if LOC is default 15', test_LOC_15))
 
-    tests.append(Test('Item 19 - Test 58: Sort by Sepsis Risk, Ascending' , test_sepsisRisk_sort))
-    tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
-    tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
+    # tests.append(Test('Item 19 - Test 58: Sort by Sepsis Risk, Ascending' , test_sepsisRisk_sort))
+    # tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
+    # tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
+    
+    # Allen's version
+    tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Toggle' , test_sort_sepsis))
 
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
