@@ -875,7 +875,7 @@ def test_pause_icon():
 #------_---_---_---@ZenithZ---_---_---_------
 #Item 19: Patients can be sorted by their level of suspicion of sepsis
 def comp_sepsis(patients, comp):
-    risks = [p.find_elements_by_tag_name('mat-icon')[-1].get_attribute('ng-reflect-message') for p in patients]
+    risks = [float(p.find_elements_by_tag_name('mat-icon')[-1].get_attribute('ng-reflect-message')) for p in patients]
 
     if len(risks) == 1:
         return True
@@ -895,7 +895,7 @@ def test_sepsisRisk_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x <= y
+    comp = lambda x, y: x < y
 
     if not comp_sepsis(patients, comp):
         return FAIL, 'Sorting by sepsis risk not performed correctly 1'
@@ -920,7 +920,7 @@ def test_sepsisRisk_reverse_sort():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     
-    comp = lambda x, y: x >= y
+    comp = lambda x, y: x > y
 
     if not comp_sepsis(patients, comp):
         return FAIL, 'Sorting by sepsis risk not performed correctly 1'
@@ -942,7 +942,7 @@ def test_sepsisRisk_preserved_order():
     if not toggle('ats'):
         return FAIL, 'Could not toggle views'
 
-    comp = lambda x, y: x <= y
+    comp = lambda x, y: x < y
 
     num_tables = len(DRIVER.find_elements_by_css_selector('app-table')) + 1
     for i in range(1, num_tables):
@@ -1842,7 +1842,7 @@ def get_testcases():
     tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
     
     # Allen's version
-    tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Toggle' , test_sort_sepsis))
+    tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
 
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
