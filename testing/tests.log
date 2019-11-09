@@ -1,0 +1,14 @@
+\e[93mMoving to \e[1m\e[36mdashboard\e[0m
+\e[93mRunning \e[1m\e[91mbuild\e[39m\e[0m
+
+chunk {0} runtime-es2015.d61f42a1e4be5689ac82.js (runtime) 1.41 kB [entry] [rendered]
+chunk {1} main-es2015.f0e098da75a98fead0d4.js (main) 730 kB [initial] [rendered]
+chunk {2} polyfills-es2015.a8cf2d3dc3edef6712e4.js (polyfills) 36.4 kB [initial] [rendered]
+chunk {3} styles.4ca6b388eaabeb66cde5.css (styles) 65.1 kB [initial] [rendered]
+Date: 2019-11-09T07:59:24.654Z - Hash: d7f6ebcb71a2e02cbb12 - Time: 78371ms
+
+chunk {0} runtime-es5.0c5226cce70e491b47d0.js (runtime) 1.41 kB [entry] [rendered]
+chunk {1} main-es5.6238a85ec5d7163ca894.js (main) 832 kB [initial] [rendered]
+chunk {2} polyfills-es5.a110209613c679b5e7b9.js (polyfills) 119 kB [initial] [rendered]
+Date: 2019-11-09T08:00:18.370Z - Hash: 893882e954555f25d78d - Time: 53532ms
+\e[1m\e[92mBuild successful\e[0m
