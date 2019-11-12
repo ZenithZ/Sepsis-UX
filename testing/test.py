@@ -1341,7 +1341,7 @@ def test_sort_BG():
         # Enter the value of outofRange value (Please help fix it if it is not collect properly)
         maxBL = p.find_elements_by_tag_name('mat-icon')[1].value_of_css_property('color')
         try:
-            valueBL = int(p.find_element_by_class_name("cdk-column-BG")[-1])
+            valueBL = int(p.find_element_by_class_name("cdk-column-BG").text[-1])
         except:
             valueBL = None
         valueBL = 0 if valueBL == None else valueBL
@@ -1445,7 +1445,7 @@ def test_sort_Vitals():
         # Enter the value of outofRange value (Please help fix it if it is not collect properly)
         maxVitals = p.find_elements_by_tag_name('mat-icon')[0].value_of_css_property('color')
         try:
-            valueVitals = int(p.find_element_by_class_name("cdk-column-Vitals")[-1])
+            valueVitals = int(p.find_element_by_class_name("cdk-column-Vitals").text[-1])
         except:
             valueVitals = None
         valueVitals = 0 if valueVitals == None else valueVitals
