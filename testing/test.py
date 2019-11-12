@@ -1849,8 +1849,11 @@ def get_testcases():
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
     tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
-    # Item 13 missing?
-
+    tests.append(Test('Item 13 - Test 40: Sort by Surname, Ascending', test_sort_last_name))
+    tests.append(Test('Item 13 - Test 40a: Sort by Fullname, Ascending', test_sort_full_name))
+    tests.append(Test('Item 13 - Test 41: Sort by Surname, Descending', test_sort_last_name_reverse))
+    tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
+    
     tests.append(Test('Item 14 - Test 43: Sort by Age, Ascending', test_age_sort))
     tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
     tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
