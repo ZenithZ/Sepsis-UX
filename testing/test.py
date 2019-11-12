@@ -1856,7 +1856,7 @@ def get_testcases():
     
     # Allen's version
     tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
-    tests.append(Test('Item 16 - Test 49-51: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_BG))
+    tests.append(Test('Item 16 - Test 49-51: Sort by Bloodgas Ascending, Desending & Toggle' , test_sort_BG))
 
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
