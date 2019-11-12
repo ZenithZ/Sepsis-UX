@@ -723,45 +723,48 @@ def test_short_red():
 def test_left_border_warning():
     global DRIVER
 
-    DRIVER.refresh()
+    warning = 'rgb(229, 57, 53)'
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     for p in patients:
         risk = p.text.split()[-1]
 
-        if risk == 'warning':
-            if 'rgb(229, 57, 53)' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
-                return FAIL, 'red not in left border'
-        else:
-            if 'whitesmoke' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
-                return FAIL, 'whitesmoke not in left border'
+        colour = p.find_element_by_class_name('cdk-column-ATS').get_attribute('style')
 
-    return PASS, 'caution left border correct'
+        if risk == 'warning':
+            if warning not in colour:
+                return FAIL, 'Left border should be red'
+
+    return PASS, 'Warning left border correct'
 
 
 def test_left_border_caution():
     global DRIVER
 
-    DRIVER.refresh()
+    warning = 'rgb(229, 57, 53)'
+    error = 'rgb(254, 212, 76)'
+    white = 'whitesmoke'
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     for p in patients:
         risk = p.text.split()[-1]
 
-        if risk == 'error':
-            if 'rgb(254, 212, 76)' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
-                return FAIL, 'yellow not in left border'
-        else:
-            if 'whitesmoke' not in p.find_elements_by_tag_name('td')[0].get_attribute('style'):
-                return FAIL, 'whitesmoke not in left border'
+        colour = p.find_element_by_class_name('cdk-column-ATS').get_attribute('style')
 
-    return PASS, 'warning left border correct'
+        if risk == 'warning':
+            if warning not in colour:
+                return FAIL, 'Left border should be red'
+        elif risk == 'error':
+            if error not in colour:
+                return FAIL, 'Left border should be yellow'
+        elif white not in colour:
+            return FAIL, 'Left border should be white'
+
+    return PASS, 'Left borders are correct for all patients'
 
 
 def test_waiting_caution():
     global DRIVER
-
-    DRIVER.refresh()
 
     allen_exceeds = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
     time = int(allen_exceeds.text.split(' ').split(':')[0])
