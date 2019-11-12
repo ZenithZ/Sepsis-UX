@@ -768,12 +768,16 @@ def test_waiting_caution():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     times = [p.find_element_by_class_name('cdk-column-Delta') for p in patients]
-    for t in times:
+    ats = [int(p.find_element_by_class_name('cdk-column-ATS').text) for p in patients]
+    thresholds = {1: 0, 2: 10, 3: 30, 4: 60, 5: 120}
+    for a, t in zip(ats, times):
         hour = int(t.text.split()[0].split(':')[0]) * 60
         minute = int(t.text.split()[0].split(':')[1])
         waiting = hour + minute
-        if waiting >= 60:
+        if waiting >= thresholds[a]:
             if 'error' not in t.text:
+                print(a, t.text, patients[times.index(t)].text)
+                time.sleep(10)
                 return FAIL, 'caution icon not present'
 
     return PASS, 'caution icon present'
@@ -784,12 +788,16 @@ def test_no_waiting_caution():
 
     patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
     times = [p.find_element_by_class_name('cdk-column-Delta') for p in patients]
-    for t in times:
+    ats = [int(p.find_element_by_class_name('cdk-column-ATS').text) for p in patients]
+    thresholds = {1: 0, 2: 10, 3: 30, 4: 60, 5: 120}
+    for a, t in zip(ats, times):
         hour = int(t.text.split()[0].split(':')[0]) * 60
         minute = int(t.text.split()[0].split(':')[1])
         waiting = hour + minute
-        if waiting < 60:
+        if waiting < thresholds[a]:
             if 'error' in t.text:
+                time.sleep(10)
+                print(a, t.text, patients[times.index(t)].text)
                 return FAIL, 'caution icon present'
 
     return PASS, 'no caution icon present for patients'
@@ -1802,79 +1810,79 @@ def get_testcases():
         tests.append(Test('Build', test_build))
     tests.append(Test('Test Page Load', test_page_load))
 
-    tests.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
+    # tests.append(Test('Item 1 - Test 1: Columns, present', test_columns_present))
 
-    tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
-    tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
-    tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
+    # tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
+    # tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
+    # tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
 
-    tests.append(Test('Item 3 - Test 6: Repeated Vitals in order', test_repeated_vitals))
+    # tests.append(Test('Item 3 - Test 6: Repeated Vitals in order', test_repeated_vitals))
 
-    tests.append(Test('Item 4 - Test 8: caution lab icons present', test_caution_icon))
-    tests.append(Test('Item 4 - Test 9: warning lab icons present', test_warning_icon))
-    tests.append(Test('Item 4 - Test 10: shorthand yellow icon row', test_short_yellow))
-    tests.append(Test('Item 4 - Test 11: shorthand red icon row', test_short_red))
+    # tests.append(Test('Item 4 - Test 8: caution lab icons present', test_caution_icon))
+    # tests.append(Test('Item 4 - Test 9: warning lab icons present', test_warning_icon))
+    # tests.append(Test('Item 4 - Test 10: shorthand yellow icon row', test_short_yellow))
+    # tests.append(Test('Item 4 - Test 11: shorthand red icon row', test_short_red))
 
-    tests.append(Test('Item 5 - Test 12: left border warning present', test_left_border_warning))
-    tests.append(Test('Item 5 - Test 13: left border caution present', test_left_border_caution))
+    # tests.append(Test('Item 5 - Test 12: left border warning present', test_left_border_warning))
+    # tests.append(Test('Item 5 - Test 13: left border caution present', test_left_border_caution))
     
-    tests.append(Test('Item 6 - Test 14/16: waittime caution present', test_waiting_caution))
-    tests.append(Test('Item 6 - Test 15: waittime no caution present', test_no_waiting_caution))
-    tests.append(Test('Item 6 - Test 17: pauses correctly', test_pause))
-    tests.append(Test('Item 6 - Test 18: pause icon appears correctly', test_pause_icon))
+    # tests.append(Test('Item 6 - Test 14/16: waittime caution present', test_waiting_caution))
+    # tests.append(Test('Item 6 - Test 15: waittime no caution present', test_no_waiting_caution))
+    # tests.append(Test('Item 6 - Test 17: pauses correctly', test_pause))
+    # tests.append(Test('Item 6 - Test 18: pause icon appears correctly', test_pause_icon))
 
-    tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
-    tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
+    # tests.append(Test('Item 7 - Test 19: LOC value is 15 for every patient.', test_LOC_15))
+    # tests.append(Test('Item 8 - Test 20: Value for team defaulted to one of the teams.', test_default_team_A_B))
 
-    tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
+    # tests.append(Test('Item 8 - Test 21: Value for team can be changed (more than once).', test_team_change))
 
-    tests.append(Test("Item 9 - Test 22: A patient who is suspected of sepsis has a warning or caution icon in the appropriate column", test_patient_has_warning_or_cation_icon))
-    tests.append(Test("Item 9 - Test 23: Upon clicking override, the ATS Category increases to 3", test_override_changes_ats_to_3))
-    tests.append(Test("Item 9 - Test 24: Upon clicking override, the patient has a warning or caution icon in the appropriate column and the bar on the left is similarly coloured", test_override_changes_icon_and_left_border))
-    tests.append(Test("Item 9 - Test 25: The icon will remain present if views are switched back and forth (from combined to separate and back to combined)", test_override_changes_icon_and_remains_after_view_change))
+    # tests.append(Test("Item 9 - Test 22: A patient who is suspected of sepsis has a warning or caution icon in the appropriate column", test_patient_has_warning_or_cation_icon))
+    # tests.append(Test("Item 9 - Test 23: Upon clicking override, the ATS Category increases to 3", test_override_changes_ats_to_3))
+    # tests.append(Test("Item 9 - Test 24: Upon clicking override, the patient has a warning or caution icon in the appropriate column and the bar on the left is similarly coloured", test_override_changes_icon_and_left_border))
+    # tests.append(Test("Item 9 - Test 25: The icon will remain present if views are switched back and forth (from combined to separate and back to combined)", test_override_changes_icon_and_remains_after_view_change))
 
-    tests.append(Test("Item 10 - Test 26: Search ' ' will reveal all patients, both seen and unseen", test_search_shows_seen_unseen))
-    tests.append(Test("Item 10 - Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients)", test_click_seen_removes_from_view))
-    tests.append(Test("Item 10 - Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients)", test_search_and_untick_seen_makes_them_reappear))
-    tests.append(Test("Item 10 - Test 29: Patients will remain seen if views are switched back and forth", test_patients_remain_seen_when_switching_view))
+    # tests.append(Test("Item 10 - Test 26: Search ' ' will reveal all patients, both seen and unseen", test_search_shows_seen_unseen))
+    # tests.append(Test("Item 10 - Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients)", test_click_seen_removes_from_view))
+    # tests.append(Test("Item 10 - Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients)", test_search_and_untick_seen_makes_them_reappear))
+    # tests.append(Test("Item 10 - Test 29: Patients will remain seen if views are switched back and forth", test_patients_remain_seen_when_switching_view))
 
-    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_MRN_search))
-    tests.append(Test('Item 11 - Test 30: Search by MRN will reveal /a single patient matching that MRN.', test_last_name))
-    tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
-    tests.append(Test('Item 11 - Test 34: Searching by a patients full name will reveal all patients with that full name.', test_name_search))
-    tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
+    # tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_MRN_search))
+    # tests.append(Test('Item 11 - Test 30: Search by MRN will reveal /a single patient matching that MRN.', test_last_name))
+    # tests.append(Test('Item 11 - Test 33: Searching by a patients last name will reveal all patients with that last name.', test_first_name))
+    # tests.append(Test('Item 11 - Test 34: Searching by a patients full name will reveal all patients with that full name.', test_name_search))
+    # tests.append(Test('Item 11 - Test 35: Search by a patients name that doesnt exist should reveal no patients.', test_no_patient_name))
 
-    tests.append(Test('Item 12 - Test 36: Tables can be toggle to ATS and back', test_ats_toggle))
-    tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
-    tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
-    tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
-    tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
+    # tests.append(Test('Item 12 - Test 36: Tables can be toggle to ATS and back', test_ats_toggle))
+    # tests.append(Test('Item 12 - Test 37: Search maintained in ATS toggle' , test_search_toggle_ats))
+    # tests.append(Test('Item 12 - Test 38: Patients in correct ATS table' , test_ats_table_correct))
+    # tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
+    # tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
-    tests.append(Test('Item 13 - Test 40: Sort by Surname, Ascending', test_sort_last_name))
-    tests.append(Test('Item 13 - Test 40a: Sort by Fullname, Ascending', test_sort_full_name))
-    tests.append(Test('Item 13 - Test 41: Sort by Surname, Descending', test_sort_last_name_reverse))
-    tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
+    # tests.append(Test('Item 13 - Test 40: Sort by Surname, Ascending', test_sort_last_name))
+    # tests.append(Test('Item 13 - Test 40a: Sort by Fullname, Ascending', test_sort_full_name))
+    # tests.append(Test('Item 13 - Test 41: Sort by Surname, Descending', test_sort_last_name_reverse))
+    # tests.append(Test('Item 13 - Test 42: Sort by Surname Toggle', test_sort_last_name_toggle))
     
-    tests.append(Test('Item 14 - Test 43: Sort by Age, Ascending', test_age_sort))
-    tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
-    tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
+    # tests.append(Test('Item 14 - Test 43: Sort by Age, Ascending', test_age_sort))
+    # tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
+    # tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
     
-    # Item 15 missing?
+    # # Item 15 missing?
 
-    tests.append(Test('Item 16 - Test 49-51: Sort by Bloodgas Ascending, Desending & Toggle' , test_sort_BG))
+    # tests.append(Test('Item 16 - Test 49-51: Sort by Bloodgas Ascending, Desending & Toggle' , test_sort_BG))
 
-    tests.append(Test('Item 17 - Test 52: Sort by LOC, Ascending' , test_LOC_sort))
-    tests.append(Test('Item 17 - Test 53: Sort by LOC, Descending', test_LOC_reverse_sort))
-    tests.append(Test('Item 17 - Test 54: Sort by LOC Toggle', test_LOC_preserved_order))
-    tests.append(Test('Item 17 - Test 54a: Test if LOC is default 15', test_LOC_15))
+    # tests.append(Test('Item 17 - Test 52: Sort by LOC, Ascending' , test_LOC_sort))
+    # tests.append(Test('Item 17 - Test 53: Sort by LOC, Descending', test_LOC_reverse_sort))
+    # tests.append(Test('Item 17 - Test 54: Sort by LOC Toggle', test_LOC_preserved_order))
+    # tests.append(Test('Item 17 - Test 54a: Test if LOC is default 15', test_LOC_15))
 
-    tests.append(Test('Item 18 - Test 55: Sort by waiting time, Ascending' , test_sort_waiting_time))
-    tests.append(Test('Item 18 - Test 56: Sort by waiting time, Descending' , test_sort_waiting_time_reverse))
-    tests.append(Test('Item 18 - Test 57: Sort by waiting Toggle' , test_sort_waiting_time_view_toggle))
+    # tests.append(Test('Item 18 - Test 55: Sort by waiting time, Ascending' , test_sort_waiting_time))
+    # tests.append(Test('Item 18 - Test 56: Sort by waiting time, Descending' , test_sort_waiting_time_reverse))
+    # tests.append(Test('Item 18 - Test 57: Sort by waiting Toggle' , test_sort_waiting_time_view_toggle))
 
-    tests.append(Test('Item 19 - Test 58: Sort by Sepsis Risk, Ascending' , test_sepsisRisk_sort))
-    tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
-    tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
-    tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
+    # tests.append(Test('Item 19 - Test 58: Sort by Sepsis Risk, Ascending' , test_sepsisRisk_sort))
+    # tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
+    # tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
+    # tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
 
     return tests
