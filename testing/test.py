@@ -1815,9 +1815,9 @@ def after_test(skip=False):
 
 def get_testcases():
     tests = []
-    # if not SKIP:
-    #     tests.append(Test('Build', test_build))
-    # tests.append(Test('Test Page Load', test_page_load))
+    if not SKIP:
+        tests.append(Test('Build', test_build))
+    tests.append(Test('Test Page Load', test_page_load))
 
 # ------------------------------@Mark------------------------------ #
     tests.append(Test("Item 9 - Test 22: A patient who is suspected of sepsis has a warning or caution icon in the appropriate column", test_patient_has_warning_or_cation_icon))
