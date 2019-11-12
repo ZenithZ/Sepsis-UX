@@ -806,8 +806,6 @@ def test_no_waiting_caution():
 def test_pause():
     global DRIVER
 
-    DRIVER.refresh()
-
     search = DRIVER.find_element_by_id("mat-input-0")
     search.clear()
 
@@ -829,21 +827,20 @@ def test_pause():
 def test_pause_icon():
     global DRIVER
 
-    DRIVER.refresh()
-
     search = DRIVER.find_element_by_id("mat-input-0")
     search.clear()
 
     search_name = " "
     search.send_keys(search_name)
 
-    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
+    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]').text
     if 'pause_circle_outline' in allen_waittime:
         return FAIL, 'waittime should not be paused'
     allen_seen = DRIVER.find_element_by_xpath('//*[@id="mat-checkbox-1"]/label/div')
     allen_seen.click()
-    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
-    if 'pause_circle_outline' in allen_waittime:
+    allen_waittime = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]').text
+
+    if 'pause_circle_outline' not in allen_waittime:
         return FAIL, 'waittime should be paused'
 
     return PASS, 'waitime icon correctly shows after seen'
