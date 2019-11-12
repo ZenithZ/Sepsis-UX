@@ -1884,4 +1884,8 @@ def get_testcases():
 
 # ----------------------------------------------------------------------------- #
 
+    tests.append(Test('Item 18 - Test 55: Sort by waiting time, Ascending' , test_sort_waiting_time))
+    tests.append(Test('Item 18 - Test 56: Sort by waiting time, Descending' , test_sort_waiting_time_reverse))
+    tests.append(Test('Item 18 - Test 57: Sort by waiting Toggle' , test_sort_waiting_time_view_toggle))
+
     return tests
