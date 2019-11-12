@@ -1305,13 +1305,13 @@ def test_sort_BG():
             orderTest.append(2)
             numBLs[0].append(valueBL)
         elif maxBL == 'rgba(49, 163, 84, 1)':
-            orderTest.append(1)
+            orderTest.append(0)
             numBLs[1].append(valueBL)
         elif maxBL == 'rgba(0, 0, 0, 0.87)':
             orderTest.append(-1)
             numBLs[3].append(valueBL)
         else:
-            orderTest.append(0)
+            orderTest.append(1)
             numBLs[2].append(valueBL)
 
     for i in range(len(orderTest)-1):
@@ -1352,14 +1352,15 @@ def test_sort_BG():
             orderTest.append(2)
             numBLs[0].append(valueBL)
         elif maxBL == 'rgba(49, 163, 84, 1)':
-            orderTest.append(1)
+            orderTest.append(0)
             numBLs[1].append(valueBL)
         elif maxBL == 'rgba(0, 0, 0, 0.87)':
             orderTest.append(-1)
             numBLs[3].append(valueBL)   
         else:
-            orderTest.append(0)
+            orderTest.append(1)
             numBLs[2].append(valueBL)
+
     for i in range(len(orderTest)-1):
         if orderTest[i] < orderTest[i+1]:
             return FAIL, 'Bloodgas not get correctly sorted (decending order)'
@@ -1378,9 +1379,9 @@ def test_sort_BG():
 
 def test_sort_Vitals():
     global DRIVER
-    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[5]/div/button")
-    button.click()
-    
+    DRIVER.refresh()
+    sort('vitals')
+
     # Test in ascending order
     tables = DRIVER.find_elements_by_tag_name("app-table")
     tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
@@ -1390,40 +1391,46 @@ def test_sort_Vitals():
     for t in tables:
         patients += t.find_elements_by_class_name("example-element-row")
     
-    # Store value of bloodgas out of range, numBLs[0] for warning, 1 for caution and 2 for normal
-    numVitals = [[], [], []]
+    # Store value of bloodgas out of range, numVitals[0] for warning, 1 for caution and 2 for normal
+    numVitals = [[], [], [], []]
 
-    # Used to test if it is ranged in the order of warning, caution and normal, store 2 for warning, 1 for caution and 0 for normal 
+    # Used to test if it is ranged in the order of warning, caution and normal, store 2 for warning, 1 for caution, 0 for normal and -1 for nonValue
     orderTest = []
 
     for p in patients:
-        # Enter the num of outofRange value (Please help fix it if it is not collect properly)
-        maxVital = p.find_element_by_class_name("cdk-column-maxVitals")
-        valueVital =  p.find_element_by_class_name("cdk-column-numVitals")
-
-        if maxVital == 'warning':
+        # Enter the value of outofRange value (Please help fix it if it is not collect properly)
+        maxVitals = p.find_elements_by_tag_name('mat-icon')[0].value_of_css_property('color')
+        try:
+            valueVitals = int(p.find_element_by_class_name("cdk-column-Vitals").text[-1])
+        except:
+            valueVitals = None
+        valueVitals = 0 if valueVitals == None else valueVitals
+        if maxVitals == 'rgba(240, 59, 32, 1)':
             orderTest.append(2)
-            numVitals[0].append(valueVital)
-        elif maxVital == 'caution':
-            orderTest.append(1)
-            numVitals[1].append(valueVital)
-        else:
+            numVitals[0].append(valueVitals)
+        elif maxVitals == 'rgba(49, 163, 84, 1)':
             orderTest.append(0)
-            numVitals[2].append(valueVital)
+            numVitals[1].append(valueVitals)
+        elif maxVitals == 'rgba(0, 0, 0, 0.87)':
+            orderTest.append(-1)
+            numVitals[3].append(valueVitals)
+        else:
+            orderTest.append(1)
+            numVitals[2].append(valueVitals)
 
     for i in range(len(orderTest)-1):
-        if orderTest[i] < orderTest[i+1]:
-            return FAIL, 'Vitals not get correctly sorted (descending order)'
+        if orderTest[i] > orderTest[i+1]:
+            return False, 'Vitals not get correctly sorted (ascending order)'
     
-    for i in range(numVitals):
+    for i in range(len(numVitals)):
         try:
-            for j in range(len(numVitals[i])-1):
-                if numVitals[i][j] < numVitals[i][j+1]:
-                    return FAIL, 'Vitals not get correctly sorted (descending order)'
+            for j in range(len(numVitals[i]) -1 ):
+                if numVitals[i][j] > numVitals[i][j+1]:
+                    return FAIL, 'Vitals not get correctly sorted (ascending order)'
         except:
             continue
     # Test in ascending order
-    button.click()
+    sort('vitals')
     
     tables_r = DRIVER.find_elements_by_tag_name("app-table")
     tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
@@ -1438,31 +1445,39 @@ def test_sort_Vitals():
         patients += t.find_elements_by_class_name("example-element-row")
 
     for p in patients:
-        # Enter the num of outofRange value (Please help fix it if it is not collect properly)
-        maxVital = p.find_element_by_class_name("cdk-column-maxVitals")
-        valueVital =  p.find_element_by_class_name("cdk-column-numVitals")
-
-        if maxVital == 'warning':
+        # Enter the value of outofRange value (Please help fix it if it is not collect properly)
+        maxVitals = p.find_elements_by_tag_name('mat-icon')[0].value_of_css_property('color')
+        try:
+            valueVitals = int(p.find_element_by_class_name("cdk-column-Vitals")[-1])
+        except:
+            valueVitals = None
+        valueVitals = 0 if valueVitals == None else valueVitals
+        if maxVitals == 'rgba(240, 59, 32, 1)':
             orderTest.append(2)
-            numVitals[0].append(valueVital)
-        elif maxVital == 'caution':
-            orderTest.append(1)
-            numVitals[1].append(valueVital)
-        else:
+            numVitals[0].append(valueVitals)
+        elif maxVitals == 'rgba(49, 163, 84, 1)':
             orderTest.append(0)
-            numVitals[2].append(valueVital)
+            numVitals[1].append(valueVitals)
+        elif maxVitals == 'rgba(0, 0, 0, 0.87)':
+            orderTest.append(-1)
+            numVitals[3].append(valueVitals)   
+        else:
+            orderTest.append(1)
+            numVitals[2].append(valueVitals)
 
     for i in range(len(orderTest)-1):
-        if orderTest[i] > orderTest[i+1]:
-            return FAIL, 'Vitals not get correctly sorted (ascending order)'
+        if orderTest[i] < orderTest[i+1]:
+            return FAIL, 'Vitals not get correctly sorted (decending order)'
     
     for i in range(len(numVitals)):
+        # Use Try in case it is the length is 0
         try:
             for j in range(len(numVitals[i])-1):
-                if numVitals[i][j] > numVitals[i][j+1]:
-                    return FAIL, 'Vitals not get correctly sorted (descending order)'
+                if numVitals[i][j] < numVitals[i][j+1]:
+                    return FAIL, 'Vitals not get correctly sorted (decending order)'
         except:
             continue
+
     return PASS, None
 
 
@@ -1867,7 +1882,7 @@ def get_testcases():
     tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
     tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
     
-    # Item 15 missing?
+    tests.append(Test('Item 15 - Test 46-48: Sort by Vitals Ascending, Desending & Toggle' , test_sort_Vitals))
 
     tests.append(Test('Item 16 - Test 49-51: Sort by Bloodgas Ascending, Desending & Toggle' , test_sort_BG))
 
