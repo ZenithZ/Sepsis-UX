@@ -1291,11 +1291,11 @@ def test_sort_sepsis():
     return PASS, None
 
 
-def test_sort_BL():
+def test_sort_BG():
     global DRIVER
-    button = DRIVER.find_element_by_xpath("/html/body/app-root/div/app-table[5]/div/table/thead/tr/th[6]/div/button")
-    button.click()
-    
+    DRIVER.refresh()
+    sort('bloodgas')
+
     # Test in ascending order
     tables = DRIVER.find_elements_by_tag_name("app-table")
     tables = [t for t in tables if "unseen" not in t.get_attribute('class')]
@@ -1306,38 +1306,45 @@ def test_sort_BL():
         patients += t.find_elements_by_class_name("example-element-row")
     
     # Store value of bloodgas out of range, numBLs[0] for warning, 1 for caution and 2 for normal
-    numBLs = [[], [], []]
+    numBLs = [[], [], [], []]
 
-    # Used to test if it is ranged in the order of warning, caution and normal, store 2 for warning, 1 for caution and 0 for normal 
+    # Used to test if it is ranged in the order of warning, caution and normal, store 2 for warning, 1 for caution, 0 for normal and -1 for nonValue
     orderTest = []
 
     for p in patients:
         # Enter the value of outofRange value (Please help fix it if it is not collect properly)
-        maxBL = p.find_element_by_class_name("cdk-column-maxBloodgas")
-        valueBL =  p.find_element_by_class_name("cdk-column-numBloodgas")
-        if maxBL == 'warning':
+        maxBL = p.find_elements_by_tag_name('mat-icon')[1].value_of_css_property('color')
+        try:
+            valueBL = int(p.find_element_by_class_name("cdk-column-BG").text[-1])
+        except:
+            valueBL = None
+        valueBL = 0 if valueBL == None else valueBL
+        if maxBL == 'rgba(240, 59, 32, 1)':
             orderTest.append(2)
             numBLs[0].append(valueBL)
-        elif maxBL == 'caution':
+        elif maxBL == 'rgba(49, 163, 84, 1)':
             orderTest.append(1)
             numBLs[1].append(valueBL)
+        elif maxBL == 'rgba(0, 0, 0, 0.87)':
+            orderTest.append(-1)
+            numBLs[3].append(valueBL)
         else:
             orderTest.append(0)
             numBLs[2].append(valueBL)
 
     for i in range(len(orderTest)-1):
-        if orderTest[i] < orderTest[i+1]:
-            return False, 'Bloodgas not get correctly sorted (descending order)'
+        if orderTest[i] > orderTest[i+1]:
+            return False, 'Bloodgas not get correctly sorted (ascending order)'
     
     for i in range(len(numBLs)):
         try:
             for j in range(len(numBLs[i]) -1 ):
-                if numBLs[i][j] < numBLs[i][j+1]:
-                    return FAIL, 'Bloodgas not get correctly sorted (descending order)'
+                if numBLs[i][j] > numBLs[i][j+1]:
+                    return FAIL, 'Bloodgas not get correctly sorted (ascending order)'
         except:
             continue
     # Test in ascending order
-    button.click()
+    sort('bloodgas')
     
     tables_r = DRIVER.find_elements_by_tag_name("app-table")
     tables_r = [t for t in tables_r if "unseen" not in t.get_attribute('class')]
@@ -1353,28 +1360,34 @@ def test_sort_BL():
 
     for p in patients:
         # Enter the value of outofRange value (Please help fix it if it is not collect properly)
-        maxBL = p.find_element_by_class_name("cdk-column-maxBloodgas")
-        valueBL =  p.find_element_by_class_name("cdk-column-numBloodgas")
-        if maxBL == 'warning':
+        maxBL = p.find_elements_by_tag_name('mat-icon')[1].value_of_css_property('color')
+        try:
+            valueBL = int(p.find_element_by_class_name("cdk-column-BG")[-1])
+        except:
+            valueBL = None
+        valueBL = 0 if valueBL == None else valueBL
+        if maxBL == 'rgba(240, 59, 32, 1)':
             orderTest.append(2)
             numBLs[0].append(valueBL)
-        elif maxBL == 'caution':
+        elif maxBL == 'rgba(49, 163, 84, 1)':
             orderTest.append(1)
             numBLs[1].append(valueBL)
+        elif maxBL == 'rgba(0, 0, 0, 0.87)':
+            orderTest.append(-1)
+            numBLs[3].append(valueBL)   
         else:
             orderTest.append(0)
             numBLs[2].append(valueBL)
-
     for i in range(len(orderTest)-1):
-        if orderTest[i] > orderTest[i+1]:
-            return FAIL, 'Bloodgas not get correctly sorted (ascending order)'
+        if orderTest[i] < orderTest[i+1]:
+            return FAIL, 'Bloodgas not get correctly sorted (decending order)'
     
     for i in range(len(numBLs)):
         # Use Try in case it is the length is 0
         try:
             for j in range(len(numBLs[i])-1):
-                if numBLs[i][j] > numBLs[i][j+1]:
-                    return FAIL, 'Bloodgas not get correctly sorted (ascending order)'
+                if numBLs[i][j] < numBLs[i][j+1]:
+                    return FAIL, 'Bloodgas not get correctly sorted (decending order)'
         except:
             continue
 
@@ -1843,6 +1856,7 @@ def get_testcases():
     
     # Allen's version
     tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
+    tests.append(Test('Item 16 - Test 49-51: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_BG))
 
 # ----------------------------------- @John ---------------------------------- #
 #kill -9 `lsof -t -i:4200`
