@@ -766,11 +766,15 @@ def test_left_border_caution():
 def test_waiting_caution():
     global DRIVER
 
-    allen_exceeds = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
-    time = int(allen_exceeds.text.split(' ').split(':')[0])
-    if time > 1:
-        if 'error' not in allen_exceeds.text:
-            return FAIL, 'caution icon not present'
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    times = [p.find_element_by_class_name('cdk-column-Delta') for p in patients]
+    for t in times:
+        hour = int(t.text.split()[0].split(':')[0]) * 60
+        minute = int(t.text.split()[0].split(':')[1])
+        waiting = hour + minute
+        if waiting >= 60:
+            if 'error' not in t.text:
+                return FAIL, 'caution icon not present'
 
     return PASS, 'caution icon present'
 
@@ -778,15 +782,17 @@ def test_waiting_caution():
 def test_no_waiting_caution():
     global DRIVER
 
-    DRIVER.refresh()
+    patients = DRIVER.find_elements_by_xpath('//tr[contains(@class, "expandable")]')
+    times = [p.find_element_by_class_name('cdk-column-Delta') for p in patients]
+    for t in times:
+        hour = int(t.text.split()[0].split(':')[0]) * 60
+        minute = int(t.text.split()[0].split(':')[1])
+        waiting = hour + minute
+        if waiting < 60:
+            if 'error' in t.text:
+                return FAIL, 'caution icon present'
 
-    allen_exceeds = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[10]')
-    time = int(allen_exceeds.text.split(' ').split(':')[0])
-    if time < 1:
-        if 'error' in allen_exceeds.text:
-            return FAIL, 'caution icon present'
-
-    return PASS, 'caution icon not present'
+    return PASS, 'no caution icon present for patients'
 
 
 def test_pause():
