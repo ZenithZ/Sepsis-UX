@@ -93,6 +93,27 @@ def toggle(view):
     return True
 
 
+def change_team(patient, team):
+    global DRIVER
+
+    team_col = patient.find_element_by_class_name('cdk-column-Team')
+    menu = team_col.find_element_by_tag_name('mat-select')
+    menu.click()
+
+    time.sleep(0.125)
+
+    teams = menu.find_elements_by_tag_name('mat-option')
+    teams = ['a', 'b', 'c', 'd']
+    index = teams.index(team.lower())
+
+    try:
+        ActionChains(DRIVER).click(index).perform()
+    except:
+        return False
+
+    time.sleep(0.125)
+
+
 def sort(colname, view='combined', table=''):
     global DRIVER
 
@@ -215,11 +236,7 @@ def test_MRN_search():
 
     return PASS, None
 
-# ---------------------------------------------------------------------------- #
-#                                 Mark Dagher                                  #
-# ---------------------------------------------------------------------------- #
-# ----------------------------- Item 9, 10 ----- ----------------------------- #
-# ---------------------------------- Test 22 --------------------------------- #
+
 def test_patient_has_warning_or_cation_icon():
     global DRIVER
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
@@ -238,8 +255,6 @@ def test_patient_has_warning_or_cation_icon():
         return FAIL, "Patient doesn't have appropriate icon"
 
 
-# --------------------------------- Test 23 ---------------------------------- #
-
 def test_override_changes_ats_to_3():
     global DRIVER
     john = DRIVER.find_element_by_xpath('//*[@id="1091439687"]')
@@ -251,7 +266,6 @@ def test_override_changes_ats_to_3():
         return PASS, None
     return FAIL, "ATS wasn't changed to 3"
 
-# --------------------------------- Test 24 ---------------------------------- #
 
 def test_override_changes_icon_and_left_border():
     global DRIVER
@@ -264,15 +278,14 @@ def test_override_changes_icon_and_left_border():
     if (sepsis.text not in "warning"):
         ret = False
     ats = john.find_element_by_class_name('cdk-column-ATS')
-    
+
     if (ats.get_attribute('style') not in "border-left-color: rgb(229, 57, 53);"):
         ret = False
     if (ret):
         return PASS, None
-    
+
     return FAIL, "Didn't change icon/left border."
-    
-# --------------------------------- Test 24 ---------------------------------- #
+
 
 def test_override_changes_icon_and_remains_after_view_change():
     global DRIVER
@@ -306,7 +319,7 @@ def test_override_changes_icon_and_remains_after_view_change():
     
     return PASS, None
     
-# ---------------------------------- Test 26 --------------------------------- #
+
 def test_search_shows_seen_unseen():
     global DRIVER
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
@@ -329,7 +342,7 @@ def test_search_shows_seen_unseen():
 
     return FAIL, None
 
-# ---------------------------------- Test 27 --------------------------------- #
+
 def test_click_seen_removes_from_view():
     global DRIVER
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
@@ -342,7 +355,7 @@ def test_click_seen_removes_from_view():
     
     return FAIL, "Didn't remove from view"
 
-# ---------------------------------- Test 28 --------------------------------- #
+
 def test_search_and_untick_seen_makes_them_reappear():
     global DRIVER
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
@@ -371,7 +384,7 @@ def test_search_and_untick_seen_makes_them_reappear():
     return FAIL, "Patient didn't show again"
 
 
-# ---------------------------------- Test 29 --------------------------------- #
+
 def test_patients_remain_seen_when_switching_view():
     global DRIVER
     allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
@@ -404,11 +417,6 @@ def test_patients_remain_seen_when_switching_view():
     return PASS, None
 
 
-# ---------------------------------------------------------------------------- #
-#                                  John Spicer                                 #
-# ---------------------------------------------------------------------------- #
-# ----------------------------- Item 2, 7, 8, 11 ----------------------------- #
-# ---------------------------------- Test 3 ---------------------------------- #
 def test_vitals_shown():
     global DRIVER
 
@@ -437,7 +445,7 @@ def test_vitals_shown():
     vital_positive.click()
     return PASS, 'Vital table correctly shown, and correct icon and text number'
 
-# ---------------------------------- Test 5 ---------------------------------- #
+
 def test_bloodgas_shown():
     global DRIVER
 
@@ -466,7 +474,7 @@ def test_bloodgas_shown():
     bG_positive.click()
     return PASS, 'Bloodgas table correctly shown, and correct icon and text number'
 
-# ---------------------------------- Test 4 ---------------------------------- #
+
 def test_no_bloodgas_shown():
     global DRIVER
 
@@ -484,7 +492,7 @@ def test_no_bloodgas_shown():
     bG_positive.click()
     return PASS, 'Bloodgas not shown, as no results'
 
-# ---------------------------------- Test 5 ---------------------------------- #
+
 def test_LOC_15():
     global DRIVER
 
@@ -499,7 +507,7 @@ def test_LOC_15():
 
     return PASS, 'All expandable patients default LOC of 15'
 
-# ---------------------------------- Test 20 ---------------------------------- #
+
 def test_default_team_A_B():
     global DRIVER
 
@@ -514,36 +522,26 @@ def test_default_team_A_B():
 
     return PASS, 'All expandable patients default team A or B'
 
-# ---------------------------------- Test 21 ---------------------------------- #
+
 def test_team_change():
     global DRIVER
-
-    DRIVER.refresh()
 
     clear_notifications()
     toggle('team')
 
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]/td[9]/mat-form-field/div/div[1]/div')
-    allen.click()
+    allen = DRIVER.find_element_by_id('7092666054')
 
-    time.sleep(0.125)
-
-    B = DRIVER.find_element_by_xpath('//*[@id="mat-option-29"]/span')
-    B.click()
-
-    time.sleep(0.125)
+    change_team(allen, 'B')
 
     new_allen = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table[2]/div/table/tbody/tr[1]')
-    if 'display' not in new_allen.get_attribute('class'):
+    if '7092666054' != new_allen.get_attribute('id'):
         return FAIL, 'patient is not displayed in new team table'
 
     return PASS, 'patient team has been changed, and table updated appropriately'
 
-# ---------------------------------- Test 32 ---------------------------------- #
+
 def test_last_name():
     global DRIVER
-
-    DRIVER.refresh()
 
     search = DRIVER.find_element_by_id("mat-input-0")
     if not search:
@@ -562,7 +560,7 @@ def test_last_name():
 
     return PASS, 'last name search correctly identifies patient'
 
-# ---------------------------------- Test 33 ---------------------------------- #
+
 def test_first_name():
     global DRIVER
 
@@ -585,7 +583,7 @@ def test_first_name():
 
     return PASS, 'last name search correctly identifies patient'
 
-# ---------------------------------- Test 35 ---------------------------------- #
+
 def test_no_patient_name():
     global DRIVER
 
@@ -606,11 +604,6 @@ def test_no_patient_name():
 
     return PASS, 'last name search correctly doesnt find patient'
 
-# ---------------------------------------------------------------------------- #
-#                                    Item 1                                    #
-# ---------------------------------------------------------------------------- #
-
-# ---------------------------------- Test 1 ---------------------------------- #
 
 def test_columns_present():
     global DRIVER
@@ -660,11 +653,6 @@ def test_columns_present():
     
     return PASS, 'all columns detected across all patients'
 
-# ---------------------------------------------------------------------------- #
-#                                    Item 4                                    #
-# ---------------------------------------------------------------------------- #
-
-# ---------------------------------- Test 8 ---------------------------------- #
 
 def test_caution_icon():
     global DRIVER
@@ -690,7 +678,6 @@ def test_caution_icon():
 
     return PASS, 'caution icons displayed correctly'
 
-# ---------------------------------- Test 9 ---------------------------------- #
 
 def test_warning_icon():
     global DRIVER
@@ -716,7 +703,6 @@ def test_warning_icon():
 
     return PASS, 'Warning icons displayed correctly'
 
-# ---------------------------------- Test 10 --------------------------------- #
 
 def test_short_yellow():
     global DRIVER
@@ -729,7 +715,6 @@ def test_short_yellow():
 
     return PASS, 'shorthand caution is displayed correctly'
 
-# ---------------------------------- Test 11 --------------------------------- #
 
 def test_short_red():
     global DRIVER
@@ -742,11 +727,6 @@ def test_short_red():
 
     return PASS, 'shorthand warning is displayed correctly'
 
-# ---------------------------------------------------------------------------- #
-#                                    Item 5                                    #
-# ---------------------------------------------------------------------------- #
-
-# ---------------------------------- Test 12 --------------------------------- #
 
 def test_left_border_warning():
     global DRIVER
@@ -766,7 +746,6 @@ def test_left_border_warning():
 
     return PASS, 'caution left border correct'
 
-# ---------------------------------- Test 13 --------------------------------- #
 
 def test_left_border_caution():
     global DRIVER
@@ -786,11 +765,7 @@ def test_left_border_caution():
 
     return PASS, 'warning left border correct'
 
-# ---------------------------------------------------------------------------- #
-#                                    Item 6                                    #
-# ---------------------------------------------------------------------------- #
 
-# ---------------------------------- Test 14/16 --------------------------------- #
 def test_waiting_caution():
     global DRIVER
 
@@ -804,7 +779,7 @@ def test_waiting_caution():
 
     return PASS, 'caution icon present'
 
-# ---------------------------------- Test 15 --------------------------------- #
+
 def test_no_waiting_caution():
     global DRIVER
 
@@ -818,7 +793,7 @@ def test_no_waiting_caution():
 
     return PASS, 'caution icon not present'
 
-# ---------------------------------- Test 17 --------------------------------- #
+
 def test_pause():
     global DRIVER
 
@@ -841,7 +816,7 @@ def test_pause():
 
     return PASS, 'time is the same after 1 minute, paused'
 
-# ---------------------------------- Test 18 --------------------------------- #
+
 def test_pause_icon():
     global DRIVER
 
@@ -865,15 +840,6 @@ def test_pause_icon():
     return PASS, 'waitime icon correctly shows after seen'
 
 
-# ---------------------------------------------------------------------------- #
-#                                    Item 9                                    #
-# ---------------------------------------------------------------------------- #
-
-# ---------------------------------- Test 22 --------------------------------- #
-
-
-#------_---_---_---@ZenithZ---_---_---_------
-#Item 19: Patients can be sorted by their level of suspicion of sepsis
 def comp_sepsis(patients, comp):
     risks = [float(p.find_elements_by_tag_name('mat-icon')[-1].get_attribute('ng-reflect-message')) for p in patients]
 
@@ -886,7 +852,7 @@ def comp_sepsis(patients, comp):
  
     return True
 
-#Test 58: Clicking on the suspect column will sort patients first by those not suspected of sepsis, then by those with a caution icon, then by those with a warning icon. (then every third click).
+
 def test_sepsisRisk_sort():
     global DRIVER
 
@@ -911,6 +877,7 @@ def test_sepsisRisk_sort():
         return FAIL, 'Sorting by sepsis risk not performed correctly 2' 
 
     return PASS, None
+
 
 def test_sepsisRisk_reverse_sort():
     global DRIVER
@@ -937,6 +904,7 @@ def test_sepsisRisk_reverse_sort():
 
     return PASS, None
 
+
 def test_sepsisRisk_preserved_order():
     global DRIVER
     if not toggle('ats'):
@@ -956,7 +924,7 @@ def test_sepsisRisk_preserved_order():
 
     return PASS, None
 
-# Item 14: Patients can be sorted by their age
+
 def comp_age(patients, comp):
     ages = [int(p.find_element_by_class_name('cdk-column-DOB').text) for p in patients]
     
@@ -968,7 +936,8 @@ def comp_age(patients, comp):
             return False
 
     return True
-# Test 43: Clicking on the age column will sort patients by their age. (then every third click).
+
+
 def test_age_sort():
     global DRIVER
 
@@ -993,7 +962,8 @@ def test_age_sort():
         return FAIL, 'Sorting by age not performed correctly'
 
     return PASS, None
-# Test 44: Clicking on the age column twice will sort patients in reverse order by their age. (then every third click).
+
+
 def test_age_reverse_sort():
     global DRIVER
     for i in range(2):
@@ -1018,7 +988,8 @@ def test_age_reverse_sort():
         return FAIL, 'Sorting by age not performed correctly'
 
     return PASS, None
-# Test 45: Order is preserved when switching views.
+
+
 def test_age_preserved_order():
     global DRIVER
     if not toggle('ats'):
@@ -1038,7 +1009,7 @@ def test_age_preserved_order():
 
     return PASS, None
 
-# Item 17: Patients can be sorted by their LOC
+
 def comp_LOC(patients, comp):
     loc = [int(p.find_element_by_class_name('cdk-column-LOC').text) for p in patients]
 
@@ -1050,7 +1021,8 @@ def comp_LOC(patients, comp):
             return False
 
     return True
-# Test 52: Clicking on the LOC column will sort patients by their LOC. (then every third click).
+
+
 def test_LOC_sort():
     global DRIVER
     if not sort('loc'):
@@ -1074,7 +1046,8 @@ def test_LOC_sort():
         return FAIL, 'Sorting by loc not performed correctly'
 
     return PASS, None
-# Test 53: Clicking on the LOC column twice will sort patients in reverse order by their LOC. (then every third click).
+
+
 def test_LOC_reverse_sort():
     global DRIVER
     for i in range(2):
@@ -1099,7 +1072,8 @@ def test_LOC_reverse_sort():
         return FAIL, 'Sorting by loc not performed correctly'
 
     return PASS, None
-# Test 54: Order is preserved when switching views.
+
+
 def test_LOC_preserved_order():
     global DRIVER
     if not toggle('ats'):
@@ -1119,7 +1093,6 @@ def test_LOC_preserved_order():
 
     return PASS, None
 
-#------_---_---_---@ZenithZ---_---_---_------
 
 def comp_name(patients, comp, part):
     names = []
@@ -1621,7 +1594,10 @@ def test_ats_suspect_cat():
 
 
 def suspect_toggle(mrn, num, orig_cat, new_cat):
+    global DRIVER
+
     for i in range(num):
+        clear_notifications()
         res, msg = suspect_septic(mrn, new_cat=new_cat)
         if not res:
             return res, msg
@@ -1639,18 +1615,24 @@ def test_ats_suspect_toggle_cat():
     # Testing with a patient in ATS cat 5
     res, msg = suspect_toggle('1423017529', 2, 5, 3)
 
+    DRIVER.refresh()
+
     # Testing with a patient in ATS cat 3 (Boundary)
     res, msg = suspect_toggle('3245321980', 2, 3, 3)
     if not res:
         return res, msg
+
+    DRIVER.refresh()
 
     # Testing with a patient in ATS cat 2 (Abnormal)
     res, msg = suspect_toggle('7917279390', 2, 2, 2)
     if not res:
         return res, msg
 
+    DRIVER.refresh()
+
     # Simulate indecisive user
-    res, msg = suspect_toggle('1423017529', 50, 5, 3)
+    res, msg = suspect_toggle('1423017529', 10, 5, 3)
     if not res:
         return res, msg
 
@@ -1815,11 +1797,10 @@ def after_test(skip=False):
 
 def get_testcases():
     tests = []
-    # if not SKIP:
-    #     tests.append(Test('Build', test_build))
-    # tests.append(Test('Test Page Load', test_page_load))
+    if not SKIP:
+        tests.append(Test('Build', test_build))
+    tests.append(Test('Test Page Load', test_page_load))
 
-# ------------------------------@Mark------------------------------ #
     tests.append(Test("Item 9 - Test 22: A patient who is suspected of sepsis has a warning or caution icon in the appropriate column", test_patient_has_warning_or_cation_icon))
     tests.append(Test("Item 9 - Test 23: Upon clicking override, the ATS Category increases to 3", test_override_changes_ats_to_3))
     tests.append(Test("Item 9 - Test 24: Upon clicking override, the patient has a warning or caution icon in the appropriate column and the bar on the left is similarly coloured", test_override_changes_icon_and_left_border))
@@ -1828,7 +1809,6 @@ def get_testcases():
     tests.append(Test("Item 10 - Test 27: Clicking on the seen checkbox will remove a patient from view (unseen patients)", test_click_seen_removes_from_view))
     tests.append(Test("Item 10 - Test 28: Searching and re-checking the seen checkbox will make the patient reappear (unseen patients)", test_search_and_untick_seen_makes_them_reappear))
     tests.append(Test("Item 10 - Test 29: Patients will remain seen if views are switched back and forth", test_patients_remain_seen_when_switching_view))
-# -------------------------------Unknown -------------------------- #
     tests.append(Test('Item 11 - Test 34: Searching by a patients full name will reveal all patients with that full name.', test_name_search))
     tests.append(Test('Item 11 - Test 30: Search by MRN will reveal a single patient matching that MRN.', test_MRN_search))
 
@@ -1840,7 +1820,6 @@ def get_testcases():
     tests.append(Test('Item 12 - Test 39: Patient moves tables if suspect' , test_ats_suspect_cat))
     tests.append(Test('Item 12 - Test 39a: Patient cat toggles if suspect changes', test_ats_suspect_toggle_cat))
 
-# ----------------------------------- @ZenithZ ---------------------------------- #
     tests.append(Test('Item 14 - Test 43: Sort by Age, Ascending', test_age_sort))
     tests.append(Test('Item 14 - Test 44: Sort by Age, Descending' , test_age_reverse_sort))
     tests.append(Test('Item 14 - Test 45: Sort by Age Toggle' , test_age_preserved_order))
@@ -1854,12 +1833,9 @@ def get_testcases():
     tests.append(Test('Item 19 - Test 59: Sort by Sepsis Risk, Descending' , test_sepsisRisk_reverse_sort))
     tests.append(Test('Item 19 - Test 60: Sort by Sepsis Risk Toggle' , test_sepsisRisk_preserved_order))
     
-    # Allen's version
     tests.append(Test('Item 19 - Test 58-60: Sort by Sepsis Risk Ascending, Desending & Toggle' , test_sort_sepsis))
     tests.append(Test('Item 16 - Test 49-51: Sort by Bloodgas Ascending, Desending & Toggle' , test_sort_BG))
 
-# ----------------------------------- @John ---------------------------------- #
-#kill -9 `lsof -t -i:4200`
     tests.append(Test('Item 2 - Test 3: If vitals were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_vitals_shown))
     tests.append(Test('Item 2 - Test 5: If bloodgas were done, clicking on the patient shows vitals with the same number of out of range values as indicated.', test_bloodgas_shown))
     tests.append(Test('Item 2 - Test 4: If brief results show x, there are no results.', test_no_bloodgas_shown))
@@ -1881,7 +1857,5 @@ def get_testcases():
     tests.append(Test('Item 6 - Test 15: waittime no caution present', test_no_waiting_caution))
     tests.append(Test('Item 6 - Test 17: pauses correctly', test_pause))
     tests.append(Test('Item 6 - Test 18: pause icon appears correctly', test_pause_icon))
-
-# ----------------------------------------------------------------------------- #
 
     return tests
