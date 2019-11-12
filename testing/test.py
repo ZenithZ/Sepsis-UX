@@ -239,8 +239,8 @@ def test_MRN_search():
 
 def test_patient_has_warning_or_cation_icon():
     global DRIVER
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
-    flynn = DRIVER.find_element_by_xpath('//*[@id="7917279390"]')
+    allen = DRIVER.find_element_by_id('7092666054')
+    flynn = DRIVER.find_element_by_id('7917279390')
     
     sepsis1 = allen.find_element_by_class_name('cdk-column-Sepsis')
     sepsis2 = flynn.find_element_by_class_name('cdk-column-Sepsis')
@@ -322,7 +322,7 @@ def test_override_changes_icon_and_remains_after_view_change():
 
 def test_search_shows_seen_unseen():
     global DRIVER
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     
     cols = allen.find_elements_by_tag_name('td')
     cols[1].click() # Click seen
@@ -345,11 +345,11 @@ def test_search_shows_seen_unseen():
 
 def test_click_seen_removes_from_view():
     global DRIVER
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     
     cols = allen.find_elements_by_tag_name('td')
     cols[1].click() # Click seen
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' in res.get_attribute('class')):
         return PASS, None
     
@@ -358,11 +358,11 @@ def test_click_seen_removes_from_view():
 
 def test_search_and_untick_seen_makes_them_reappear():
     global DRIVER
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     
     cols = allen.find_elements_by_tag_name('td')
     cols[1].click() # Click seen
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
     
@@ -373,11 +373,11 @@ def test_search_and_untick_seen_makes_them_reappear():
     search.clear()
     search_name = "allen"
     search.send_keys(search_name)
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     cols = allen.find_elements_by_tag_name('td')
     cols[1].click() # Click seen
     search.clear()
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return PASS, None
 
@@ -387,30 +387,30 @@ def test_search_and_untick_seen_makes_them_reappear():
 
 def test_patients_remain_seen_when_switching_view():
     global DRIVER
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     
     cols = allen.find_elements_by_tag_name('td')
     cols[1].click() # Click seen
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
     toggle('ats')
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
     
     toggle('combined')
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
 
     toggle('team')
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
 
     toggle('combined')
-    res = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    res = DRIVER.find_element_by_id('7092666054')
     if ('seen' not in res.get_attribute('class')):
         return FAIL, "Patient was still in view after clicking seen"
 
@@ -422,7 +422,7 @@ def test_vitals_shown():
 
     DRIVER.refresh()
 
-    vital_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    vital_positive = DRIVER.find_element_by_id('7092666054')
     vital_positive.click()
 
     time.sleep(0.25)
@@ -451,7 +451,7 @@ def test_bloodgas_shown():
 
     DRIVER.refresh()
 
-    bG_positive = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    bG_positive = DRIVER.find_element_by_id('7092666054')
     bG_positive.click()
 
     time.sleep(0.25)
@@ -480,7 +480,7 @@ def test_no_bloodgas_shown():
 
     DRIVER.refresh()
 
-    bG_positive = DRIVER.find_element_by_xpath('//*[@id="6781046174"]')
+    bG_positive = DRIVER.find_element_by_id('6781046174')
     bG_positive.click()
 
     time.sleep(0.25)
@@ -657,23 +657,18 @@ def test_columns_present():
 def test_caution_icon():
     global DRIVER
 
-    DRIVER.refresh()
-
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     allen.click()
+    time.sleep(0.25)
 
-    vitals = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[1]/mat-expansion-panel')
-    vitals.click()
+    vitals = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table[1]/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[1]')
 
-    table = DRIVER.find_element_by_xpath('//*[@id="cdk-accordion-child-0"]/div')
-    values = table.find_elements_by_tag_name('tr')
+    values = [v.get_attribute('textContent') for v in vitals.find_elements_by_class_name('cdk-column-Value')[1:]]
 
-    icons = values[1].find_elements_by_tag_name('mat-icon')
-    if len(icons) > 0 or 'caution-icon' not in icons[0].get_attribute('class'):
+    if values[1].split()[0] != 'error':
         return FAIL, 'Body Temperature for Allen is not out of range'
 
-    icons = values[2].find_elements_by_tag_name('mat-icon')
-    if len(icons) < 1 or 'caution-icon' not in icons[0].get_attribute('class'):
+    if values[2].split()[0] != 'error':
         return FAIL, 'Pulse rate for Allen is out of range'
 
     return PASS, 'caution icons displayed correctly'
@@ -684,21 +679,18 @@ def test_warning_icon():
 
     DRIVER.refresh()
 
-    allen = DRIVER.find_element_by_xpath('//*[@id="7092666054"]')
+    allen = DRIVER.find_element_by_id('7092666054')
     allen.click()
+    time.sleep(0.25)
 
-    BG = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]/mat-expansion-panel')
-    BG.click()
+    bg = DRIVER.find_element_by_xpath('/html/body/app-root/div/div/app-table[1]/div/table/tbody/tr[2]/td/div/app-detail/div/mat-accordion[2]')
 
-    table = DRIVER.find_element_by_xpath('//*[@id="cdk-accordion-child-11"]/div')
-    values = table.find_elements_by_tag_name('tr')
+    values = [v.get_attribute('textContent') for v in bg.find_elements_by_class_name('cdk-column-Value')[1:]]
 
-    icons = values[1].find_elements_by_tag_name('mat-icon')
-    if len(icons) < 1 or 'warning-icon' not in icons[0].get_attribute('class'):
+    if values[0].split()[0] != 'warning':
         return FAIL, 'BE for Allen is not out of range'
 
-    icons = values[2].find_elements_by_tag_name('mat-icon')
-    if len(icons) < 1 or 'caution-icon' not in icons[0].get_attribute('class'):
+    if values[1].split()[0] != 'error':
         return FAIL, 'Lactate for Allen is out of range'
 
     return PASS, 'Warning icons displayed correctly'
