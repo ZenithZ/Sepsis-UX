@@ -6,6 +6,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import {FilterService} from '../../filter.service';
 import { ToastrService } from 'ngx-toastr';
 import { take } from 'rxjs/operators';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-table',
@@ -70,7 +71,7 @@ export class TableComponent implements OnChanges {
   waitTimeSnackActioned: boolean = false;
 
   atsGroup: number;
-  displayedColumns: string[] = ['ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
+  displayedColumns: string[] = ['Boarder', 'ATS', 'Seen', 'MRN', 'Name', 'DOB', 'Vitals', 'BG', 'LOC', 'Team', 'Delta', 'Sepsis'];
   expandedElement: any | null;
   dataSource: MatTableDataSource<any>;
   ranges;
@@ -113,6 +114,9 @@ export class TableComponent implements OnChanges {
     //Add 'implements AfterViewChecked' to the class.
 
   }
+
+  myControl = new FormControl();
+  atss: number[] = [1, 2, 3];
 
   getVitalIndicatorValue(patient) {
     if (this.patientRanges != null && this.patientRanges[patient['MRN']] != undefined) {
@@ -241,6 +245,7 @@ export class TableComponent implements OnChanges {
     return ret;
   }
 
+
   exceedsAcuity(patient: any) {
     return this.getWaitTime(patient) > this.TREATMENT_ACUITY[patient['ATS']];
   }
@@ -249,8 +254,8 @@ export class TableComponent implements OnChanges {
     let exceeds = patient['ML'] >= 0.8;
 
     if (exceeds == true && !patient['Notified']) {
-      this.notifyPatientRisk(patient);
-      patient['Notified'] = true;
+      // this.notifyPatientRisk(patient);
+      patient['Notified'] = true; //NOTIFICATION
     }
     return exceeds;
   }

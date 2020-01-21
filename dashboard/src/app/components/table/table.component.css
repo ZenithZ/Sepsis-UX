@@ -158,28 +158,29 @@
   }
 
   .atsBorder {
-    border-left: 7px solid whitesmoke;
+    /* border-left: 7px solid whitesmoke; */
+    background-color: whitesmoke;
   }
 
-.ats1Border {
+/* .ats1Border {
     border-left-color: #e53935;
   }
-  
+   */
   /* .ats2Border {
     border-left-color: #e53935;
   } */
   
-  .ats3Border {
+  /* .ats3Border {
     border-left-color: #fb8c00;
-  }
+  } */
   
   /* .ats4Border {
     border-left-color: #002664;
   } */
   
-  .ats5Border {
+  /* .ats5Border {
     border-left-color: #43a047;
-  } 
+  }  */
 
   .glow {
     background: white;
