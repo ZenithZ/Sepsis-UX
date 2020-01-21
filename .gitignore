@@ -1,0 +1,30 @@
+# dependencies
+/node_modules
+
+# production
+/dashboard/dist
+/dashboard/.firebase
+/dashboard.firebaserc
+/dashboardfirebase.json
+
+# OS X
+.DS_Store
+
+# local env files
+/dashboard.env.local
+/dashboard.env.*.local
+
+# Log files
+/dashboardnpm-debug.log*
+/dashboardyarn-debug.log*
+/dashboardyarn-error.log*
+
+# Editor directories and files
+/dashboard.idea
+/dashboard.vscode
+/dashboard/.vs
+/dashboard*.suo
+/dashboard*.ntvs*
+/dashboard*.njsproj
+/dashboard*.sln
+/dashboard*.sw?
